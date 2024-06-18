@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(bottom: 15),
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
+                              borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
                                   spreadRadius: 2.0,
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: const BorderRadius.all(
-                                    Radius.circular(50),
+                                    Radius.circular(10),
                                   ),
                                   borderSide: BorderSide(
                                     color: AppColors.grey,
@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                                   borderSide:
                                       BorderSide(color: AppColors.darkYellow),
                                   borderRadius: const BorderRadius.all(
-                                    Radius.circular(50),
+                                    Radius.circular(10),
                                   ),
                                 ),
                                 filled: true,

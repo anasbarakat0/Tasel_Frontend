@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
+// ignore: must_be_immutable
 class Button extends StatelessWidget {
   final String text;
-
+  double fontSize;
   final VoidCallback? onPressed;
-  const Button({
+
+  Button({
     super.key,
     required this.text,
+    this.fontSize = 30,
     this.onPressed,
   });
 
@@ -21,7 +24,7 @@ class Button extends StatelessWidget {
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(AppColors.yellow),
@@ -29,9 +32,10 @@ class Button extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
+            // Remove the const keyword here
             fontFamily: 'Cairo',
-            fontSize: 30,
+            fontSize: fontSize,
             fontWeight: FontWeight.w700,
           ),
         ),

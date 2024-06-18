@@ -10,10 +10,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final Map<String, dynamic> userData = {
-    "name": "anas",
-    "phone": 38406717,
+    "name": "Anas",
+    "phone": 0938406717,
     "email": "anasbarakat0@gmail.com",
-    "address": "abo rmaneh"
+    "address": "Abo Romanneh"
   };
 
   File? _image;
@@ -35,88 +35,65 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Contact Us',
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
         backgroundColor: AppColors.yellow,
         foregroundColor: AppColors.grey,
         centerTitle: true,
       ),
-      body: Stack(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.yellow,
+        foregroundColor: AppColors.grey,
+        onPressed: () {},
+        child: const Icon(Icons.edit),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/background.jpg'), // Ensure you have this image in your assets folder
-                fit: BoxFit.cover,
-              ),
+          GestureDetector(
+            onTap: _pickImage,
+            child: CircleAvatar(
+              radius: 60,
+              backgroundImage: _image != null
+                  ? FileImage(_image!)
+                  : const AssetImage('assets/tasel.png') as ImageProvider,
             ),
           ),
-          Container(
-            color: Colors.black.withOpacity(0.6),
+          const SizedBox(height: 16),
+          Text(
+            userData['name'],
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomPaint(
-                painter: SemiCirclePainter(),
-                child: Container(
-                  height:
-                      300, // Increase the height to make the semi-circle bigger
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: _pickImage,
-                        child: CircleAvatar(
-                          radius: 40,
-                          backgroundImage: _image != null
-                              ? FileImage(_image!)
-                              : AssetImage('assets/user_image.jpg')
-                                  as ImageProvider,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Text(
-                        userData['name'],
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                UserInfoTile(
+                  label: 'Phone',
+                  value: userData['phone'].toString(),
+                  icon: Icons.phone,
                 ),
-              ),
-              SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    UserInfoTile(
-                      label: 'Phone',
-                      value: userData['phone'].toString(),
-                      icon: Icons.phone,
-                    ),
-                    UserInfoTile(
-                      label: 'Email',
-                      value: userData['email'],
-                      icon: Icons.email,
-                    ),
-                    UserInfoTile(
-                      label: 'Address',
-                      value: userData['address'],
-                      icon: Icons.home,
-                    ),
-                  ],
+                UserInfoTile(
+                  label: 'Email',
+                  value: userData['email'],
+                  icon: Icons.email,
                 ),
-              ),
-            ],
+                UserInfoTile(
+                  label: 'Address',
+                  value: userData['address'],
+                  icon: Icons.home,
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -165,22 +142,23 @@ class UserInfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white.withOpacity(0.8),
+      color: AppColors.grey,
       shadowColor: Colors.black54,
-      margin: EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ListTile(
         leading: Icon(icon, color: AppColors.yellow),
         title: Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
-            color: AppColors.grey,
+            color: Colors.white,
           ),
         ),
         subtitle: Text(
           value,
           style: TextStyle(
-            color: AppColors.grey,
+            color: Colors.grey[300],
+            fontStyle: FontStyle.italic,
           ),
         ),
       ),

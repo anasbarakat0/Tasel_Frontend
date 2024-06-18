@@ -30,7 +30,7 @@ class MyTextField extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 15),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
               spreadRadius: 2.0,
@@ -47,7 +47,7 @@ class MyTextField extends StatelessWidget {
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderRadius: const BorderRadius.all(
-                Radius.circular(50),
+                Radius.circular(10),
               ),
               borderSide: BorderSide(
                 color: AppColors.grey,
@@ -67,7 +67,7 @@ class MyTextField extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: AppColors.darkYellow),
               borderRadius: const BorderRadius.all(
-                Radius.circular(50),
+                Radius.circular(10),
               ),
             ),
             fillColor: Colors.grey[850],

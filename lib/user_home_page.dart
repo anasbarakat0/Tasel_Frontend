@@ -4,7 +4,6 @@ import 'package:tasel_frontend/Widgets/leading.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
-import 'package:tasel_frontend/google_maps.dart';
 import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/map_sample.dart';
 import 'package:tasel_frontend/profile_page.dart';
@@ -115,7 +114,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ContactPage()),
+                            builder: (context) => ContactUsPage()),
                       );
                     }),
                 leadingButtons(
@@ -134,21 +133,16 @@ class _UserHomePageState extends State<UserHomePage> {
           body: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(16.0),
                 child: MyTextField(
                   controller: searchController,
                   title: 'Search',
                   keyboardType: TextInputType.name,
-                  prefixIcon: const SizedBox(),
-                  suffix: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.search,
-                      color: AppColors.grey,
-                    ),
-                    iconSize: 16,
-                    color: AppColors.yellow,
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(left: 5),
+                    child: Icon(Icons.search),
                   ),
+                  ontap: () {},
                 ),
               ),
               BlocBuilder<ShowProvidersBloc, ShowProvidersState>(

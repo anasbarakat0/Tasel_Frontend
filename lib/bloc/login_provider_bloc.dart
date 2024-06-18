@@ -31,7 +31,7 @@ Future<ResultModel> loginProvider(LoginModel login) async {
     Response response =
         await dio.post("$baseurl/login/store", data: login.toMap());
     if (response.statusCode == 200) {
-      return TokenModel(token: response.data);
+      return TokenModel(token: response.data['token']);
     } else {
       return ErrorResult(message: 'try again later');
     }

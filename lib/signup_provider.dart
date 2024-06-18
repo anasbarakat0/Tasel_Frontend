@@ -124,7 +124,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               padding: const EdgeInsets.only(bottom: 15),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
                                       spreadRadius: 2.0,
@@ -146,7 +146,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                   decoration: InputDecoration(
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: const BorderRadius.all(
-                                          Radius.circular(50),
+                                          Radius.circular(10),
                                         ),
                                         borderSide: BorderSide(
                                           color: AppColors.grey,
@@ -171,7 +171,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         borderSide: BorderSide(
                                             color: AppColors.darkYellow),
                                         borderRadius: const BorderRadius.all(
-                                          Radius.circular(50),
+                                          Radius.circular(10),
                                         ),
                                       ),
                                       fillColor: Colors.grey[850],
@@ -197,7 +197,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               padding: const EdgeInsets.only(bottom: 15),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
                                       spreadRadius: 2.0,
@@ -215,7 +215,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                   decoration: InputDecoration(
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: const BorderRadius.all(
-                                          Radius.circular(50),
+                                          Radius.circular(10),
                                         ),
                                         borderSide: BorderSide(
                                           color: AppColors.grey,
@@ -233,7 +233,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         borderSide: BorderSide(
                                             color: AppColors.darkYellow),
                                         borderRadius: const BorderRadius.all(
-                                          Radius.circular(50),
+                                          Radius.circular(10),
                                         ),
                                       ),
                                       fillColor: Colors.grey[850],
@@ -415,7 +415,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               padding: const EdgeInsets.only(bottom: 15),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
                                       spreadRadius: 2.0,
@@ -430,7 +430,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                   decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: const BorderRadius.all(
-                                        Radius.circular(50),
+                                        Radius.circular(10),
                                       ),
                                       borderSide: BorderSide(
                                         color: AppColors.grey,
@@ -447,7 +447,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                       borderSide: BorderSide(
                                           color: AppColors.darkYellow),
                                       borderRadius: const BorderRadius.all(
-                                        Radius.circular(50),
+                                        Radius.circular(10),
                                       ),
                                     ),
                                     prefixIcon: const Icon(Icons.lock),
@@ -483,7 +483,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               padding: const EdgeInsets.only(bottom: 15),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
+                                  borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
                                       spreadRadius: 2.0,
@@ -507,7 +507,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                   decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: const BorderRadius.all(
-                                        Radius.circular(50),
+                                        Radius.circular(10),
                                       ),
                                       borderSide: BorderSide(
                                         color: AppColors.grey,
@@ -539,7 +539,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         ? const OutlineInputBorder(
                                             borderRadius:
                                                 const BorderRadius.all(
-                                              Radius.circular(50),
+                                              Radius.circular(10),
                                             ),
                                             borderSide: BorderSide(
                                                 color: Colors.green,
@@ -548,7 +548,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         : OutlineInputBorder(
                                             borderRadius:
                                                 const BorderRadius.all(
-                                              Radius.circular(50),
+                                              Radius.circular(10),
                                             ),
                                             borderSide: BorderSide(
                                                 color: AppColors.yellow,
