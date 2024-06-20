@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:tasel_frontend/Model/provider_info.dart';
-import 'package:tasel_frontend/Widgets/leading.dart';
 import 'package:tasel_frontend/Widgets/provider_info_card.dart';
 import 'package:tasel_frontend/bloc/provider_info_bloc.dart';
-import 'package:tasel_frontend/contact_page.dart';
-import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/map_sample.dart';
 import 'package:tasel_frontend/theme/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ProviderPage extends StatefulWidget {
   final String id;

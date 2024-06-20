@@ -1,5 +1,3 @@
-import 'package:tasel_frontend/Model/provisers_model.dart';
-
 class ResultProviders {}
 
 class SuccessModel extends ResultProviders {}

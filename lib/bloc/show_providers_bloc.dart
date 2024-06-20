@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
@@ -48,23 +46,19 @@ Future<ResultProviders> getAllProviders() async {
     Dio dio = Dio();
     Response response = await dio.get('$baseurl/stores');
     if (response.statusCode == 200) {
-      print('sssssssssssssssssssssssssss');
       List<ProvidersModel> providersModel = List.generate(
         response.data['data'].length,
         (index) => ProvidersModel.fromMap(
           response.data['data'][index],
         ),
       );
-      print('greaaattttttttttttttttttt');
       return ListOf(
         resutl: providersModel,
       );
     } else {
-      print('تباااااااااااااااااااااااااا');
       return ErrorModel(messge: 'No Internet Connection');
     }
   } on DioException catch (e) {
-    print('سحقاااااااااااااااااااااااااا');
     return ExceptionModel(message: e.message.toString());
   }
 }

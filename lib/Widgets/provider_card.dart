@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:tasel_frontend/Model/provider_info.dart';
 import 'package:tasel_frontend/main.dart';
-import 'package:tasel_frontend/provider_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProviderCard extends StatelessWidget {
