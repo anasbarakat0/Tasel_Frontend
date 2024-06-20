@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tasel_frontend/Model/provider_info.dart';
-import 'package:tasel_frontend/map_sample.dart';
-import 'package:tasel_frontend/provider_home_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 import 'package:tasel_frontend/user_home_page.dart';
 

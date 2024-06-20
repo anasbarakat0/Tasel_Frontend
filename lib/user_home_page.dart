@@ -75,7 +75,7 @@ class _UserHomePageState extends State<UserHomePage> {
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
-                              child: Image.asset('images/tasel.png')),
+                              child: Image.asset('tasel.png')),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(left: 12, top: 20),

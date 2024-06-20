@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('images/tasel.png', height: 120),
+                  Image.asset('tasel.png', height: 120),
                   const Text(
                     'Welcome back!',
                     style: TextStyle(
