@@ -5,3 +5,10 @@ part of 'show_providers_bloc.dart';
 sealed class ShowProvidersEvent {}
 
 class ShowProviders extends ShowProvidersEvent {}
+
+class SearchEvent extends ShowProvidersEvent {
+  final String lexem;
+  SearchEvent({
+    required this.lexem,
+  });
+}

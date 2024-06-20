@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tasel_frontend/Model/signup_user_model.dart';
@@ -335,7 +334,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               focusedBorder: match
                                   ? const OutlineInputBorder(
-                                      borderRadius: const BorderRadius.all(
+                                      borderRadius: BorderRadius.all(
                                         Radius.circular(10),
                                       ),
                                       borderSide: BorderSide(

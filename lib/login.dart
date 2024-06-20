@@ -7,6 +7,7 @@ import 'package:tasel_frontend/bloc/login_bloc.dart';
 import 'package:tasel_frontend/bloc/login_provider_bloc.dart';
 import 'package:tasel_frontend/signup_provider.dart';
 import 'package:tasel_frontend/signup_user.dart';
+import 'package:tasel_frontend/user_home_page.dart';
 import '../../theme/colors.dart';
 import 'forget_password.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
@@ -282,7 +283,13 @@ Widget BUildUser() {
 }
 
 Widget BuildProvider() {
-  return BlocBuilder<LoginProviderBloc, LoginProviderState>(
+  return BlocConsumer<LoginProviderBloc, LoginProviderState>(
+    listener: (context, state) {
+      if (state is SuccessLoginProvider) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => UserHomePage()));
+      }
+    },
     builder: (context, state) {
       switch (state) {
         case SuccessLoginProvider():

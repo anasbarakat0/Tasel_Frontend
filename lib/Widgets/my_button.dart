@@ -22,13 +22,13 @@ class Button extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          backgroundColor: MaterialStateProperty.all<Color>(AppColors.yellow),
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+          backgroundColor: WidgetStateProperty.all<Color>(AppColors.yellow),
+          foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
         ),
         child: Text(
           text,

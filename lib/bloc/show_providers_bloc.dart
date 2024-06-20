@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
@@ -10,9 +12,11 @@ part 'show_providers_state.dart';
 
 class ShowProvidersBloc extends Bloc<ShowProvidersEvent, ShowProvidersState> {
   ShowProvidersBloc() : super(ShowProvidersInitial()) {
+    List<ProvidersModel> things = [];
     on<ShowProvidersEvent>((event, emit) async {
       var data = await getAllProviders();
       if (data is ListOf<ProvidersModel>) {
+        things = data.resutl;
         emit(
           SuccessShowProviders(
             providers: data.resutl,
@@ -22,6 +26,20 @@ class ShowProvidersBloc extends Bloc<ShowProvidersEvent, ShowProvidersState> {
         emit(ErrorFetchingData());
       }
     });
+
+    List<ProvidersModel> result = [];
+
+    on<SearchEvent>((event, emit) {
+      emit(LoadingFetching());
+      result = [];
+      things.forEach((e) {
+        if (e.name.contains(event.lexem)) {
+          result.add(e);
+        }
+      });
+
+      emit(SearchResutl(providers: result));
+    });
   }
 }
 
@@ -30,19 +48,23 @@ Future<ResultProviders> getAllProviders() async {
     Dio dio = Dio();
     Response response = await dio.get('$baseurl/stores');
     if (response.statusCode == 200) {
+      print('sssssssssssssssssssssssssss');
       List<ProvidersModel> providersModel = List.generate(
-        response.data.length,
+        response.data['data'].length,
         (index) => ProvidersModel.fromMap(
-          response.data[index],
+          response.data['data'][index],
         ),
       );
+      print('greaaattttttttttttttttttt');
       return ListOf(
         resutl: providersModel,
       );
     } else {
+      print('تباااااااااااااااااااااااااا');
       return ErrorModel(messge: 'No Internet Connection');
     }
   } on DioException catch (e) {
+    print('سحقاااااااااااااااااااااااااا');
     return ExceptionModel(message: e.message.toString());
   }
 }

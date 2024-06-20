@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -538,7 +537,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     focusedBorder: match
                                         ? const OutlineInputBorder(
                                             borderRadius:
-                                                const BorderRadius.all(
+                                                BorderRadius.all(
                                               Radius.circular(10),
                                             ),
                                             borderSide: BorderSide(
@@ -832,9 +831,9 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     }),
                               );
                             case Loading():
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             default:
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                           }
                         },
                       )

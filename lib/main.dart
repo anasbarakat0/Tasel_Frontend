@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         primaryColorDark: AppColors.yellow,
       ),
-      home: UserHomePage(),
+      home: const UserHomePage(),
       // ProviderHomePage(
       //   providerInfo: ProviderInfo(
       //     address: Address(

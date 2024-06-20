@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasel_frontend/Widgets/leading.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
+import 'package:tasel_frontend/Widgets/provider_card.dart';
 import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
 import 'package:tasel_frontend/login.dart';
@@ -104,7 +107,8 @@ class _UserHomePageState extends State<UserHomePage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                        MaterialPageRoute(
+                            builder: (context) => const ProfilePage()),
                       );
                     }),
                 leadingButtons(
@@ -114,7 +118,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ContactUsPage()),
+                            builder: (context) => const ContactUsPage()),
                       );
                     }),
                 leadingButtons(
@@ -142,53 +146,78 @@ class _UserHomePageState extends State<UserHomePage> {
                     padding: EdgeInsets.only(left: 5),
                     child: Icon(Icons.search),
                   ),
-                  ontap: () {},
+                  ontap: (String val) {
+                    context
+                        .read<ShowProvidersBloc>()
+                        .add(SearchEvent(lexem: val));
+                  },
                 ),
               ),
               BlocBuilder<ShowProvidersBloc, ShowProvidersState>(
                 builder: (context, state) {
-                  switch (state) {
-                    case LoadingFetching():
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-
-                    case SuccessShowProviders():
-                      return ListView.builder(
-                        itemCount: (state).providers.length,
+                  if (state is LoadingFetching) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is SuccessShowProviders) {
+                    print('ggggggggggggggggggggggggggggggggggg');
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: state.providers.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(state.providers[index].name),
+                          return ProviderCard(
+                            name: state.providers[index].name,
+                            image: state.providers[index].profileImage,
+                            category: state.providers[index].category,
+                            address: state.providers[index].address.areaName,
+                            id: state.providers[index].id,
                           );
                         },
-                      );
-                    case ErrorFetchingData():
-                      return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'There is an Error',
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const UserHomePage(),
-                                  ),
-                                );
-                              },
-                              label: const Text('Try Again'),
-                              icon: const Icon(Icons.autorenew_rounded),
-                            )
-                          ],
-                        ),
-                      );
-                    default:
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      ),
+                    );
+                  } else if (state is ErrorFetchingData) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'There is an Error',
+                          ),
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const UserHomePage(),
+                                ),
+                              );
+                            },
+                            label: const Text('Try Again'),
+                            icon: const Icon(Icons.autorenew_rounded),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (state is SearchResutl) {
+                    print('searchhhhhhhhhh');
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: state.providers.length,
+                        itemBuilder: (context, index) {
+                          return ProviderCard(
+                            name: state.providers[index].name,
+                            image: state.providers[index].profileImage,
+                            category: state.providers[index].category,
+                            address: state.providers[index].address.areaName,
+                            id: state.providers[index].id,
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return const Center(
+                      child: LinearProgressIndicator(),
+                    );
                   }
                 },
               ),

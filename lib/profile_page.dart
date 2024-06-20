@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -133,11 +135,11 @@ class UserInfoTile extends StatelessWidget {
   final IconData icon;
 
   const UserInfoTile({
-    Key? key,
+    super.key,
     required this.label,
     required this.value,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

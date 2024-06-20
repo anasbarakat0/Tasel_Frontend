@@ -6,7 +6,7 @@ class leadingButtons extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
 
-  const leadingButtons({
+  const leadingButtons({super.key, 
     required this.title,
     required this.icon,
     required this.onTap,

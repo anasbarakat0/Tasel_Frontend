@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 import '../theme/colors.dart';
 
@@ -11,10 +9,10 @@ class MyTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final Widget? prefixIcon;
   final Widget? suffix;
-  final VoidCallback? ontap;
+  final dynamic ontap;
   final int? maxLength;
   const MyTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.title,
     required this.keyboardType,
@@ -22,7 +20,7 @@ class MyTextField extends StatelessWidget {
     this.suffix,
     this.ontap,
     this.maxLength,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +74,7 @@ class MyTextField extends StatelessWidget {
           ),
           textAlign: TextAlign.start,
           cursorColor: AppColors.darkYellow,
-          onTap: ontap,
+          onChanged: ontap,
           maxLength: maxLength,
         ),
       ),

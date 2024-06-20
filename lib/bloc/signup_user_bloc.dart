@@ -29,7 +29,7 @@ Future<SignupResultModel> signupUserMethod(UserModel user) async {
   try {
     Dio dio = Dio();
     Response response = await dio.post('$baseurl/signup', data: user.toMap());
-    print('the response is  ${response}');
+    print('the response is  $response');
     if (response.statusCode == 200) {
       print(
           "signup statuscode is 200 and the message is : ${response.data['message']}");
