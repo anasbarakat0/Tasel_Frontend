@@ -6,7 +6,7 @@ void main() {
   runApp(const MyApp());
 }
 
-String baseurl = 'http://localhost:8080';
+String baseurl = 'https://tasel-backend-g6gsdfug6a-uc.a.run.app';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

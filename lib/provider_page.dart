@@ -1,32 +1,25 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:tasel_frontend/Widgets/provider_info_card.dart';
 import 'package:tasel_frontend/bloc/provider_info_bloc.dart';
 import 'package:tasel_frontend/map_sample.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
-class ProviderPage extends StatefulWidget {
-  final String id;
-  const ProviderPage({
-    super.key,
-    required this.id,
-  });
-
-  @override
-  State<ProviderPage> createState() => _ProviderHomePageState();
-}
-
-class _ProviderHomePageState extends State<ProviderPage> {
+class ProviderPage extends StatelessWidget {
   TextEditingController searchController = TextEditingController();
-
+  final String id;
+  ProviderPage({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ProviderInfoBloc(),
+      create: (context) =>
+          ProviderInfoBloc()..add(ShowProviderInfo(idProvider: id)),
       child: Builder(builder: (context) {
-        context
-            .read<ProviderInfoBloc>()
-            .add(ShowProviderInfo(idProvider: widget.id));
         return Scaffold(
           appBar: AppBar(
             title: const Text(
@@ -69,7 +62,7 @@ class _ProviderHomePageState extends State<ProviderPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProviderPage(
-                                id: widget.id,
+                                id: id,
                               ),
                             ),
                           );

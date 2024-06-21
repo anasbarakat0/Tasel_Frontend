@@ -43,7 +43,7 @@ class ProviderCard extends StatelessWidget {
             backgroundColor: Colors.transparent,
             child: ClipOval(
               child: SizedBox(
-                width: 100,
+                width: 50,
                 height: 100,
                 child: Image.network(
                   "$baseurl/$image",
