@@ -6,7 +6,12 @@ sealed class LoginState {}
 
 final class LoginInitial extends LoginState {}
 
-class SuccessLogin extends LoginState {}
+class SuccessLogin extends LoginState {
+  TokenModel tokenId;
+  SuccessLogin({
+    required this.tokenId,
+  });
+}
 
 class LoadingLogin extends LoginState {}
 

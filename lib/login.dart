@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasel_frontend/Model/login_model.dart';
+import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/login_bloc.dart';
@@ -65,13 +66,19 @@ class _LoginPageState extends State<LoginPage> {
                     iconOn: Icons.person,
                     iconOff: Icons.store_mall_directory_sharp,
                     onTap: () {
-                      type = !type;
+                      setState(() {
+                        type = !type;
+                      });
                     },
                     onDoubleTap: () {
-                      type = !type;
+                      setState(() {
+                        type = !type;
+                      });
                     },
                     onSwipe: () {
-                      type = !type;
+                      setState(() {
+                        type = !type;
+                      });
                     },
                     onChanged: (type) {
                       print("the button is $type");
@@ -216,7 +223,20 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 Widget BUildUser() {
-  return BlocBuilder<LoginBloc, LoginState>(
+  return BlocConsumer<LoginBloc, LoginState>(
+    listener: (context, state) {
+      if (state is SuccessLogin) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UserHomePage(
+              tokenId:
+                  TokenModel(token: state.tokenId.token, id: state.tokenId.id),
+            ),
+          ),
+        );
+      }
+    },
     builder: (context, state) {
       switch (state) {
         case SuccessLogin():
@@ -241,6 +261,41 @@ Widget BUildUser() {
         case LoadingLogin():
           return const CircularProgressIndicator();
 
+        case ErrorLogin():
+          return Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Column(
+              children: [
+                Text(state.message),
+                Button(
+                    text: 'Log In',
+                    onPressed: () {
+                      context.read<LoginBloc>().add(Signin(
+                          user: LoginModel(
+                              email: phoneOrEmail.text,
+                              password: password.text)));
+                    }),
+              ],
+            ),
+          );
+        case ExceptionLogin():
+          return Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Column(
+              children: [
+                Text(state.message),
+                Button(
+                    text: 'Log In',
+                    onPressed: () {
+                      context.read<LoginBloc>().add(Signin(
+                          user: LoginModel(
+                              email: phoneOrEmail.text,
+                              password: password.text)));
+                    }),
+              ],
+            ),
+          );
+
         case LoginInitial():
           return Padding(
             padding: const EdgeInsets.only(top: 30),
@@ -253,30 +308,8 @@ Widget BUildUser() {
                 }),
           );
 
-        case ErrorLogin():
-          return Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Button(
-                text: 'Try Again',
-                onPressed: () {
-                  context.read<LoginBloc>().add(Signin(
-                      user: LoginModel(
-                          email: phoneOrEmail.text, password: password.text)));
-                }),
-          );
-        case ExceptionLogin():
-          return Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Button(
-                text: 'Try Again Later',
-                onPressed: () {
-                  context.read<LoginBloc>().add(Signin(
-                      user: LoginModel(
-                          email: phoneOrEmail.text, password: password.text)));
-                }),
-          );
         default:
-          return const CircularProgressIndicator();
+          return const LinearProgressIndicator();
       }
     },
   );
@@ -287,7 +320,9 @@ Widget BuildProvider() {
     listener: (context, state) {
       if (state is SuccessLoginProvider) {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => UserHomePage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => UserHomePage(tokenId: state.tokenId)));
       }
     },
     builder: (context, state) {
@@ -317,39 +352,62 @@ Widget BuildProvider() {
         case LoginProviderInitial():
           return Padding(
             padding: const EdgeInsets.only(top: 30),
-            child: Button(
-                text: 'Log In Provider',
-                onPressed: () {
-                  context.read<LoginProviderBloc>().add(SignedinProvider(
-                      user: LoginModel(
-                          email: phoneOrEmail.text, password: password.text)));
-                }),
+            child: Column(
+              children: [
+                Button(
+                    text: 'Log In Provider',
+                    onPressed: () {
+                      context.read<LoginProviderBloc>().add(SignedinProvider(
+                          user: LoginModel(
+                              email: phoneOrEmail.text,
+                              password: password.text)));
+                    }),
+              ],
+            ),
           );
 
         case ErrorLoginProvider():
           return Padding(
             padding: const EdgeInsets.only(top: 30),
-            child: Button(
-                text: 'Try Again',
-                onPressed: () {
-                  context.read<LoginProviderBloc>().add(SignedinProvider(
-                      user: LoginModel(
-                          email: phoneOrEmail.text, password: password.text)));
-                }),
+            child: Column(
+              children: [
+                Text(state.message),
+                Column(
+                  children: [
+                    Text(state.message),
+                    Button(
+                        text: 'Log In',
+                        onPressed: () {
+                          context.read<LoginProviderBloc>().add(
+                              SignedinProvider(
+                                  user: LoginModel(
+                                      email: phoneOrEmail.text,
+                                      password: password.text)));
+                        }),
+                  ],
+                ),
+              ],
+            ),
           );
         case ExceptionLoginProvider():
           return Padding(
             padding: const EdgeInsets.only(top: 30),
-            child: Button(
-                text: 'Try Again Later provider',
-                onPressed: () {
-                  context.read<LoginProviderBloc>().add(SignedinProvider(
-                      user: LoginModel(
-                          email: phoneOrEmail.text, password: password.text)));
-                }),
+            child: Column(
+              children: [
+                Text(state.message),
+                Button(
+                    text: 'Log In',
+                    onPressed: () {
+                      context.read<LoginProviderBloc>().add(SignedinProvider(
+                          user: LoginModel(
+                              email: phoneOrEmail.text,
+                              password: password.text)));
+                    }),
+              ],
+            ),
           );
         default:
-          return const CircularProgressIndicator();
+          return LinearProgressIndicator();
       }
     },
   );

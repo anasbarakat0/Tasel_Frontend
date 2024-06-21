@@ -1,8 +1,8 @@
 // import 'dart:convert';
+// import 'package:http/http.dart' as http;
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-// import 'package:http/http.dart' as http;
 import 'package:tasel_frontend/Model/login_model.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/main.dart';
@@ -16,11 +16,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print(event.user.toMap());
       var data = await loginUser(event.user);
       if (data is TokenModel) {
-        emit(SuccessLogin());
+        emit(SuccessLogin(tokenId: TokenModel(token: data.token, id: data.id)));
       } else if (data is ErrorResult) {
-        emit(ErrorLogin(message: 'try again later'));
-      } else if (data is ErrorResult) {
-        emit(ExceptionLogin(message: 'try again later'));
+        emit(ErrorLogin(message: data.message));
+      } else if (data is ExceptionResult) {
+        emit(ExceptionLogin(message: data.message));
       } else {
         emit(LoadingLogin());
       }
@@ -56,12 +56,14 @@ Future<ResultModel> loginUser(LoginModel login) async {
     Dio dio = Dio();
     Response response = await dio.post("$baseurl/login", data: login.toMap());
     if (response.statusCode == 200) {
-      return TokenModel(token: response.data['token']);
+      return TokenModel(token: response.data['token'], id: response.data['id']);
     } else {
-      return ErrorResult(message: 'try again later');
+      print('Error User Log In ');
+      print(response.data);
+      return ErrorResult(message: response.data);
     }
   } on DioException catch (e) {
-    print("--------");
+    print("------------");
     print(e.message.toString());
     return ExceptionResult(message: e.message.toString());
   }

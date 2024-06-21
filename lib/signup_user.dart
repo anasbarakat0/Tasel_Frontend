@@ -5,6 +5,7 @@ import 'package:tasel_frontend/Model/signup_user_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/signup_user_bloc.dart';
+import 'package:tasel_frontend/user_home_page.dart';
 import 'package:validators/validators.dart';
 import '../../theme/colors.dart';
 import 'login.dart';
@@ -359,7 +360,15 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                      BlocBuilder<SignupUserBloc, SignupUserState>(
+                      BlocConsumer<SignupUserBloc, SignupUserState>(
+                        listener: (context, state) {
+                          if (state is Success) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          }
+                        },
                         builder: (context, state) {
                           switch (state) {
                             case SignupUserInitial():
@@ -457,13 +466,17 @@ class _SignUpPageState extends State<SignUpPage> {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content: Text('Error has beed found')));
-                              return const LoginPage();
+                              return Center(
+                                child: Text(state.message),
+                              );
 
                             case Exception():
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                       content: Text("Exception where found")));
-                              return const LoginPage();
+                              return Center(
+                                child: Text(state.message),
+                              );
 
                             case Loading():
                               return const CircularProgressIndicator();

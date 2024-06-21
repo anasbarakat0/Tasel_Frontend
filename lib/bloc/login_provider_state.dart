@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'login_provider_bloc.dart';
 
 @immutable
@@ -5,7 +6,12 @@ sealed class LoginProviderState {}
 
 final class LoginProviderInitial extends LoginProviderState {}
 
-class SuccessLoginProvider extends LoginProviderState {}
+class SuccessLoginProvider extends LoginProviderState {
+  TokenModel tokenId;
+  SuccessLoginProvider({
+    required this.tokenId,
+  });
+}
 
 class LoadingLoginProvider extends LoginProviderState {}
 

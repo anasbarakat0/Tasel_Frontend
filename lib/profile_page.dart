@@ -1,23 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:tasel_frontend/bloc/profile_info_bloc.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String userId;
+  const ProfilePage({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final Map<String, dynamic> userData = {
-    "name": "Anas",
-    "phone": 0938406717,
-    "email": "anasbarakat0@gmail.com",
-    "address": "Abo Romanneh"
-  };
-
   File? _image;
 
   Future<void> _pickImage() async {
@@ -35,70 +38,104 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Contact Us',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: AppColors.yellow,
-        foregroundColor: AppColors.grey,
-        centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.yellow,
-        foregroundColor: AppColors.grey,
-        onPressed: () {},
-        child: const Icon(Icons.edit),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          GestureDetector(
-            onTap: _pickImage,
-            child: CircleAvatar(
-              radius: 60,
-              backgroundImage: _image != null
-                  ? FileImage(_image!)
-                  : const AssetImage('assets/tasel.png') as ImageProvider,
+    return BlocProvider(
+      create: (context) => ProfileInfoBloc(),
+      child: Builder(builder: (context) {
+        context
+            .read<ProfileInfoBloc>()
+            .add(ShowProfileInfo(userId: widget.userId));
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Contact Us',
+              style: TextStyle(fontWeight: FontWeight.w600),
             ),
+            backgroundColor: AppColors.yellow,
+            foregroundColor: AppColors.grey,
+            centerTitle: true,
           ),
-          const SizedBox(height: 16),
-          Text(
-            userData['name'],
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: AppColors.yellow,
+            foregroundColor: AppColors.grey,
+            onPressed: () {},
+            child: const Icon(Icons.edit),
           ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                UserInfoTile(
-                  label: 'Phone',
-                  value: userData['phone'].toString(),
-                  icon: Icons.phone,
-                ),
-                UserInfoTile(
-                  label: 'Email',
-                  value: userData['email'],
-                  icon: Icons.email,
-                ),
-                UserInfoTile(
-                  label: 'Address',
-                  value: userData['address'],
-                  icon: Icons.home,
-                ),
-              ],
-            ),
+          body: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
+            builder: (context, state) {
+              if (state is ProfileInfoInitial) {
+                return const Center(
+                  child: Row(
+                    children: [
+                      Text(
+                        'Connecting ...',
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      )
+                    ],
+                  ),
+                );
+              } else if (state is LoadingProfileInfo) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is ErrorProfileInfo) {
+                return Center(child: Text(state.message));
+              } else if (state is SuccessProfileInfo) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage: _image != null
+                            ? FileImage(_image!)
+                            : const AssetImage('assets/tasel.png')
+                                as ImageProvider,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      state.userInfo.name,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          UserInfoTile(
+                            label: 'Phone',
+                            value: state.userInfo.phone.toString(),
+                            icon: Icons.phone,
+                          ),
+                          UserInfoTile(
+                            label: 'Email',
+                            value: state.userInfo.email,
+                            icon: Icons.email,
+                          ),
+                          UserInfoTile(
+                            label: 'Address',
+                            value: state.userInfo.address,
+                            icon: Icons.home,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const Center(child: LinearProgressIndicator());
+              }
+            },
           ),
-        ],
-      ),
+        );
+      }),
     );
   }
 }

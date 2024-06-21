@@ -9,8 +9,8 @@ import 'package:tasel_frontend/theme/colors.dart';
 class ProviderInfoCard extends StatelessWidget {
   final String profileImage;
   final String name;
-  final int longitude;
-  final int latitude;
+  final double longitude;
+  final double latitude;
   final List<int> phoneNumbers;
   final List<int> landlines;
   final int whatsappNumber;
@@ -77,37 +77,41 @@ class ProviderInfoCard extends StatelessWidget {
                     launchUrl(url);
                   }
                 },
-                leading: Icon(Icons.phone, color: AppColors.yellow),
-                title: const Text('Phone Numbers'),
+                leading: Icon(Icons.phone, color: Colors.white),
+                title: Text('Phone Numbers',
+                    style: TextStyle(color: AppColors.yellow)),
                 subtitle: Text(phoneNumbers.join(', '),
                     style: const TextStyle(color: Colors.white)),
               ),
               ListTile(
                 onTap: () {},
-                leading: FaIcon(FontAwesomeIcons.addressBook,
-                    color: AppColors.yellow),
-                title: const Text('Landlines'),
+                leading:
+                    FaIcon(FontAwesomeIcons.addressBook, color: Colors.white),
+                title: Text('Landlines',
+                    style: TextStyle(color: AppColors.yellow)),
                 subtitle: Text(landlines.join(', '),
                     style: const TextStyle(color: Colors.white)),
               ),
               ListTile(
                 onTap: () {},
-                leading: Icon(Ionicons.logo_whatsapp, color: AppColors.yellow),
-                title: const Text('WhatsApp Number'),
+                leading: Icon(Ionicons.logo_whatsapp, color: Colors.white),
+                title: Text('WhatsApp Number',
+                    style: TextStyle(color: AppColors.yellow)),
                 subtitle: Text(whatsappNumber.toString(),
                     style: const TextStyle(color: Colors.white)),
               ),
               ListTile(
                 onTap: () {},
-                leading: Icon(Icons.email, color: AppColors.yellow),
-                title: const Text('Email'),
+                leading: Icon(Icons.email, color: Colors.white),
+                title: Text('Email', style: TextStyle(color: AppColors.yellow)),
                 subtitle:
                     Text(email, style: const TextStyle(color: Colors.white)),
               ),
               ListTile(
                 onTap: () {},
-                leading: Icon(Icons.category, color: AppColors.yellow),
-                title: const Text('Category'),
+                leading: Icon(Icons.category, color: Colors.white),
+                title:
+                    Text('Category', style: TextStyle(color: AppColors.yellow)),
                 subtitle:
                     Text(category, style: const TextStyle(color: Colors.white)),
               ),
@@ -118,8 +122,9 @@ class ProviderInfoCard extends StatelessWidget {
                     mode: LaunchMode.inAppWebView,
                   );
                 },
-                leading: Icon(Ionicons.logo_facebook, color: AppColors.yellow),
-                title: const Text('Facebook Page'),
+                leading: Icon(Ionicons.logo_facebook, color: Colors.white),
+                title: Text('Facebook Page',
+                    style: TextStyle(color: AppColors.yellow)),
                 subtitle: Text(
                   facebookPage,
                   style: const TextStyle(color: Colors.white),
@@ -127,15 +132,17 @@ class ProviderInfoCard extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {},
-                leading: Icon(Ionicons.logo_instagram, color: AppColors.yellow),
-                title: const Text('Instagram Account'),
+                leading: Icon(Ionicons.logo_instagram, color: Colors.white),
+                title: Text('Instagram Account',
+                    style: TextStyle(color: AppColors.yellow)),
                 subtitle: Text(instagramAccount,
                     style: const TextStyle(color: Colors.white)),
               ),
               ListTile(
                 onTap: () {},
-                leading: Icon(Icons.location_on, color: AppColors.yellow),
-                title: const Text('Address'),
+                leading: Icon(Icons.location_on, color: Colors.white),
+                title:
+                    Text('Address', style: TextStyle(color: AppColors.yellow)),
                 subtitle:
                     Text(areaName, style: const TextStyle(color: Colors.white)),
               ),

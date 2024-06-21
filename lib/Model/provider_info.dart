@@ -7,8 +7,8 @@ class ProviderInfo {
   Address address;
   String profileImage;
   String name;
-  int longitude;
-  int latitude;
+  double longitude;
+  double latitude;
   List<int> phoneNumbers;
   List<int> landlines;
   int whatsappNumber;
@@ -39,8 +39,8 @@ class ProviderInfo {
     Address? address,
     String? profileImage,
     String? name,
-    int? longitude,
-    int? latitude,
+    double? longitude,
+    double? latitude,
     List<int>? phoneNumbers,
     List<int>? landlines,
     int? whatsappNumber,
@@ -93,8 +93,8 @@ class ProviderInfo {
       address: Address.fromMap(map['address'] as Map<String, dynamic>),
       profileImage: map['profileImage'] as String,
       name: map['name'] as String,
-      longitude: map['longitude'] as int,
-      latitude: map['latitude'] as int,
+      longitude: map['longitude'] as double,
+      latitude: map['latitude'] as double,
       phoneNumbers: List<int>.from(map['phoneNumbers']),
       landlines: List<int>.from(map['landlines']),
       whatsappNumber: map['whatsappNumber'] as int,

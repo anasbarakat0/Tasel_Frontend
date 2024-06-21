@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/leading.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/Widgets/provider_card.dart';
@@ -11,7 +12,8 @@ import 'package:tasel_frontend/profile_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class UserHomePage extends StatefulWidget {
-  const UserHomePage({super.key});
+  final TokenModel tokenId;
+  const UserHomePage({super.key, required this.tokenId});
 
   @override
   State<UserHomePage> createState() => _UserHomePageState();
@@ -106,7 +108,8 @@ class _UserHomePageState extends State<UserHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ProfilePage()),
+                            builder: (context) =>
+                                ProfilePage(userId: widget.tokenId.id)),
                       );
                     }),
                 leadingButtons(
@@ -135,7 +138,7 @@ class _UserHomePageState extends State<UserHomePage> {
           body: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
                 child: MyTextField(
                   controller: searchController,
                   title: 'Search',
@@ -158,7 +161,6 @@ class _UserHomePageState extends State<UserHomePage> {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is SuccessShowProviders) {
-                    print('ggggggggggggggggggggggggggggggggggg');
                     return Expanded(
                       child: ListView.builder(
                         itemCount: state.providers.length,
@@ -186,7 +188,9 @@ class _UserHomePageState extends State<UserHomePage> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const UserHomePage(),
+                                  builder: (context) => UserHomePage(
+                                    tokenId: widget.tokenId,
+                                  ),
                                 ),
                               );
                             },
@@ -197,7 +201,6 @@ class _UserHomePageState extends State<UserHomePage> {
                       ),
                     );
                   } else if (state is SearchResutl) {
-                    print('searchhhhhhhhhh');
                     return Expanded(
                       child: ListView.builder(
                         itemCount: state.providers.length,

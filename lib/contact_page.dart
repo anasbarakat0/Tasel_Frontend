@@ -33,7 +33,7 @@ class ContactUsPage extends StatelessWidget {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                           ),
-                          child: Image.asset('images/tasel.png')),
+                          child: Image.asset('tasel.png')),
                     ),
                     const SizedBox(height: 50),
                     Card(

@@ -3,8 +3,10 @@ class ResultModel {}
 
 class TokenModel extends ResultModel {
   String token;
+  String id;
   TokenModel({
     required this.token,
+    required this.id,
   });
 }
 

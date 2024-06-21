@@ -13,7 +13,8 @@ class LoginProviderBloc extends Bloc<LoginProviderEvent, LoginProviderState> {
     on<SignedinProvider>((event, emit) async {
       var data = await loginProvider(event.user);
       if (data is TokenModel) {
-        emit(SuccessLoginProvider());
+        emit(SuccessLoginProvider(
+            tokenId: TokenModel(token: data.token, id: data.id)));
       } else if (data is ErrorResult) {
         emit(ErrorLoginProvider(message: 'try again later'));
       } else if (data is ErrorResult) {
@@ -31,12 +32,12 @@ Future<ResultModel> loginProvider(LoginModel login) async {
     Response response =
         await dio.post("$baseurl/login/store", data: login.toMap());
     if (response.statusCode == 200) {
-      return TokenModel(token: response.data['token']);
+      return TokenModel(token: response.data['token'], id: response.data['id']);
     } else {
       return ErrorResult(message: 'try again later');
     }
   } on DioException catch (e) {
-    print("--------");
+    print("--------ggggg");
     print(e.message.toString());
     return ExceptionResult(message: e.message.toString());
   }

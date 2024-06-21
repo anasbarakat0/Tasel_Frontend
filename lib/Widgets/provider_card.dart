@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/main.dart';
+import 'package:tasel_frontend/provider_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProviderCard extends StatelessWidget {
@@ -85,15 +86,15 @@ class ProviderCard extends StatelessWidget {
         ),
         isThreeLine: true,
         onTap: () {
-          print('$baseurl/$image');
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ProviderPage(
-          //       id: id,
-          //     ),
-          //   ),
-          // );
+          // print('$baseurl/$image');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProviderPage(
+                id: id,
+              ),
+            ),
+          );
         },
       ),
     );
