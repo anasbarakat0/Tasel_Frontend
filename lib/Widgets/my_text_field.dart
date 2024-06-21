@@ -9,7 +9,7 @@ class MyTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final Widget? prefixIcon;
   final Widget? suffix;
-  final dynamic ontap;
+  final void Function(String) ontap;
   final int? maxLength;
   const MyTextField({
     super.key,
@@ -18,7 +18,7 @@ class MyTextField extends StatelessWidget {
     required this.keyboardType,
     this.prefixIcon,
     this.suffix,
-    this.ontap,
+   required this.ontap,
     this.maxLength,
   });
 

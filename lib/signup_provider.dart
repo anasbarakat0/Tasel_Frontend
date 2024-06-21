@@ -112,6 +112,9 @@ class _SignUpProviderState extends State<SignUpProvider> {
                           children: [
                             //Provider-Name
                             MyTextField(
+                              ontap: (p0) {
+                                
+                              },
                               controller: providerController,
                               title: 'Provider-Name',
                               keyboardType: TextInputType.name,
@@ -267,7 +270,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               keyboardType: TextInputType.phone,
                               prefixIcon: const Icon(Icons.phone),
                               maxLength: 7,
-                              ontap: () {
+                              ontap: (val) {
                                 if (phoneNumController.text.startsWith('0')) {
                                   mobile = mobile.substring(0, 4) +
                                       mobile.substring(5);
@@ -294,7 +297,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     title: 'Website URL*',
                                     keyboardType: TextInputType.url,
                                     prefixIcon: const Icon(Icons.link),
-                                    ontap: () {
+                                    ontap: (val) {
                                       if (landlineNumberController
                                                   .text.length !=
                                               7 ||
@@ -319,7 +322,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     controller: websiteTitleController,
                                     title: 'Website Title*',
                                     keyboardType: TextInputType.name,
-                                    ontap: () {
+                                    ontap: (val) {
                                       if (websiteUrlController.text.isEmpty) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -341,6 +344,9 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               children: [
                                 Expanded(
                                   child: MyTextField(
+                                    ontap: (p0) {
+                                      
+                                    },
                                     controller: instagramUrlController,
                                     title: 'Account URL*',
                                     keyboardType: TextInputType.url,
@@ -356,7 +362,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     controller: instagramUsernameController,
                                     title: 'Username*',
                                     keyboardType: TextInputType.name,
-                                    ontap: () {
+                                    ontap: (val) {
                                       if (instagramUrlController.text.isEmpty) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -378,6 +384,9 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               children: [
                                 Expanded(
                                   child: MyTextField(
+                                    ontap: (p0) {
+                                      
+                                    },
                                     controller: facebookUrlController,
                                     title: 'Account URL*',
                                     keyboardType: TextInputType.url,
@@ -393,7 +402,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     controller: facebookUsernameController,
                                     title: 'Username*',
                                     keyboardType: TextInputType.name,
-                                    ontap: () {
+                                    ontap: (val) {
                                       if (instagramUrlController.text.isEmpty) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(

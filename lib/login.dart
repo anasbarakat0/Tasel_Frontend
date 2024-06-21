@@ -97,6 +97,9 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         MyTextField(
+                          ontap: (p0) {
+                            
+                          },
                           controller: phoneOrEmail,
                           title: 'E-mail',
                           keyboardType: TextInputType.name,

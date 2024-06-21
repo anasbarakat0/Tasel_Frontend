@@ -129,6 +129,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 MyTextField(
+                  ontap: (p0) {
+                    
+                  },
                   controller: name,
                   title: 'UserName',
                   keyboardType: TextInputType.name,
@@ -171,6 +174,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextField(
+                  ontap: (p0) {
+                    
+                  },
                   controller: address,
                   title: 'Address',
                   keyboardType: TextInputType.name,

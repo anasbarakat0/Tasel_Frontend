@@ -93,6 +93,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       MyTextField(
+                        ontap: (p0) {
+                          
+                        },
                         controller: _nameController,
                         title: 'UserName',
                         keyboardType: TextInputType.name,
