@@ -18,7 +18,7 @@ class MyTextField extends StatelessWidget {
     required this.keyboardType,
     this.prefixIcon,
     this.suffix,
-   required this.ontap,
+    required this.ontap,
     this.maxLength,
   });
 
