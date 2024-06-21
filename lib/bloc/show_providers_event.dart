@@ -12,3 +12,11 @@ class SearchEvent extends ShowProvidersEvent {
     required this.lexem,
   });
 }
+
+class FilterBy extends ShowProvidersEvent {
+  final String category;
+  final int index;
+  FilterBy(this.index, {
+    required this.category,
+  });
+}

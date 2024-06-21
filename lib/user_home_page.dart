@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/leading.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
@@ -12,22 +14,19 @@ import 'package:tasel_frontend/map_sample.dart';
 import 'package:tasel_frontend/profile_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
-class UserHomePage extends StatefulWidget {
+class UserHomePage extends StatelessWidget {
+  final TextEditingController searchController = TextEditingController();
   final TokenModel tokenId;
-  const UserHomePage({super.key, required this.tokenId});
-
-  @override
-  State<UserHomePage> createState() => _UserHomePageState();
-}
-
-class _UserHomePageState extends State<UserHomePage> {
-  TextEditingController searchController = TextEditingController();
+  Set<String> category = {};
+  UserHomePage({
+    Key? key,
+    required this.tokenId,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ShowProvidersBloc(),
+      create: (context) => ShowProvidersBloc()..add(ShowProviders()),
       child: Builder(builder: (context) {
-        context.read<ShowProvidersBloc>().add(ShowProviders());
         return Scaffold(
           appBar: AppBar(
             title: const Text(
@@ -102,8 +101,7 @@ class _UserHomePageState extends State<UserHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                ProfilePage(userId: widget.tokenId)),
+                            builder: (context) => ProfilePage(userId: tokenId)),
                       );
                     }),
                 leadingButtons(
@@ -155,18 +153,62 @@ class _UserHomePageState extends State<UserHomePage> {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is SuccessShowProviders) {
+                    state.providers.forEach((e) {
+                      category.add(e.category);
+                    });
                     return Expanded(
-                      child: ListView.builder(
-                        itemCount: state.providers.length,
-                        itemBuilder: (context, index) {
-                          return ProviderCard(
-                            name: state.providers[index].name,
-                            image: state.providers[index].profileImage,
-                            category: state.providers[index].category,
-                            address: state.providers[index].address.areaName,
-                            id: state.providers[index].id,
-                          );
-                        },
+                      child: Column(
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: category.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        context.read<ShowProvidersBloc>().add(
+                                            FilterBy(index,
+                                                category:
+                                                    category.elementAt(index)));
+                                      },
+                                      child: Container(
+                                        child: Center(
+                                          child:
+                                              Text(category.elementAt(index)),
+                                        ),
+                                        width: 80,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            color: (index == 0)
+                                                ? AppColors.darkYellow
+                                                : AppColors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )),
+                          Expanded(
+                            flex: 10,
+                            child: ListView.builder(
+                              itemCount: state.providers.length,
+                              itemBuilder: (context, index) {
+                                return ProviderCard(
+                                  name: state.providers[index].name,
+                                  image: state.providers[index].profileImage,
+                                  category: state.providers[index].category,
+                                  address:
+                                      state.providers[index].address.areaName,
+                                  id: state.providers[index].id,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   } else if (state is ErrorFetchingData) {
@@ -183,7 +225,7 @@ class _UserHomePageState extends State<UserHomePage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => UserHomePage(
-                                    tokenId: widget.tokenId,
+                                    tokenId: tokenId,
                                   ),
                                 ),
                               );
@@ -207,6 +249,62 @@ class _UserHomePageState extends State<UserHomePage> {
                             id: state.providers[index].id,
                           );
                         },
+                      ),
+                    );
+                  } else if (state is FilterResutl) {
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: category.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        context.read<ShowProvidersBloc>().add(
+                                            FilterBy(index,
+                                                category:
+                                                    category.elementAt(index)));
+                                      },
+                                      child: Container(
+                                        child: Center(
+                                          child:
+                                              Text(category.elementAt(index)),
+                                        ),
+                                        width: 80,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            color: (index == state.index)
+                                                ? AppColors.darkYellow
+                                                : AppColors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )),
+                          Expanded(
+                            flex: 10,
+                            child: ListView.builder(
+                              itemCount: state.providers.length,
+                              itemBuilder: (context, index) {
+                                return ProviderCard(
+                                  name: state.providers[index].name,
+                                  image: state.providers[index].profileImage,
+                                  category: state.providers[index].category,
+                                  address:
+                                      state.providers[index].address.areaName,
+                                  id: state.providers[index].id,
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   } else {

@@ -38,6 +38,19 @@ class ShowProvidersBloc extends Bloc<ShowProvidersEvent, ShowProvidersState> {
 
       emit(SearchResutl(providers: result));
     });
+
+    
+    on<FilterBy>((event, emit) {
+      emit(LoadingFetching());
+      result = [];
+      things.forEach((e) {
+        if (e.category == event.category) {
+          result.add(e);
+        }
+      });
+
+      emit(FilterResutl(event.index, providers: result));
+    });
   }
 }
 

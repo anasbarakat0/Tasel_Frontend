@@ -22,3 +22,11 @@ class SearchResutl extends ShowProvidersState {
     required this.providers,
   });
 }
+
+class FilterResutl extends ShowProvidersState {
+  final List<ProvidersModel> providers;
+  final int index;
+  FilterResutl(this.index, {
+    required this.providers,
+  });
+}
