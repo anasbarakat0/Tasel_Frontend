@@ -5,7 +5,7 @@ part of 'profile_info_bloc.dart';
 sealed class ProfileInfoEvent {}
 
 class ShowProfileInfo extends ProfileInfoEvent {
-  final String userId;
+  final TokenModel userId;
   ShowProfileInfo({
     required this.userId,
   });

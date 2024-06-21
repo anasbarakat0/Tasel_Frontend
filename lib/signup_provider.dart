@@ -536,8 +536,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     ),
                                     focusedBorder: match
                                         ? const OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.all(
+                                            borderRadius: BorderRadius.all(
                                               Radius.circular(10),
                                             ),
                                             borderSide: BorderSide(

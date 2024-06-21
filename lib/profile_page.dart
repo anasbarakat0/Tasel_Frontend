@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tasel_frontend/Model/response_login_model.dart';
 
 import 'package:tasel_frontend/bloc/profile_info_bloc.dart';
+import 'package:tasel_frontend/profile_page_update.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String userId;
+  final TokenModel userId;
   const ProfilePage({
     Key? key,
     required this.userId,
@@ -22,6 +24,11 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   File? _image;
+  late String id;
+  late String name;
+  late int phone;
+  late String email;
+  late String address;
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -47,7 +54,7 @@ class _ProfilePageState extends State<ProfilePage> {
         return Scaffold(
           appBar: AppBar(
             title: const Text(
-              'Contact Us',
+              'Profile Page',
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
             backgroundColor: AppColors.yellow,
@@ -57,19 +64,37 @@ class _ProfilePageState extends State<ProfilePage> {
           floatingActionButton: FloatingActionButton(
             backgroundColor: AppColors.yellow,
             foregroundColor: AppColors.grey,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UpdateProfilePage(
+                    tokenId: widget.userId,
+                    id: id,
+                    name: name,
+                    phone: phone,
+                    address: address,
+                  ),
+                ),
+              );
+            },
             child: const Icon(Icons.edit),
           ),
           body: BlocBuilder<ProfileInfoBloc, ProfileInfoState>(
             builder: (context, state) {
               if (state is ProfileInfoInitial) {
                 return const Center(
-                  child: Row(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'Connecting ...',
                         style: TextStyle(color: Colors.white, fontSize: 15),
-                      )
+                      ),
+                      SizedBox(
+                        width: 100,
+                        child: LinearProgressIndicator(),
+                      ),
                     ],
                   ),
                 );
@@ -80,6 +105,11 @@ class _ProfilePageState extends State<ProfilePage> {
               } else if (state is ErrorProfileInfo) {
                 return Center(child: Text(state.message));
               } else if (state is SuccessProfileInfo) {
+                id = state.userInfo.id;
+                name = state.userInfo.name;
+                address = state.userInfo.address;
+                email = state.userInfo.email;
+                phone = state.userInfo.phone;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,

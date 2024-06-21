@@ -88,9 +88,12 @@ class _ProviderHomePageState extends State<ProviderPage> {
                         padding: const EdgeInsets.only(
                           top: 16.0,
                         ),
-                        child: Image.network(
-                          state.provider.profileImage,
-                          fit: BoxFit.cover,
+                        child: SizedBox(
+                          height: 75,
+                          child: Image.asset(
+                            'tasel.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                       ProviderInfoCard(

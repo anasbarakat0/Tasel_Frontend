@@ -6,6 +6,7 @@ import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/Widgets/provider_card.dart';
 import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
+import 'package:tasel_frontend/google_maps.dart';
 import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/map_sample.dart';
 import 'package:tasel_frontend/profile_page.dart';
@@ -90,13 +91,6 @@ class _UserHomePageState extends State<UserHomePage> {
                                 color: Colors.white),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 12),
-                          child: Text(
-                            'userName',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
                       ],
                     ),
                   ),
@@ -109,7 +103,7 @@ class _UserHomePageState extends State<UserHomePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                ProfilePage(userId: widget.tokenId.id)),
+                                ProfilePage(userId: widget.tokenId)),
                       );
                     }),
                 leadingButtons(

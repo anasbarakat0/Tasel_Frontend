@@ -6,6 +6,7 @@ sealed class LoginProviderState {}
 
 final class LoginProviderInitial extends LoginProviderState {}
 
+// ignore: must_be_immutable
 class SuccessLoginProvider extends LoginProviderState {
   TokenModel tokenId;
   SuccessLoginProvider({

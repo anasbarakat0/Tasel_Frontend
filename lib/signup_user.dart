@@ -5,7 +5,6 @@ import 'package:tasel_frontend/Model/signup_user_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/signup_user_bloc.dart';
-import 'package:tasel_frontend/user_home_page.dart';
 import 'package:validators/validators.dart';
 import '../../theme/colors.dart';
 import 'login.dart';
@@ -463,19 +462,173 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                               );
                             case Error():
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Error has beed found')));
                               return Center(
-                                child: Text(state.message),
+                                child: Column(
+                                  children: [
+                                    Text(state.message),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 40),
+                                      child: Button(
+                                        text: 'Sign Up',
+                                        onPressed: () async {
+                                          if (_nameController.text.isEmpty ||
+                                              phoneNumController.text.isEmpty ||
+                                              emailController.text.isEmpty ||
+                                              passwordController.text.isEmpty ||
+                                              conPasswordController
+                                                  .text.isEmpty) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      "Please fill in all fields")),
+                                            );
+                                            return;
+                                          }
+                                          if (_nameController.text.length < 4) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      "User Name Can't Be Less Than 4 characters")),
+                                            );
+                                            return;
+                                          }
+                                          if (!isEmailCorrect) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      "Email is not correct")),
+                                            );
+                                            return;
+                                          }
+
+                                          if (phoneNumController.text.length <
+                                              9) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      "Invalid Mobile Number")),
+                                            );
+                                            return;
+                                          }
+
+                                          if (passwordController.text ==
+                                              conPasswordController.text) {
+                                            context.read<SignupUserBloc>().add(
+                                                SignupUser(
+                                                    user: UserModel(
+                                                        name: _nameController
+                                                            .text,
+                                                        phone:
+                                                            phoneNumController
+                                                                .text,
+                                                        email: emailController
+                                                            .text,
+                                                        address: 'address',
+                                                        latitude: 'latitude',
+                                                        longitude: 'longitude',
+                                                        password:
+                                                            passwordController
+                                                                .text)));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        "Please reconfirm your password")));
+                                          }
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
                               );
 
                             case Exception():
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text("Exception where found")));
                               return Center(
-                                child: Text(state.message),
+                                child: Column(
+                                  children: [
+                                    Text(state.message),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 40),
+                                      child: Button(
+                                        text: 'Sign Up',
+                                        onPressed: () async {
+                                          if (_nameController.text.isEmpty ||
+                                              phoneNumController.text.isEmpty ||
+                                              emailController.text.isEmpty ||
+                                              passwordController.text.isEmpty ||
+                                              conPasswordController
+                                                  .text.isEmpty) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      "Please fill in all fields")),
+                                            );
+                                            return;
+                                          }
+                                          if (_nameController.text.length < 4) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      "User Name Can't Be Less Than 4 characters")),
+                                            );
+                                            return;
+                                          }
+                                          if (!isEmailCorrect) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      "Email is not correct")),
+                                            );
+                                            return;
+                                          }
+
+                                          if (phoneNumController.text.length <
+                                              9) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      "Invalid Mobile Number")),
+                                            );
+                                            return;
+                                          }
+
+                                          if (passwordController.text ==
+                                              conPasswordController.text) {
+                                            context.read<SignupUserBloc>().add(
+                                                SignupUser(
+                                                    user: UserModel(
+                                                        name: _nameController
+                                                            .text,
+                                                        phone:
+                                                            phoneNumController
+                                                                .text,
+                                                        email: emailController
+                                                            .text,
+                                                        address: 'address',
+                                                        latitude: 'latitude',
+                                                        longitude: 'longitude',
+                                                        password:
+                                                            passwordController
+                                                                .text)));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    content: Text(
+                                                        "Please reconfirm your password")));
+                                          }
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
                               );
 
                             case Loading():

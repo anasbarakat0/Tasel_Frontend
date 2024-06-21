@@ -29,8 +29,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoginBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => LoginBloc(),
+        ),
+        BlocProvider(
+          create: (context) => LoginProviderBloc(),
+        ),
+      ],
       child: Builder(builder: (context) {
         return Scaffold(
           body: Center(

@@ -39,8 +39,24 @@ class ProviderCard extends StatelessWidget {
         ),
         leading: Expanded(
           child: CircleAvatar(
-            backgroundImage: const AssetImage('blank-profile.png'),
-            child: Image.network('$baseurl/$image'),
+            radius: 50,
+            backgroundColor: Colors.transparent,
+            child: ClipOval(
+              child: SizedBox(
+                width: 100,
+                height: 100,
+                child: Image.network(
+                  "$baseurl/$image",
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'blank-profile.png',
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
+              ),
+            ),
           ),
         ),
         subtitle: Column(
@@ -86,7 +102,7 @@ class ProviderCard extends StatelessWidget {
         ),
         isThreeLine: true,
         onTap: () {
-          // print('$baseurl/$image');
+          print('$baseurl/$image');
           Navigator.push(
             context,
             MaterialPageRoute(

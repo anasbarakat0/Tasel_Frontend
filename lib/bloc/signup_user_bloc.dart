@@ -34,12 +34,16 @@ Future<SignupResultModel> signupUserMethod(UserModel user) async {
       print(
           "signup statuscode is 200 and the message is : ${response.data['message']}");
       return SignedUp(message: response.data['message']);
+    } else if (response.statusCode == 400) {
+      print('signup user error');
+      return ErrorResult(message: response.data['message']);
     } else {
       print('signup user error');
       return ErrorResult(message: response.data['message']);
     }
   } on DioException catch (e) {
     print('Signup user exception  ${e.message.toString()}');
-    return ExceptionResult(message: e.message.toString());
+    return ExceptionResult(
+        message: 'Status code 400 , البريد الإلكتروني أو الهاتف موجود بالفعل');
   }
 }
