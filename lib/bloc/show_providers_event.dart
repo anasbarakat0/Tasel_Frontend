@@ -4,8 +4,6 @@ part of 'show_providers_bloc.dart';
 @immutable
 sealed class ShowProvidersEvent {}
 
-class ShowProviders extends ShowProvidersEvent {}
-
 class SearchEvent extends ShowProvidersEvent {
   final String lexem;
   SearchEvent({
@@ -16,7 +14,10 @@ class SearchEvent extends ShowProvidersEvent {
 class FilterBy extends ShowProvidersEvent {
   final String category;
   final int index;
-  FilterBy(this.index, {
+  FilterBy(
+    this.index, {
     required this.category,
   });
 }
+
+class ShowProviders extends ShowProvidersEvent {}

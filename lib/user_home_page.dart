@@ -130,7 +130,7 @@ class UserHomePage extends StatelessWidget {
           body: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                 child: MyTextField(
                   controller: searchController,
                   title: 'Search',
@@ -166,7 +166,8 @@ class UserHomePage extends StatelessWidget {
                                 itemCount: category.length,
                                 itemBuilder: (context, index) {
                                   return Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(8, 0, 8, 8),
                                     child: InkWell(
                                       onTap: () {
                                         context.read<ShowProvidersBloc>().add(
@@ -175,18 +176,25 @@ class UserHomePage extends StatelessWidget {
                                                     category.elementAt(index)));
                                       },
                                       child: Container(
-                                        child: Center(
-                                          child:
-                                              Text(category.elementAt(index)),
-                                        ),
                                         width: 80,
                                         height: 40,
                                         decoration: BoxDecoration(
-                                            color: (index == 0)
-                                                ? AppColors.darkYellow
-                                                : AppColors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
+                                          color: (index == state.providers)
+                                              ? AppColors.darkYellow
+                                              : AppColors.grey,
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            category.elementAt(index),
+                                            style: TextStyle(
+                                              color: (index == state.providers)
+                                                  ? AppColors.grey
+                                                  : AppColors.darkYellow,
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   );
@@ -256,38 +264,67 @@ class UserHomePage extends StatelessWidget {
                       child: Column(
                         children: [
                           Expanded(
-                              flex: 1,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: category.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: InkWell(
-                                      onTap: () {
-                                        context.read<ShowProvidersBloc>().add(
-                                            FilterBy(index,
-                                                category:
-                                                    category.elementAt(index)));
+                            child: Row(
+                              children: [
+                                Expanded(
+                                    flex: 1,
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: category.length,
+                                      itemBuilder: (context, index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              8, 0, 8, 8),
+                                          child: InkWell(
+                                            onTap: () {
+                                              context
+                                                  .read<ShowProvidersBloc>()
+                                                  .add(FilterBy(index,
+                                                      category: category
+                                                          .elementAt(index)));
+                                            },
+                                            child: Container(
+                                              width: 80,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                  color: (index == state.index)
+                                                      ? AppColors.darkYellow
+                                                      : AppColors.grey,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                              child: Center(
+                                                child: Text(
+                                                  category.elementAt(index),
+                                                  style: TextStyle(
+                                                    color: (index ==
+                                                            state.index)
+                                                        ? AppColors.grey
+                                                        : AppColors.darkYellow,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
                                       },
-                                      child: Container(
-                                        child: Center(
-                                          child:
-                                              Text(category.elementAt(index)),
-                                        ),
-                                        width: 80,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            color: (index == state.index)
-                                                ? AppColors.darkYellow
-                                                : AppColors.grey,
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )),
+                                    )),
+                                IconButton(
+                                    onPressed: () {
+                                      context.read<ShowProvidersBloc>()
+                                        ..add(ShowProviders());
+                                      // Navigator.pushReplacement(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //       builder: (context) => UserHomePage(
+                                      //             tokenId: tokenId,
+                                      //           )),
+                                      // );
+                                    },
+                                    icon: const Icon(Icons.cancel))
+                              ],
+                            ),
+                          ),
                           Expanded(
                             flex: 10,
                             child: ListView.builder(

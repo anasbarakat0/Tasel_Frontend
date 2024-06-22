@@ -112,9 +112,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                           children: [
                             //Provider-Name
                             MyTextField(
-                              ontap: (p0) {
-                                
-                              },
+                              ontap: (p0) {},
                               controller: providerController,
                               title: 'Provider-Name',
                               keyboardType: TextInputType.name,
@@ -344,9 +342,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               children: [
                                 Expanded(
                                   child: MyTextField(
-                                    ontap: (p0) {
-                                      
-                                    },
+                                    ontap: (p0) {},
                                     controller: instagramUrlController,
                                     title: 'Account URL*',
                                     keyboardType: TextInputType.url,
@@ -384,9 +380,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               children: [
                                 Expanded(
                                   child: MyTextField(
-                                    ontap: (p0) {
-                                      
-                                    },
+                                    ontap: (p0) {},
                                     controller: facebookUrlController,
                                     title: 'Account URL*',
                                     keyboardType: TextInputType.url,
@@ -761,87 +755,109 @@ class _SignUpProviderState extends State<SignUpProvider> {
                             case Error():
                               return Padding(
                                 padding: const EdgeInsets.only(top: 30),
-                                child: Button(
-                                    text: 'Try Again',
-                                    onPressed: () {
-                                      context.read<SignupProviderBloc>().add(
-                                            SignedupProvider(
-                                              provider: SignupProviderModel(
-                                                  name: providerController.text,
-                                                  latitude: 'latitude',
-                                                  longitude: 'longitude',
-                                                  phoneNumbers:
-                                                      phoneNumController.text,
-                                                  landlines:
-                                                      landlineNumberController
+                                child: Column(
+                                  children: [
+                                    Text(state.message),
+                                    Button(
+                                        text: 'Sign Up',
+                                        onPressed: () {
+                                          context
+                                              .read<SignupProviderBloc>()
+                                              .add(
+                                                SignedupProvider(
+                                                  provider: SignupProviderModel(
+                                                      name: providerController
                                                           .text,
-                                                  address: 'address',
-                                                  email: emailController.text,
-                                                  whatsappNumber:
-                                                      'whatsappNumber',
-                                                  instagramAccount:
-                                                      instagramUrlController
-                                                          .text,
-                                                  instagramUsername:
-                                                      instagramUsernameController
-                                                          .text,
-                                                  facebookPage:
-                                                      facebookUrlController
-                                                          .text,
-                                                  facebookUsername:
-                                                      facebookUsernameController
-                                                          .text,
-                                                  category: 'category',
-                                                  password:
-                                                      passwordController.text),
-                                            ),
-                                          );
-                                    }),
+                                                      latitude: 'latitude',
+                                                      longitude: 'longitude',
+                                                      phoneNumbers:
+                                                          phoneNumController
+                                                              .text,
+                                                      landlines:
+                                                          landlineNumberController
+                                                              .text,
+                                                      address: 'address',
+                                                      email:
+                                                          emailController.text,
+                                                      whatsappNumber:
+                                                          'whatsappNumber',
+                                                      instagramAccount:
+                                                          instagramUrlController
+                                                              .text,
+                                                      instagramUsername:
+                                                          instagramUsernameController
+                                                              .text,
+                                                      facebookPage:
+                                                          facebookUrlController
+                                                              .text,
+                                                      facebookUsername:
+                                                          facebookUsernameController
+                                                              .text,
+                                                      category: 'category',
+                                                      password:
+                                                          passwordController
+                                                              .text),
+                                                ),
+                                              );
+                                        }),
+                                  ],
+                                ),
                               );
                             case Exception():
                               return Padding(
                                 padding: const EdgeInsets.only(top: 30),
-                                child: Button(
-                                    text: 'Try Again Later',
-                                    onPressed: () {
-                                      context.read<SignupProviderBloc>().add(
-                                            SignedupProvider(
-                                              provider: SignupProviderModel(
-                                                  name: providerController.text,
-                                                  latitude: 'latitude',
-                                                  longitude: 'longitude',
-                                                  phoneNumbers:
-                                                      phoneNumController.text,
-                                                  landlines:
-                                                      landlineNumberController
+                                child: Column(
+                                  children: [
+                                    Text(state.message),
+                                    Button(
+                                        text: 'Sign Up',
+                                        onPressed: () {
+                                          context
+                                              .read<SignupProviderBloc>()
+                                              .add(
+                                                SignedupProvider(
+                                                  provider: SignupProviderModel(
+                                                      name: providerController
                                                           .text,
-                                                  address: 'address',
-                                                  email: emailController.text,
-                                                  whatsappNumber:
-                                                      'whatsappNumber',
-                                                  instagramAccount:
-                                                      instagramUrlController
-                                                          .text,
-                                                  instagramUsername:
-                                                      instagramUsernameController
-                                                          .text,
-                                                  facebookPage:
-                                                      facebookUrlController
-                                                          .text,
-                                                  facebookUsername:
-                                                      facebookUsernameController
-                                                          .text,
-                                                  category: 'category',
-                                                  password:
-                                                      passwordController.text),
-                                            ),
-                                          );
-                                    }),
+                                                      latitude: 'latitude',
+                                                      longitude: 'longitude',
+                                                      phoneNumbers:
+                                                          phoneNumController
+                                                              .text,
+                                                      landlines:
+                                                          landlineNumberController
+                                                              .text,
+                                                      address: 'address',
+                                                      email:
+                                                          emailController.text,
+                                                      whatsappNumber:
+                                                          'whatsappNumber',
+                                                      instagramAccount:
+                                                          instagramUrlController
+                                                              .text,
+                                                      instagramUsername:
+                                                          instagramUsernameController
+                                                              .text,
+                                                      facebookPage:
+                                                          facebookUrlController
+                                                              .text,
+                                                      facebookUsername:
+                                                          facebookUsernameController
+                                                              .text,
+                                                      category: 'category',
+                                                      password:
+                                                          passwordController
+                                                              .text),
+                                                ),
+                                              );
+                                        }),
+                                  ],
+                                ),
                               );
                             case Loading():
                               return const CircularProgressIndicator();
                             default:
-                              return const CircularProgressIndicator();
+                              return const LinearProgressIndicator();
                           }
                         },
                       )

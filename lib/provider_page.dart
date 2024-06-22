@@ -74,7 +74,6 @@ class ProviderPage extends StatelessWidget {
                   ),
                 );
               } else if (state is SuccessShowProviderInfo) {
-                
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -85,7 +84,7 @@ class ProviderPage extends StatelessWidget {
                         child: SizedBox(
                           height: 75,
                           child: Image.asset(
-                            'asset/tasel.png',
+                            'tasel.png',
                             fit: BoxFit.cover,
                           ),
                         ),

@@ -43,15 +43,14 @@ class ProviderCard extends StatelessWidget {
             backgroundColor: Colors.transparent,
             child: ClipOval(
               child: SizedBox(
-                width: 100,
-                height: 100,
+                height: 50,
                 child: Image.network(
                   "$baseurl/$image",
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
                       'blank-profile.png',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                     );
                   },
                 ),

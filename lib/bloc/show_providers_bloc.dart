@@ -11,19 +11,6 @@ part 'show_providers_state.dart';
 class ShowProvidersBloc extends Bloc<ShowProvidersEvent, ShowProvidersState> {
   ShowProvidersBloc() : super(ShowProvidersInitial()) {
     List<ProvidersModel> things = [];
-    on<ShowProvidersEvent>((event, emit) async {
-      var data = await getAllProviders();
-      if (data is ListOf<ProvidersModel>) {
-        things = data.resutl;
-        emit(
-          SuccessShowProviders(
-            providers: data.resutl,
-          ),
-        );
-      } else {
-        emit(ErrorFetchingData());
-      }
-    });
 
     List<ProvidersModel> result = [];
 
@@ -39,7 +26,20 @@ class ShowProvidersBloc extends Bloc<ShowProvidersEvent, ShowProvidersState> {
       emit(SearchResutl(providers: result));
     });
 
-    
+    on<ShowProviders>((event, emit) async {
+      var data = await getAllProviders();
+      if (data is ListOf<ProvidersModel>) {
+        things = data.resutl;
+        emit(
+          SuccessShowProviders(
+            providers: data.resutl,
+          ),
+        );
+      } else {
+        emit(ErrorFetchingData());
+      }
+    });
+
     on<FilterBy>((event, emit) {
       emit(LoadingFetching());
       result = [];
