@@ -19,24 +19,7 @@ class ProviderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TextEditingController searchController = TextEditingController();
-    final List<ProductModel> products = [
-      ProductModel(
-        name: "Product 1",
-        price: 29.99,
-        picture: "https://via.placeholder.com/150",
-        description: "This is the description for Product 1",
-        id: '',
-        storeId: '',
-      ),
-      ProductModel(
-        name: "Product 2",
-        price: 19.99,
-        picture: "https://via.placeholder.com/150",
-        description: "This is the description for Product 2",
-        id: '',
-        storeId: '',
-      ),
-    ];
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -184,8 +167,12 @@ class ProviderPage extends StatelessWidget {
                                       .read<ShowProviderProductsBloc>()
                                       .add(ShowProviderProducts(storeId: id));
                                 },
-                                label: const Text('Try Again'),
-                                icon: const Icon(Icons.autorenew_rounded),
+                                label: const Text(
+                                  'Try Again',
+                                ),
+                                icon: const Icon(
+                                  Icons.autorenew_rounded,
+                                ),
                               ),
                             ],
                           ),
