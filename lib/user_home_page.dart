@@ -10,6 +10,7 @@ import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
 import 'package:tasel_frontend/google_maps.dart';
 import 'package:tasel_frontend/login.dart';
+import 'package:tasel_frontend/main.dart';
 import 'package:tasel_frontend/map_sample.dart';
 import 'package:tasel_frontend/profile_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
@@ -118,6 +119,7 @@ class UserHomePage extends StatelessWidget {
                     title: 'Log Out',
                     icon: Icons.logout_rounded,
                     onTap: () {
+                      // isAuth = false;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -313,13 +315,6 @@ class UserHomePage extends StatelessWidget {
                                     onPressed: () {
                                       context.read<ShowProvidersBloc>()
                                         ..add(ShowProviders());
-                                      // Navigator.pushReplacement(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => UserHomePage(
-                                      //             tokenId: tokenId,
-                                      //           )),
-                                      // );
                                     },
                                     icon: const Icon(Icons.cancel))
                               ],

@@ -30,19 +30,6 @@ class _ProfilePageState extends State<ProfilePage> {
   late String email;
   late String address;
 
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -114,15 +101,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: _pickImage,
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundImage: _image != null
-                            ? FileImage(_image!)
-                            : const AssetImage('assets/tasel.png')
-                                as ImageProvider,
-                      ),
+                    const CircleAvatar(
+                      radius: 60,
+                      backgroundImage:
+                          AssetImage('assets/tasel.png') as ImageProvider,
                     ),
                     const SizedBox(height: 16),
                     Text(

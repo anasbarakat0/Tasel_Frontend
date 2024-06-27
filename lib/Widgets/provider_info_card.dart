@@ -25,7 +25,7 @@ class ProviderInfoCard extends StatelessWidget {
   final String buildingNameorNumber;
   final String floor;
   const ProviderInfoCard({
-    Key? key,
+    super.key,
     required this.profileImage,
     required this.name,
     required this.longitude,
@@ -43,7 +43,7 @@ class ProviderInfoCard extends StatelessWidget {
     required this.streetName,
     required this.buildingNameorNumber,
     required this.floor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -71,80 +71,119 @@ class ProviderInfoCard extends StatelessWidget {
               ),
               ListTile(
                 onTap: () async {
-                  final url =
-                      Uri(scheme: 'tel', path: phoneNumbers.first.toString());
+                  final url = Uri(
+                    scheme: 'tel',
+                    path: phoneNumbers.first.toString(),
+                  );
                   if (await canLaunchUrl(url)) {
                     launchUrl(url);
                   }
                 },
-                leading: Icon(Icons.phone, color: Colors.white),
-                title: Text('Phone Numbers',
-                    style: TextStyle(color: AppColors.yellow)),
-                subtitle: Text(phoneNumbers.join(', '),
-                    style: const TextStyle(color: Colors.white)),
-              ),
-              ListTile(
-                onTap: () {},
-                leading:
-                    FaIcon(FontAwesomeIcons.addressBook, color: Colors.white),
-                title: Text('Landlines',
-                    style: TextStyle(color: AppColors.yellow)),
-                subtitle: Text(landlines.join(', '),
-                    style: const TextStyle(color: Colors.white)),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: Icon(Ionicons.logo_whatsapp, color: Colors.white),
-                title: Text('WhatsApp Number',
-                    style: TextStyle(color: AppColors.yellow)),
-                subtitle: Text(whatsappNumber.toString(),
-                    style: const TextStyle(color: Colors.white)),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: Icon(Icons.email, color: Colors.white),
-                title: Text('Email', style: TextStyle(color: AppColors.yellow)),
-                subtitle:
-                    Text(email, style: const TextStyle(color: Colors.white)),
-              ),
-              ListTile(
-                onTap: () {},
-                leading: Icon(Icons.category, color: Colors.white),
-                title:
-                    Text('Category', style: TextStyle(color: AppColors.yellow)),
-                subtitle:
-                    Text(category, style: const TextStyle(color: Colors.white)),
-              ),
-              ListTile(
-                onTap: () {
-                  launchUrl(
-                    Uri.parse('https://www.facebook.com'),
-                    mode: LaunchMode.inAppWebView,
-                  );
-                },
-                leading: Icon(Ionicons.logo_facebook, color: Colors.white),
-                title: Text('Facebook Page',
-                    style: TextStyle(color: AppColors.yellow)),
-                subtitle: Text(
-                  facebookPage,
-                  style: const TextStyle(color: Colors.white),
+                leading: const Icon(
+                  Icons.phone,
+                  color: Colors.white,
                 ),
+                title: Text('Phone Numbers',
+                    style: TextStyle(
+                      color: AppColors.yellow,
+                    )),
+                subtitle: Text(phoneNumbers.join(' , '),
+                    style: const TextStyle(
+                      color: Colors.white,
+                    )),
               ),
               ListTile(
                 onTap: () {},
-                leading: Icon(Ionicons.logo_instagram, color: Colors.white),
-                title: Text('Instagram Account',
-                    style: TextStyle(color: AppColors.yellow)),
-                subtitle: Text(instagramAccount,
-                    style: const TextStyle(color: Colors.white)),
+                leading: const FaIcon(
+                  FontAwesomeIcons.addressBook,
+                  color: Colors.white,
+                ),
+                title: Text('Landlines',
+                    style: TextStyle(
+                      color: AppColors.yellow,
+                    )),
+                subtitle: Text(landlines.join(' , '),
+                    style: const TextStyle(
+                      color: Colors.white,
+                    )),
               ),
               ListTile(
                 onTap: () {},
-                leading: Icon(Icons.location_on, color: Colors.white),
-                title:
-                    Text('Address', style: TextStyle(color: AppColors.yellow)),
-                subtitle:
-                    Text(areaName, style: const TextStyle(color: Colors.white)),
+                leading: const Icon(
+                  Icons.category,
+                  color: Colors.white,
+                ),
+                title: Text('Category',
+                    style: TextStyle(
+                      color: AppColors.yellow,
+                    )),
+                subtitle: Text(category,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(
+                  Icons.location_on,
+                  color: Colors.white,
+                ),
+                title: Text('Address',
+                    style: TextStyle(
+                      color: AppColors.yellow,
+                    )),
+                subtitle: Text(areaName,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Ionicons.logo_facebook),
+                    color: AppColors.yellow,
+                    iconSize: 40,
+                    onPressed: () {
+                      launchUrl(
+                        Uri.parse('https://www.facebook.com'),
+                        mode: LaunchMode.inAppWebView,
+                      );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Ionicons.logo_instagram),
+                    color: AppColors.yellow,
+                    iconSize: 40,
+                    onPressed: () {
+                      // Handle Instagram button press
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.link),
+                    color: AppColors.yellow,
+                    iconSize: 40,
+                    onPressed: () {
+                      // Handle Instagram button press
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Ionicons.logo_whatsapp),
+                    color: AppColors.yellow,
+                    iconSize: 40,
+                    onPressed: () {
+                      // Handle Twitter button press
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.mail),
+                    color: AppColors.yellow,
+                    iconSize: 40,
+                    onPressed: () {
+                      // Handle LinkedIn button press
+                    },
+                  ),
+                ],
               ),
             ],
           ),

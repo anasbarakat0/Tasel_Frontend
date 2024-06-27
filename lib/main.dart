@@ -1,19 +1,26 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/theme/colors.dart';
+import 'package:tasel_frontend/user_home_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 String baseurl = 'https://tasel-backend-g6gsdfug6a-uc.a.run.app';
+// String baseurl = 'http://localhost:8080';
+String tokenS = '';
+String userIdS = '';
+bool isAuth = false;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Tasel Demo',
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark().copyWith(
@@ -31,7 +38,14 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         primaryColorDark: AppColors.yellow,
       ),
-      home: const LoginPage(),
+      home: isAuth
+          ? UserHomePage(
+              tokenId: TokenModel(
+                token: tokenS,
+                id: userIdS,
+              ),
+            )
+          : const LoginPage(),
     );
   }
 }

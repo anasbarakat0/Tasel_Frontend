@@ -6,6 +6,8 @@ import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/login_bloc.dart';
 import 'package:tasel_frontend/bloc/login_provider_bloc.dart';
+import 'package:tasel_frontend/main.dart';
+import 'package:tasel_frontend/provider_page.dart';
 import 'package:tasel_frontend/signup_provider.dart';
 import 'package:tasel_frontend/signup_user.dart';
 import 'package:tasel_frontend/user_home_page.dart';
@@ -97,9 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         MyTextField(
-                          ontap: (p0) {
-                            
-                          },
+                          ontap: (p0) {},
                           controller: phoneOrEmail,
                           title: 'E-mail',
                           keyboardType: TextInputType.name,
@@ -240,8 +240,7 @@ Widget BUildUser() {
           context,
           MaterialPageRoute(
             builder: (context) => UserHomePage(
-              tokenId:
-                  TokenModel(token: state.tokenId.token, id: state.tokenId.id),
+              tokenId: TokenModel(token: tokenS, id: userIdS),
             ),
           ),
         );
@@ -330,9 +329,9 @@ Widget BuildProvider() {
     listener: (context, state) {
       if (state is SuccessLoginProvider) {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => UserHomePage(tokenId: state.tokenId)));
+          context,
+          MaterialPageRoute(builder: (context) => ProviderPage(id: userIdS)),
+        );
       }
     },
     builder: (context, state) {

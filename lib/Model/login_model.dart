@@ -44,7 +44,6 @@ class LoginModel {
   @override
   bool operator ==(covariant LoginModel other) {
     if (identical(this, other)) return true;
-
     return other.email == email && other.password == password;
   }
 
