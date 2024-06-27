@@ -158,7 +158,11 @@ class ProviderPage extends StatelessWidget {
                   BlocBuilder<ShowProviderProductsBloc,
                       ShowProviderProductsState>(
                     builder: (context, state) {
-                      if (state is SuccessShowProducts) {
+                      if (state is ShowProviderProductsInitial) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is SuccessShowProducts) {
                         return ListView.builder(
                             itemCount: state.products.length,
                             itemBuilder: (context, index) {
@@ -191,7 +195,7 @@ class ProviderPage extends StatelessWidget {
                           child: CircularProgressIndicator(),
                         );
                       } else {
-                        return Center(
+                        return const Center(
                           child: Column(
                             children: [
                               Text('Connecting...'),
