@@ -1,9 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tasel_frontend/Model/product_model.dart';
 import 'package:tasel_frontend/Widgets/product_list.dart';
-
 import 'package:tasel_frontend/Widgets/provider_info_card.dart';
 import 'package:tasel_frontend/bloc/provider_info_bloc.dart';
 import 'package:tasel_frontend/bloc/show_provider_products_bloc.dart';
@@ -18,8 +16,6 @@ class ProviderPage extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // TextEditingController searchController = TextEditingController();
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -167,12 +163,8 @@ class ProviderPage extends StatelessWidget {
                                       .read<ShowProviderProductsBloc>()
                                       .add(ShowProviderProducts(storeId: id));
                                 },
-                                label: const Text(
-                                  'Try Again',
-                                ),
-                                icon: const Icon(
-                                  Icons.autorenew_rounded,
-                                ),
+                                label: const Text('Try Again'),
+                                icon: const Icon(Icons.autorenew_rounded),
                               ),
                             ],
                           ),

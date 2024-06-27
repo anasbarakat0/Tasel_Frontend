@@ -109,7 +109,7 @@ class ContactUsPage extends StatelessWidget {
                       color: AppColors.yellow,
                       iconSize: 40,
                       onPressed: () {
-                        // Handle Facebook button press
+                        // Facebook
                       },
                     ),
                     IconButton(
@@ -117,7 +117,7 @@ class ContactUsPage extends StatelessWidget {
                       color: AppColors.yellow,
                       iconSize: 40,
                       onPressed: () {
-                        // Handle Twitter button press
+                        // Twitter
                       },
                     ),
                     IconButton(
@@ -125,7 +125,7 @@ class ContactUsPage extends StatelessWidget {
                       color: AppColors.yellow,
                       iconSize: 40,
                       onPressed: () {
-                        // Handle Instagram button press
+                        // Instagram
                       },
                     ),
                     IconButton(
@@ -133,7 +133,7 @@ class ContactUsPage extends StatelessWidget {
                       color: AppColors.yellow,
                       iconSize: 40,
                       onPressed: () {
-                        // Handle LinkedIn button press
+                        //LinkedIn
                       },
                     ),
                   ],

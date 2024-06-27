@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/login.dart';

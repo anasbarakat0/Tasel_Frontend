@@ -56,16 +56,14 @@ Future<ResultModel> loginUser(LoginModel login) async {
   try {
     Dio dio = Dio();
     Response response = await dio.post("$baseurl/login", data: login.toMap());
-    if (response.statusCode == 400) {
-      print('lklklklklklklkklklklklklklklklklklklklklklklklklllklklklklklk');
-      print(response.data);
-      return ErrorResult(message: response.data);
-    } else if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString(tokenS, response.data['token']);
       prefs.setString(userIdS, response.data['id']);
       isAuth = true;
       return TokenModel(token: response.data['token'], id: response.data['id']);
+    } else if (response.statusCode == 400) {
+      return ErrorResult(message: response.data);
     } else {
       print('lklklklklklklkklklklklklklklklklklklklklklklklklllklklklklklk');
       print(response.data);
