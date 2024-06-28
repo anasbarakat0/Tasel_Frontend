@@ -18,6 +18,7 @@ class ProviderInfo {
   String facebookUsername;
   String instagramAccount;
   String instagramUsername;
+  String websiteUrl;
   ProviderInfo({
     required this.address,
     required this.profileImage,
@@ -33,6 +34,7 @@ class ProviderInfo {
     required this.facebookUsername,
     required this.instagramAccount,
     required this.instagramUsername,
+    required this.websiteUrl,
   });
 
   ProviderInfo copyWith({
@@ -66,6 +68,7 @@ class ProviderInfo {
       facebookUsername: facebookUsername ?? this.facebookUsername,
       instagramAccount: instagramAccount ?? this.instagramAccount,
       instagramUsername: instagramUsername ?? this.instagramUsername,
+      websiteUrl: websiteUrl ?? this.websiteUrl,
     );
   }
 
@@ -104,6 +107,7 @@ class ProviderInfo {
       facebookUsername: map['facebookUsername'] as String,
       instagramAccount: map['instagramAccount'] as String,
       instagramUsername: map['instagramUsername'] as String,
+      websiteUrl: map['WebsiteUrl'] as String,
     );
   }
 

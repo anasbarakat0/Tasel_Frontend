@@ -726,9 +726,12 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                             ));
                                       } else {
                                         ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    "Please reconfirm your password")));
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                "Please reconfirm your password"),
+                                          ),
+                                        );
                                       }
                                     },
                                   ));

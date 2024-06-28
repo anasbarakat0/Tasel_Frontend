@@ -24,6 +24,7 @@ class ProviderInfoCard extends StatelessWidget {
   final String streetName;
   final String buildingNameorNumber;
   final String floor;
+  final String WebsiteUrl;
   const ProviderInfoCard({
     super.key,
     required this.profileImage,
@@ -43,6 +44,7 @@ class ProviderInfoCard extends StatelessWidget {
     required this.streetName,
     required this.buildingNameorNumber,
     required this.floor,
+    required this.WebsiteUrl,
   });
 
   @override
@@ -146,7 +148,7 @@ class ProviderInfoCard extends StatelessWidget {
                     iconSize: 40,
                     onPressed: () {
                       launchUrl(
-                        Uri.parse('https://www.facebook.com'),
+                        Uri.parse(facebookPage),
                         mode: LaunchMode.inAppWebView,
                       );
                     },
@@ -156,7 +158,10 @@ class ProviderInfoCard extends StatelessWidget {
                     color: AppColors.yellow,
                     iconSize: 40,
                     onPressed: () {
-                      // Handle Instagram button press
+                      launchUrl(
+                        Uri.parse(instagramAccount),
+                        mode: LaunchMode.inAppWebView,
+                      );
                     },
                   ),
                   IconButton(
@@ -164,7 +169,10 @@ class ProviderInfoCard extends StatelessWidget {
                     color: AppColors.yellow,
                     iconSize: 40,
                     onPressed: () {
-                      // Handle Instagram button press
+                      launchUrl(
+                        Uri.parse(WebsiteUrl),
+                        mode: LaunchMode.inAppWebView,
+                      );
                     },
                   ),
                   IconButton(

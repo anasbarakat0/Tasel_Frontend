@@ -56,11 +56,7 @@ class ProviderPage extends StatelessWidget {
                 children: [
                   BlocBuilder<ProviderInfoBloc, ProviderInfoState>(
                     builder: (context, state) {
-                      if (state is LoadingFetching) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state is ErrorFetchingData) {
+                      if (state is ErrorFetchingData) {
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +119,8 @@ class ProviderPage extends StatelessWidget {
                                 buildingNameorNumber:
                                     state.provider.address.buildingNameorNumber,
                                 floor: state.provider.address.floor,
-                              )
+                                WebsiteUrl: state.provider.websiteUrl,
+                              ),
                             ],
                           ),
                         );
@@ -137,11 +134,7 @@ class ProviderPage extends StatelessWidget {
                   BlocBuilder<ShowProviderProductsBloc,
                       ShowProviderProductsState>(
                     builder: (context, state) {
-                      if (state is ShowProviderProductsInitial) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (state is SuccessShowProducts) {
+                      if (state is SuccessShowProducts) {
                         return ListView.builder(
                             itemCount: state.products.length,
                             itemBuilder: (context, index) {
@@ -169,17 +162,16 @@ class ProviderPage extends StatelessWidget {
                             ],
                           ),
                         );
-                      } else if (state is LoadingFetchingProduct) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
                       } else {
-                        return const Center(
-                          child: Column(
-                            children: [
-                              Text('Connecting...'),
-                              LinearProgressIndicator(),
-                            ],
+                        return const Padding(
+                          padding: EdgeInsets.all(30.0),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Text('Connecting...'),
+                                LinearProgressIndicator(),
+                              ],
+                            ),
                           ),
                         );
                       }
