@@ -11,9 +11,9 @@ class SuccessModel extends ResultProviderInfo {
 }
 
 class ErrorModel extends ResultProviderInfo {
-  String messge;
+  String message;
   ErrorModel({
-    required this.messge,
+    required this.message,
   });
 }
 

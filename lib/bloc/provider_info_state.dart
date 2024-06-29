@@ -13,6 +13,11 @@ class SuccessShowProviderInfo extends ProviderInfoState {
   });
 }
 
-class ErrorFetchingData extends ProviderInfoState {}
+class ErrorFetchingData extends ProviderInfoState {
+  final String message;
+  ErrorFetchingData({
+    required this.message,
+  });
+}
 
 class LoadingFetching extends ProviderInfoState {}

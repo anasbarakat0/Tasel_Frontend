@@ -19,9 +19,9 @@ class UserHomePage extends StatelessWidget {
   final TokenModel tokenId;
   Set<String> category = {};
   UserHomePage({
-    Key? key,
+    super.key,
     required this.tokenId,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -94,7 +94,7 @@ class UserHomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                leadingButtons(
+                LeadingButtons(
                     title: 'Profile',
                     icon: Icons.person,
                     onTap: () {
@@ -104,7 +104,7 @@ class UserHomePage extends StatelessWidget {
                             builder: (context) => ProfilePage(userId: tokenId)),
                       );
                     }),
-                leadingButtons(
+                LeadingButtons(
                     title: 'Contact Us',
                     icon: Icons.contact_support,
                     onTap: () {
@@ -114,7 +114,7 @@ class UserHomePage extends StatelessWidget {
                             builder: (context) => const ContactUsPage()),
                       );
                     }),
-                leadingButtons(
+                LeadingButtons(
                     title: 'Log Out',
                     icon: Icons.logout_rounded,
                     onTap: () {
@@ -143,7 +143,8 @@ class UserHomePage extends StatelessWidget {
                   suffix: IconButton(
                     icon: const Icon(Icons.cancel),
                     onPressed: () {
-                      context.read<ShowProvidersBloc>()..add(ShowProviders());
+                      context.read<ShowProvidersBloc>().add(ShowProviders());
+                      searchController.clear();
                     },
                   ),
                   ontap: (String val) {
@@ -160,9 +161,9 @@ class UserHomePage extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is SuccessShowProviders) {
-                    state.providers.forEach((e) {
+                    for (var e in state.providers) {
                       category.add(e.category);
-                    });
+                    }
                     return Expanded(
                       child: Column(
                         children: [
@@ -186,6 +187,7 @@ class UserHomePage extends StatelessWidget {
                                         width: 80,
                                         height: 40,
                                         decoration: BoxDecoration(
+                                          // ignore: unrelated_type_equality_checks
                                           color: (index == state.providers)
                                               ? AppColors.darkYellow
                                               : AppColors.grey,
@@ -196,6 +198,7 @@ class UserHomePage extends StatelessWidget {
                                           child: Text(
                                             category.elementAt(index),
                                             style: TextStyle(
+                                              // ignore: unrelated_type_equality_checks
                                               color: (index == state.providers)
                                                   ? AppColors.grey
                                                   : AppColors.darkYellow,
@@ -318,8 +321,9 @@ class UserHomePage extends StatelessWidget {
                                     )),
                                 IconButton(
                                     onPressed: () {
-                                      context.read<ShowProvidersBloc>()
-                                        ..add(ShowProviders());
+                                      context
+                                          .read<ShowProvidersBloc>()
+                                          .add(ShowProviders());
                                     },
                                     icon: const Icon(Icons.cancel))
                               ],

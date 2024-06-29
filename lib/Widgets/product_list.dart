@@ -7,9 +7,13 @@ import 'package:tasel_frontend/theme/colors.dart';
 // ignore: must_be_immutable
 class MyProducts extends StatelessWidget {
   ProductModel product;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
   MyProducts({
     super.key,
     required this.product,
+    this.onTap,
+    this.onLongPress,
   });
 
   @override
@@ -22,10 +26,28 @@ class MyProducts extends StatelessWidget {
       child: Container(
         color: AppColors.grey,
         child: ListTile(
-          leading: Image.network(
-            product.picture,
-            width: 50,
-            height: 50,
+          onTap: onTap,
+          onLongPress: onLongPress,
+          leading: Expanded(
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: Colors.transparent,
+              child: ClipOval(
+                child: SizedBox(
+                  height: 50,
+                  child: Image.network(
+                    'product.picture',
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'blank-profile.png',
+                        fit: BoxFit.contain,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
           ),
           title: Text(
             product.name,

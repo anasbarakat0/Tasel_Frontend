@@ -1,5 +1,7 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 import 'package:tasel_frontend/Model/Signup_user_model.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';

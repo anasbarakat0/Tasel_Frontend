@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:ionicons/ionicons.dart';
@@ -27,13 +30,27 @@ class _SignUpProviderState extends State<SignUpProvider> {
   final TextEditingController websiteUrlController = TextEditingController();
   final TextEditingController websiteTitleController = TextEditingController();
   final TextEditingController instagramUrlController = TextEditingController();
-  final TextEditingController instagramUsernameController =
-      TextEditingController();
   final TextEditingController facebookUrlController = TextEditingController();
-  final TextEditingController facebookUsernameController =
-      TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController conPasswordController = TextEditingController();
+  final TextEditingController areaName = TextEditingController();
+  final TextEditingController streetName = TextEditingController();
+  final TextEditingController buildingNameorNumber = TextEditingController();
+  final TextEditingController floor = TextEditingController();
+
+  final ImagePicker _picker = ImagePicker();
+  File? _image;
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
 
   String mobile = '';
   bool isEmailCorrect = false;
@@ -53,6 +70,37 @@ class _SignUpProviderState extends State<SignUpProvider> {
   }
 
   late SignupProviderModel provider;
+
+  void _showImagePickerOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Photo Library'),
+                onTap: () {
+                  _pickImage(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () {
+                  _pickImage(ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -110,6 +158,25 @@ class _SignUpProviderState extends State<SignUpProvider> {
                       SingleChildScrollView(
                         child: Column(
                           children: [
+                            GestureDetector(
+                              onTap: () {
+                                _showImagePickerOptions();
+                              },
+                              child: CircleAvatar(
+                                radius: 80,
+                                backgroundColor: Colors.grey[300],
+                                backgroundImage: _image != null
+                                    ? FileImage(_image!) as ImageProvider
+                                    : const AssetImage(
+                                            'assets/blank-profile.png')
+                                        as ImageProvider,
+                              ),
+                            ),
+
+                            const SizedBox(
+                              height: 35,
+                            ),
+
                             //Provider-Name
                             MyTextField(
                               ontap: (p0) {},
@@ -286,130 +353,40 @@ class _SignUpProviderState extends State<SignUpProvider> {
                             ),
 
                             //Website
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: MyTextField(
-                                    controller: websiteUrlController,
-                                    title: 'Website URL*',
-                                    keyboardType: TextInputType.url,
-                                    prefixIcon: const Icon(Icons.link),
-                                    ontap: (val) {
-                                      if (landlineNumberController
-                                                  .text.length !=
-                                              7 ||
-                                          !isNumber(
-                                              landlineNumberController.text)) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                              content: Text(
-                                                  "Invalid Landline Phone Number ${landlineNumberController.text}")),
-                                        );
-                                        return;
-                                      }
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: MyTextField(
-                                    controller: websiteTitleController,
-                                    title: 'Website Title*',
-                                    keyboardType: TextInputType.name,
-                                    ontap: (val) {
-                                      if (websiteUrlController.text.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Can't Enter the title of your Website Without Enternig the Website URL")),
-                                        );
-                                        return;
-                                      }
-                                    },
-                                  ),
-                                )
-                              ],
+                            MyTextField(
+                              controller: websiteUrlController,
+                              title: 'Website URL*',
+                              keyboardType: TextInputType.url,
+                              prefixIcon: const Icon(Icons.link),
+                              ontap: (val) {
+                                if (landlineNumberController.text.length != 7 ||
+                                    !isNumber(landlineNumberController.text)) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "Invalid Landline Phone Number ${landlineNumberController.text}")),
+                                  );
+                                  return;
+                                }
+                              },
                             ),
 
                             //Instagram
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: MyTextField(
-                                    ontap: (p0) {},
-                                    controller: instagramUrlController,
-                                    title: 'Account URL*',
-                                    keyboardType: TextInputType.url,
-                                    prefixIcon:
-                                        const Icon(Ionicons.logo_instagram),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: MyTextField(
-                                    controller: instagramUsernameController,
-                                    title: 'Username*',
-                                    keyboardType: TextInputType.name,
-                                    ontap: (val) {
-                                      if (instagramUrlController.text.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Can't Enter Instagram Username Without Enternig the URL of this Account")),
-                                        );
-                                        return;
-                                      }
-                                    },
-                                  ),
-                                )
-                              ],
+                            MyTextField(
+                              ontap: (p0) {},
+                              controller: instagramUrlController,
+                              title: 'Account URL*',
+                              keyboardType: TextInputType.url,
+                              prefixIcon: const Icon(Ionicons.logo_instagram),
                             ),
 
                             //Facebook
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: MyTextField(
-                                    ontap: (p0) {},
-                                    controller: facebookUrlController,
-                                    title: 'Account URL*',
-                                    keyboardType: TextInputType.url,
-                                    prefixIcon:
-                                        const Icon(Ionicons.logo_facebook),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: MyTextField(
-                                    controller: facebookUsernameController,
-                                    title: 'Username*',
-                                    keyboardType: TextInputType.name,
-                                    ontap: (val) {
-                                      if (instagramUrlController.text.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Can't Enter Facebook Username Without Enternig the URL of this Account")),
-                                        );
-                                        return;
-                                      }
-                                    },
-                                  ),
-                                )
-                              ],
+                            MyTextField(
+                              ontap: (p0) {},
+                              controller: facebookUrlController,
+                              title: 'Account URL*',
+                              keyboardType: TextInputType.url,
+                              prefixIcon: const Icon(Ionicons.logo_facebook),
                             ),
 
                             //Password
@@ -638,91 +615,56 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         return;
                                       }
 
-                                      if (instagramUrlController
-                                              .text.isNotEmpty &&
-                                          instagramUsernameController
-                                              .text.isEmpty) {
+                                      if (_image == null) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
                                               content: Text(
-                                                  "Please Enter the Username of Your Instagram Account")),
-                                        );
-                                        return;
-                                      }
-
-                                      if (facebookUrlController
-                                              .text.isNotEmpty &&
-                                          facebookUsernameController
-                                              .text.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Please Enter the Username of Your Facebook Account")),
-                                        );
-                                        return;
-                                      }
-
-                                      if (instagramUsernameController
-                                              .text.isNotEmpty &&
-                                          instagramUrlController.text.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Can't Enter Instagram Username Without Enternig the URL of this Account")),
-                                        );
-                                        return;
-                                      }
-
-                                      if (facebookUsernameController
-                                              .text.isNotEmpty &&
-                                          facebookUrlController.text.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Can't Enter Facebook Username Without Enternig the URL of this Account")),
+                                                  "You have to choose a profile image")),
                                         );
                                         return;
                                       }
 
                                       if (passwordController.text ==
                                           conPasswordController.text) {
-                                        //todo: signup provider methode
-
                                         context
                                             .read<SignupProviderBloc>()
                                             .add(SignedupProvider(
                                               provider: SignupProviderModel(
-                                                  name: providerController.text,
-                                                  latitude: 'latitude',
-                                                  longitude: 'longitude',
-                                                  phoneNumbers:
-                                                      phoneNumController.text,
-                                                  landlines:
+                                                name: providerController.text,
+                                                latitude: 0.0,
+                                                longitude: 0.0,
+                                                phoneNumbers: [
+                                                  int.parse(
+                                                      phoneNumController.text)
+                                                ],
+                                                landlines: [
+                                                  int.parse(
                                                       landlineNumberController
-                                                          .text,
-                                                  address: 'address',
-                                                  email: emailController.text,
-                                                  whatsappNumber:
-                                                      'whatsappNumber',
-                                                  instagramAccount:
-                                                      instagramUrlController
-                                                          .text,
-                                                  instagramUsername:
-                                                      instagramUsernameController
-                                                          .text,
-                                                  facebookPage:
-                                                      facebookUrlController
-                                                          .text,
-                                                  facebookUsername:
-                                                      facebookUsernameController
-                                                          .text,
-                                                  category: 'category',
-                                                  password:
-                                                      passwordController.text),
+                                                          .text)
+                                                ],
+                                                email: emailController.text,
+                                                whatsappNumber:
+                                                    'whatsappNumber',
+                                                instagramAccount:
+                                                    instagramUrlController.text,
+                                                instagramUsername: '',
+                                                facebookPage:
+                                                    facebookUrlController.text,
+                                                facebookUsername: '',
+                                                category: 'category',
+                                                password:
+                                                    passwordController.text,
+                                                websiteUrl:
+                                                    websiteUrlController.text,
+                                                websiteTitle: '',
+                                                image: _image!,
+                                                areaName: areaName.text,
+                                                streetName: streetName.text,
+                                                buildingNameorNumber:
+                                                    buildingNameorNumber.text,
+                                                floor: floor.text,
+                                              ),
                                             ));
                                       } else {
                                         ScaffoldMessenger.of(context)
@@ -769,37 +711,46 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                               .add(
                                                 SignedupProvider(
                                                   provider: SignupProviderModel(
-                                                      name: providerController
-                                                          .text,
-                                                      latitude: 'latitude',
-                                                      longitude: 'longitude',
-                                                      phoneNumbers:
+                                                    name:
+                                                        providerController.text,
+                                                    latitude: 0.0,
+                                                    longitude: 0.0,
+                                                    phoneNumbers: [
+                                                      int.parse(
                                                           phoneNumController
-                                                              .text,
-                                                      landlines:
+                                                              .text)
+                                                    ],
+                                                    landlines: [
+                                                      int.parse(
                                                           landlineNumberController
-                                                              .text,
-                                                      address: 'address',
-                                                      email:
-                                                          emailController.text,
-                                                      whatsappNumber:
-                                                          'whatsappNumber',
-                                                      instagramAccount:
-                                                          instagramUrlController
-                                                              .text,
-                                                      instagramUsername:
-                                                          instagramUsernameController
-                                                              .text,
-                                                      facebookPage:
-                                                          facebookUrlController
-                                                              .text,
-                                                      facebookUsername:
-                                                          facebookUsernameController
-                                                              .text,
-                                                      category: 'category',
-                                                      password:
-                                                          passwordController
-                                                              .text),
+                                                              .text)
+                                                    ],
+                                                    email: emailController.text,
+                                                    whatsappNumber:
+                                                        'whatsappNumber',
+                                                    instagramAccount:
+                                                        instagramUrlController
+                                                            .text,
+                                                    instagramUsername: '',
+                                                    facebookPage:
+                                                        facebookUrlController
+                                                            .text,
+                                                    facebookUsername: '',
+                                                    category: 'category',
+                                                    password:
+                                                        passwordController.text,
+                                                    websiteUrl:
+                                                        websiteUrlController
+                                                            .text,
+                                                    websiteTitle: '',
+                                                    image: _image!,
+                                                    areaName: areaName.text,
+                                                    streetName: streetName.text,
+                                                    buildingNameorNumber:
+                                                        buildingNameorNumber
+                                                            .text,
+                                                    floor: floor.text,
+                                                  ),
                                                 ),
                                               );
                                         }),
@@ -820,37 +771,46 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                               .add(
                                                 SignedupProvider(
                                                   provider: SignupProviderModel(
-                                                      name: providerController
-                                                          .text,
-                                                      latitude: 'latitude',
-                                                      longitude: 'longitude',
-                                                      phoneNumbers:
+                                                    name:
+                                                        providerController.text,
+                                                    latitude: 0.0,
+                                                    longitude: 0.0,
+                                                    phoneNumbers: [
+                                                      int.parse(
                                                           phoneNumController
-                                                              .text,
-                                                      landlines:
+                                                              .text)
+                                                    ],
+                                                    landlines: [
+                                                      int.parse(
                                                           landlineNumberController
-                                                              .text,
-                                                      address: 'address',
-                                                      email:
-                                                          emailController.text,
-                                                      whatsappNumber:
-                                                          'whatsappNumber',
-                                                      instagramAccount:
-                                                          instagramUrlController
-                                                              .text,
-                                                      instagramUsername:
-                                                          instagramUsernameController
-                                                              .text,
-                                                      facebookPage:
-                                                          facebookUrlController
-                                                              .text,
-                                                      facebookUsername:
-                                                          facebookUsernameController
-                                                              .text,
-                                                      category: 'category',
-                                                      password:
-                                                          passwordController
-                                                              .text),
+                                                              .text)
+                                                    ],
+                                                    email: emailController.text,
+                                                    whatsappNumber:
+                                                        'whatsappNumber',
+                                                    instagramAccount:
+                                                        instagramUrlController
+                                                            .text,
+                                                    instagramUsername: '',
+                                                    facebookPage:
+                                                        facebookUrlController
+                                                            .text,
+                                                    facebookUsername: '',
+                                                    category: 'category',
+                                                    password:
+                                                        passwordController.text,
+                                                    websiteUrl:
+                                                        websiteUrlController
+                                                            .text,
+                                                    websiteTitle: '',
+                                                    image: _image!,
+                                                    areaName: areaName.text,
+                                                    streetName: streetName.text,
+                                                    buildingNameorNumber:
+                                                        buildingNameorNumber
+                                                            .text,
+                                                    floor: floor.text,
+                                                  ),
                                                 ),
                                               );
                                         }),

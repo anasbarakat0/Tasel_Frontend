@@ -2,7 +2,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tasel_frontend/profile_page.dart';
@@ -36,6 +35,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
   late TextEditingController address;
   late TextEditingController phone;
   File? _image;
+  // ignore: prefer_typing_uninitialized_variables
   late var updated;
 
   @override
@@ -53,9 +53,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     setState(() {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
+      } else {}
     });
   }
 
@@ -75,14 +73,17 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
             ),
           );
           if (updated) {
+            // ignore: use_build_context_synchronously
             Navigator.pop(context);
             Navigator.pushReplacement(
+              // ignore: use_build_context_synchronously
               context,
               MaterialPageRoute(
                 builder: (context) => ProfilePage(userId: widget.tokenId),
               ),
             );
           } else {
+            // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Error Updating Data")));
           }
@@ -112,9 +113,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
             ),
           ),
           const SizedBox(height: 16),
-          Text(
+          const Text(
             'Edit Your Info...',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: Colors.white,

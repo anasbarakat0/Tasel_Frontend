@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  type ? BUildUser() : BuildProvider(),
+                  type ? BuildUser() : BuildProvider(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -229,7 +229,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-Widget BUildUser() {
+// ignore: non_constant_identifier_names
+Widget BuildUser() {
   return BlocConsumer<LoginBloc, LoginState>(
     listener: (context, state) {
       if (state is SuccessLogin) {
@@ -322,6 +323,7 @@ Widget BUildUser() {
   );
 }
 
+// ignore: non_constant_identifier_names
 Widget BuildProvider() {
   return BlocConsumer<LoginProviderBloc, LoginProviderState>(
     listener: (context, state) {
@@ -415,7 +417,7 @@ Widget BuildProvider() {
             ),
           );
         default:
-          return LinearProgressIndicator();
+          return const LinearProgressIndicator();
       }
     },
   );

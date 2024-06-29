@@ -1,7 +1,7 @@
-// import 'dart:convert';
-// import 'package:http/http.dart' as http;
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasel_frontend/Model/login_model.dart';
@@ -14,7 +14,6 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {
     on<Signin>((event, emit) async {
-      print(event.user.toMap());
       var data = await loginUser(event.user);
       if (data is TokenModel) {
         emit(SuccessLogin(tokenId: TokenModel(token: data.token, id: data.id)));

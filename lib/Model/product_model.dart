@@ -12,7 +12,6 @@ class ProductModel {
   double price;
   String description;
   String storeId;
-
   ProductModel({
     required this.id,
     required this.picture,

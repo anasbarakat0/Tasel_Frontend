@@ -62,8 +62,6 @@ class ProvidersModel {
   });
 
   factory ProvidersModel.fromMap(Map<String, dynamic> map) {
-    print('Mapping ProvidersModel from map: $map');
-
     return ProvidersModel(
       profileImage: map['profileImage'] as String,
       id: map['_id'] as String,

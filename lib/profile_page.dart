@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/bloc/profile_info_bloc.dart';
@@ -9,11 +8,12 @@ import 'package:tasel_frontend/theme/colors.dart';
 class ProfilePage extends StatefulWidget {
   final TokenModel userId;
   const ProfilePage({
-    Key? key,
+    super.key,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProfilePageState createState() => _ProfilePageState();
 }
 

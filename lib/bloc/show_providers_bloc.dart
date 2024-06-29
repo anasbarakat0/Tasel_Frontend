@@ -1,5 +1,7 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+// ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 import 'package:tasel_frontend/Model/provisers_model.dart';
 import 'package:tasel_frontend/Model/response_providers_model.dart';
@@ -17,11 +19,11 @@ class ShowProvidersBloc extends Bloc<ShowProvidersEvent, ShowProvidersState> {
     on<SearchEvent>((event, emit) {
       emit(LoadingFetching());
       result = [];
-      things.forEach((e) {
+      for (var e in things) {
         if (e.name.contains(event.lexem)) {
           result.add(e);
         }
-      });
+      }
 
       emit(SearchResutl(providers: result));
     });
@@ -43,11 +45,11 @@ class ShowProvidersBloc extends Bloc<ShowProvidersEvent, ShowProvidersState> {
     on<FilterBy>((event, emit) {
       emit(LoadingFetching());
       result = [];
-      things.forEach((e) {
+      for (var e in things) {
         if (e.category == event.category) {
           result.add(e);
         }
-      });
+      }
 
       emit(FilterResutl(event.index, providers: result));
     });

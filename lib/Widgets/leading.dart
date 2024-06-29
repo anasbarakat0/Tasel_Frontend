@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
-class leadingButtons extends StatelessWidget {
+class LeadingButtons extends StatelessWidget {
   final String title;
   final IconData icon;
   final VoidCallback onTap;
 
-  const leadingButtons({super.key, 
+  const LeadingButtons({
+    super.key,
     required this.title,
     required this.icon,
     required this.onTap,

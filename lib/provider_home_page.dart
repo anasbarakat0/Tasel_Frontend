@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/leading.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
@@ -10,6 +9,7 @@ import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
 import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/map_page.dart';
+import 'package:tasel_frontend/product_page.dart';
 import 'package:tasel_frontend/provider_update_info.dart';
 import 'package:tasel_frontend/service/delete_provider.dart';
 import 'package:tasel_frontend/theme/colors.dart';
@@ -21,9 +21,9 @@ class ProviderHomePage extends StatelessWidget {
 
   Set<String> category = {};
   ProviderHomePage({
-    Key? key,
+    super.key,
     required this.tokenId,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -96,7 +96,7 @@ class ProviderHomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                leadingButtons(
+                LeadingButtons(
                     title: 'Profile',
                     icon: Icons.person,
                     onTap: () {
@@ -107,7 +107,7 @@ class ProviderHomePage extends StatelessWidget {
                                 ProviderUpdateInfoPage(tokenId: tokenId)),
                       );
                     }),
-                leadingButtons(
+                LeadingButtons(
                     title: 'Add Products',
                     icon: Icons.add_circle_outline,
                     onTap: () {
@@ -118,7 +118,18 @@ class ProviderHomePage extends StatelessWidget {
                                 ProviderUpdateInfoPage(tokenId: tokenId)),
                       );
                     }),
-                leadingButtons(
+                LeadingButtons(
+                    title: 'Show My Products',
+                    icon: Icons.view_list_outlined,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ProductPage(tokenId: tokenId)),
+                      );
+                    }),
+                LeadingButtons(
                     title: 'Contact Us',
                     icon: Icons.contact_support,
                     onTap: () {
@@ -140,22 +151,23 @@ class ProviderHomePage extends StatelessWidget {
                     var delet = await deleteProvider(tokenId);
                     if (delet) {
                       Navigator.pushReplacement(
+                        // ignore: use_build_context_synchronously
                         context,
                         MaterialPageRoute(
                             builder: (context) => const LoginPage()),
                       );
                     } else {
+                      // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text("Error, Try again later")),
                       );
                     }
                   },
                 ),
-                leadingButtons(
+                LeadingButtons(
                     title: 'Log Out',
                     icon: Icons.logout_rounded,
                     onTap: () {
-                      // isAuth = false;
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
@@ -177,6 +189,13 @@ class ProviderHomePage extends StatelessWidget {
                     padding: EdgeInsets.only(left: 5),
                     child: Icon(Icons.search),
                   ),
+                  suffix: IconButton(
+                    icon: const Icon(Icons.cancel),
+                    onPressed: () {
+                      context.read<ShowProvidersBloc>().add(ShowProviders());
+                      searchController.clear();
+                    },
+                  ),
                   ontap: (String val) {
                     context
                         .read<ShowProvidersBloc>()
@@ -191,9 +210,9 @@ class ProviderHomePage extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   } else if (state is SuccessShowProviders) {
-                    state.providers.forEach((e) {
+                    for (var e in state.providers) {
                       category.add(e.category);
-                    });
+                    }
                     return Expanded(
                       child: Column(
                         children: [
@@ -217,6 +236,7 @@ class ProviderHomePage extends StatelessWidget {
                                         width: 80,
                                         height: 40,
                                         decoration: BoxDecoration(
+                                          // ignore: unrelated_type_equality_checks
                                           color: (index == state.providers)
                                               ? AppColors.darkYellow
                                               : AppColors.grey,
@@ -227,6 +247,7 @@ class ProviderHomePage extends StatelessWidget {
                                           child: Text(
                                             category.elementAt(index),
                                             style: TextStyle(
+                                              // ignore: unrelated_type_equality_checks
                                               color: (index == state.providers)
                                                   ? AppColors.grey
                                                   : AppColors.darkYellow,
@@ -348,8 +369,9 @@ class ProviderHomePage extends StatelessWidget {
                                     )),
                                 IconButton(
                                     onPressed: () {
-                                      context.read<ShowProvidersBloc>()
-                                        ..add(ShowProviders());
+                                      context
+                                          .read<ShowProvidersBloc>()
+                                          .add(ShowProviders());
                                     },
                                     icon: const Icon(Icons.cancel))
                               ],

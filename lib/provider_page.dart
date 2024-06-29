@@ -10,10 +10,10 @@ import 'package:tasel_frontend/theme/colors.dart';
 
 class ProviderPage extends StatelessWidget {
   final String id;
-  ProviderPage({
-    Key? key,
+  const ProviderPage({
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -61,8 +61,8 @@ class ProviderPage extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                'There is an Error',
+                              Text(
+                                state.message,
                               ),
                               ElevatedButton.icon(
                                 onPressed: () {
@@ -119,7 +119,7 @@ class ProviderPage extends StatelessWidget {
                                 buildingNameorNumber:
                                     state.provider.address.buildingNameorNumber,
                                 floor: state.provider.address.floor,
-                                WebsiteUrl: state.provider.websiteUrl,
+                                websiteUrl: state.provider.websiteUrl,
                               ),
                             ],
                           ),
@@ -136,7 +136,7 @@ class ProviderPage extends StatelessWidget {
                     builder: (context, state) {
                       if (state is SuccessShowProducts) {
                         return SizedBox(
-                          height: 200 * state.products.length.toDouble(),
+                          height: 100 * state.products.length.toDouble(),
                           child: ListView.builder(
                               itemCount: state.products.length,
                               itemBuilder: (context, index) {

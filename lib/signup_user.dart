@@ -93,9 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       MyTextField(
-                        ontap: (p0) {
-                          
-                        },
+                        ontap: (p0) {},
                         controller: _nameController,
                         title: 'UserName',
                         keyboardType: TextInputType.name,
@@ -368,7 +366,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+                                    builder: (context) => const LoginPage()));
                           }
                         },
                         builder: (context, state) {

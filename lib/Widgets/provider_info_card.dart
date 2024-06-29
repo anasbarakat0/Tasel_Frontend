@@ -24,7 +24,7 @@ class ProviderInfoCard extends StatelessWidget {
   final String streetName;
   final String buildingNameorNumber;
   final String floor;
-  final String WebsiteUrl;
+  final String websiteUrl;
   const ProviderInfoCard({
     super.key,
     required this.profileImage,
@@ -44,7 +44,7 @@ class ProviderInfoCard extends StatelessWidget {
     required this.streetName,
     required this.buildingNameorNumber,
     required this.floor,
-    required this.WebsiteUrl,
+    required this.websiteUrl,
   });
 
   @override
@@ -127,14 +127,59 @@ class ProviderInfoCard extends StatelessWidget {
               ListTile(
                 onTap: () {},
                 leading: const Icon(
-                  Icons.location_on,
+                  Icons.location_searching,
                   color: Colors.white,
                 ),
-                title: Text('Address',
+                title: Text('Area Name',
                     style: TextStyle(
                       color: AppColors.yellow,
                     )),
                 subtitle: Text(areaName,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(
+                  Icons.edit_road_rounded,
+                  color: Colors.white,
+                ),
+                title: Text('Street Name',
+                    style: TextStyle(
+                      color: AppColors.yellow,
+                    )),
+                subtitle: Text(streetName,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(
+                  Icons.location_city_outlined,
+                  color: Colors.white,
+                ),
+                title: Text('Building Name or Number',
+                    style: TextStyle(
+                      color: AppColors.yellow,
+                    )),
+                subtitle: Text(buildingNameorNumber,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(
+                  Icons.stairs,
+                  color: Colors.white,
+                ),
+                title: Text('Floor',
+                    style: TextStyle(
+                      color: AppColors.yellow,
+                    )),
+                subtitle: Text(floor,
                     style: const TextStyle(
                       color: Colors.white,
                     )),
@@ -170,7 +215,7 @@ class ProviderInfoCard extends StatelessWidget {
                     iconSize: 40,
                     onPressed: () {
                       launchUrl(
-                        Uri.parse(WebsiteUrl),
+                        Uri.parse(websiteUrl),
                         mode: LaunchMode.inAppWebView,
                       );
                     },
