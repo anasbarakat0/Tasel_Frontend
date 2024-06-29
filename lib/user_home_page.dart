@@ -9,10 +9,11 @@ import 'package:tasel_frontend/Widgets/provider_card.dart';
 import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
 import 'package:tasel_frontend/login.dart';
-import 'package:tasel_frontend/map_sample.dart';
+import 'package:tasel_frontend/map_page.dart';
 import 'package:tasel_frontend/profile_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
+// ignore: must_be_immutable
 class UserHomePage extends StatelessWidget {
   final TextEditingController searchController = TextEditingController();
   final TokenModel tokenId;
@@ -41,7 +42,7 @@ class UserHomePage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MapSample()),
+                MaterialPageRoute(builder: (context) => const MapPage()),
               );
             },
             backgroundColor: AppColors.yellow,
@@ -82,7 +83,7 @@ class UserHomePage extends StatelessWidget {
                         const Padding(
                           padding: EdgeInsets.only(left: 12, top: 20),
                           child: Text(
-                            'Wellcome',
+                            'Welcome',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 25,
@@ -138,6 +139,12 @@ class UserHomePage extends StatelessWidget {
                   prefixIcon: const Padding(
                     padding: EdgeInsets.only(left: 5),
                     child: Icon(Icons.search),
+                  ),
+                  suffix: IconButton(
+                    icon: const Icon(Icons.cancel),
+                    onPressed: () {
+                      context.read<ShowProvidersBloc>()..add(ShowProviders());
+                    },
                   ),
                   ontap: (String val) {
                     context

@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
-class MapSample extends StatefulWidget {
-  const MapSample({super.key});
+class MapPage extends StatefulWidget {
+  const MapPage({super.key});
 
   @override
-  State<MapSample> createState() => MapSampleState();
+  State<MapPage> createState() => MapPageState();
 }
 
-class MapSampleState extends State<MapSample> {
+class MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 

@@ -37,8 +37,6 @@ Future<ResultModel> loginProvider(LoginModel login) async {
       return ErrorResult(message: 'try again later');
     }
   } on DioException catch (e) {
-    print("--------ggggg");
-    print(e.message.toString());
     return ExceptionResult(message: e.message.toString());
   }
 }

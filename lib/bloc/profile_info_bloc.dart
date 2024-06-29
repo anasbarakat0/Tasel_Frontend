@@ -36,7 +36,6 @@ Future<ResultUserInfo> getUserInfo(String id) async {
       return ErrorModel(messge: response.data);
     }
   } on DioException catch (e) {
-    print('$baseurl/users/$id');
     return ExceptionModel(message: e.message.toString());
   }
 }

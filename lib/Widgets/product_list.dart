@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tasel_frontend/Model/product_model.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
+// ignore: must_be_immutable
 class MyProducts extends StatelessWidget {
   ProductModel product;
   MyProducts({

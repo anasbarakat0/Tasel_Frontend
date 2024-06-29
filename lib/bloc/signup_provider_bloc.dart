@@ -32,17 +32,12 @@ Future<SignupResultModel> signupProviderMethod(
     Dio dio = Dio();
     Response response =
         await dio.post('$baseurl/signup/store', data: provider.toMap());
-    print('the response is  $response');
     if (response.statusCode == 200) {
-      print(
-          "signup provider statuscode is 200 and the message is : ${response.data['message']}");
       return SignedUp(message: response.data['message']);
     } else {
-      print('signup provider error');
       return ErrorResult(message: response.data['message']);
     }
   } on DioException catch (e) {
-    print('Signup provider exception  ${e.message.toString()}');
     return ExceptionResult(message: e.message.toString());
   }
 }

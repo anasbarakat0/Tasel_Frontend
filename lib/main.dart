@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
-import 'package:tasel_frontend/login.dart';
+import 'package:tasel_frontend/provider_home_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 import 'package:tasel_frontend/user_home_page.dart';
 
@@ -44,7 +44,13 @@ class MyApp extends StatelessWidget {
                 id: userIdS,
               ),
             )
-          : const LoginPage(),
+          : ProviderHomePage(
+              tokenId: TokenModel(
+                token:
+                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aC5jb2ZmZWVAZ21haWwuY29tIiwiaWF0IjoxNzE5NjEzNTk5fQ.p3nGAq267ZtTFlqunRbwmg6nDHXaLi5u6_xW8dDRI3Q',
+                id: '6675f70d692906b4f2fc5514',
+              ),
+            ),
     );
   }
 }

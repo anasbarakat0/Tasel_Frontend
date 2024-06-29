@@ -11,18 +11,20 @@ part 'show_provider_products_state.dart';
 class ShowProviderProductsBloc
     extends Bloc<ShowProviderProductsEvent, ShowProviderProductsState> {
   ShowProviderProductsBloc() : super(ShowProviderProductsInitial()) {
-    on<ShowProviderProducts>((event, emit) async {
-      var data = await showProviderProducts(event.storeId);
-      if (data is ListOf<ProductModel>) {
-        emit(SuccessShowProducts(products: data.resutl));
-      } else if (data is ErrorProducts) {
-        emit(ErrorFetchingProducts(message: data.message));
-      } else if (data is ExceptionProducts) {
-        emit(ErrorFetchingProducts(message: data.message));
-      } else {
-        emit(ErrorFetchingProducts(message: 'There is an Error'));
-      }
-    });
+    on<ShowProviderProducts>(
+      (event, emit) async {
+        var data = await showProviderProducts(event.storeId);
+        if (data is ListOf<ProductModel>) {
+          emit(SuccessShowProducts(products: data.resutl));
+        } else if (data is ErrorProducts) {
+          emit(ErrorFetchingProducts(message: data.message));
+        } else if (data is ExceptionProducts) {
+          emit(ErrorFetchingProducts(message: data.message));
+        } else {
+          emit(ErrorFetchingProducts(message: 'There is an Error'));
+        }
+      },
+    );
   }
 }
 

@@ -65,13 +65,9 @@ Future<ResultModel> loginUser(LoginModel login) async {
     } else if (response.statusCode == 400) {
       return ErrorResult(message: response.data);
     } else {
-      print('lklklklklklklkklklklklklklklklklklklklklklklklklllklklklklklk');
-      print(response.data);
       return ErrorResult(message: response.data);
     }
   } on DioException catch (e) {
-    print("------------");
-    print(e.message.toString());
     return ExceptionResult(message: e.message.toString());
   }
 }

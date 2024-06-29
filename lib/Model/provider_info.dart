@@ -52,6 +52,7 @@ class ProviderInfo {
     String? facebookUsername,
     String? instagramAccount,
     String? instagramUsername,
+    String? websiteUrl,
   }) {
     return ProviderInfo(
       address: address ?? this.address,

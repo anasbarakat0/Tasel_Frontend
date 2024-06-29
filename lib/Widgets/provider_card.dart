@@ -101,7 +101,6 @@ class ProviderCard extends StatelessWidget {
         ),
         isThreeLine: true,
         onTap: () {
-          print('$baseurl/$image');
           Navigator.push(
             context,
             MaterialPageRoute(

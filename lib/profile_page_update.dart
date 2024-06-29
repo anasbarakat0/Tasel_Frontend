@@ -6,13 +6,11 @@ import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tasel_frontend/profile_page.dart';
-import 'package:validators/validators.dart';
-
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Model/update_user_profile.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/theme/colors.dart';
-import 'package:tasel_frontend/update_user_profile.dart';
+import 'package:tasel_frontend/service/update_user_profile.dart';
 
 class UpdateProfilePage extends StatefulWidget {
   final TokenModel tokenId;
@@ -129,9 +127,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 MyTextField(
-                  ontap: (p0) {
-                    
-                  },
+                  ontap: (p0) {},
                   controller: name,
                   title: 'UserName',
                   keyboardType: TextInputType.name,
@@ -174,9 +170,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextField(
-                  ontap: (p0) {
-                    
-                  },
+                  ontap: (p0) {},
                   controller: address,
                   title: 'Address',
                   keyboardType: TextInputType.name,

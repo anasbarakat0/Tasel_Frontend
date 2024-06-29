@@ -5,7 +5,7 @@ import 'package:tasel_frontend/Widgets/product_list.dart';
 import 'package:tasel_frontend/Widgets/provider_info_card.dart';
 import 'package:tasel_frontend/bloc/provider_info_bloc.dart';
 import 'package:tasel_frontend/bloc/show_provider_products_bloc.dart';
-import 'package:tasel_frontend/map_sample.dart';
+import 'package:tasel_frontend/map_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProviderPage extends StatelessWidget {
@@ -44,7 +44,7 @@ class ProviderPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MapSample()),
+                  MaterialPageRoute(builder: (context) => const MapPage()),
                 );
               },
               backgroundColor: AppColors.yellow,
@@ -135,13 +135,16 @@ class ProviderPage extends StatelessWidget {
                       ShowProviderProductsState>(
                     builder: (context, state) {
                       if (state is SuccessShowProducts) {
-                        return ListView.builder(
-                            itemCount: state.products.length,
-                            itemBuilder: (context, index) {
-                              return MyProducts(
-                                product: state.products[index],
-                              );
-                            });
+                        return SizedBox(
+                          height: 200 * state.products.length.toDouble(),
+                          child: ListView.builder(
+                              itemCount: state.products.length,
+                              itemBuilder: (context, index) {
+                                return MyProducts(
+                                  product: state.products[index],
+                                );
+                              }),
+                        );
                       } else if (state is ErrorFetchingProducts) {
                         return Center(
                           child: Column(

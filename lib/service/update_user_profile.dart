@@ -14,14 +14,11 @@ Future<bool> updateProfileUser(TokenModel tokenId, UpdateUserModel user) async {
         }));
 
     if (response.statusCode == 200) {
-      print(response);
       return true;
     } else {
-      print('error updated user');
       return false;
     }
-  } on DioException catch (e) {
-    print(e.message.toString());
+  } on DioException {
     return false;
   }
 }

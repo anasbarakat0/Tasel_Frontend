@@ -6,8 +6,7 @@ import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/login_bloc.dart';
 import 'package:tasel_frontend/bloc/login_provider_bloc.dart';
-import 'package:tasel_frontend/main.dart';
-import 'package:tasel_frontend/provider_page.dart';
+import 'package:tasel_frontend/provider_home_page.dart';
 import 'package:tasel_frontend/signup_provider.dart';
 import 'package:tasel_frontend/signup_user.dart';
 import 'package:tasel_frontend/user_home_page.dart';
@@ -89,9 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                         type = !type;
                       });
                     },
-                    onChanged: (type) {
-                      print("the button is $type");
-                    },
+                    onChanged: (type) {},
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 20, 16, 16),
@@ -240,7 +237,8 @@ Widget BUildUser() {
           context,
           MaterialPageRoute(
             builder: (context) => UserHomePage(
-              tokenId: TokenModel(token: tokenS, id: userIdS),
+              tokenId:
+                  TokenModel(token: state.tokenId.token, id: state.tokenId.id),
             ),
           ),
         );
@@ -330,7 +328,8 @@ Widget BuildProvider() {
       if (state is SuccessLoginProvider) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProviderPage(id: userIdS)),
+          MaterialPageRoute(
+              builder: (context) => ProviderHomePage(tokenId: state.tokenId)),
         );
       }
     },

@@ -1,12 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
-
 import 'package:tasel_frontend/bloc/profile_info_bloc.dart';
 import 'package:tasel_frontend/profile_page_update.dart';
 import 'package:tasel_frontend/theme/colors.dart';
@@ -23,7 +18,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  File? _image;
   late String id;
   late String name;
   late int phone;

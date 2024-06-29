@@ -29,21 +29,12 @@ Future<SignupResultModel> signupUserMethod(UserModel user) async {
   try {
     Dio dio = Dio();
     Response response = await dio.post('$baseurl/signup', data: user.toMap());
-    print('the response is  $response');
     if (response.statusCode == 200) {
-      print(
-          "signup statuscode is 200 and the message is : ${response.data['message']}");
       return SignedUp(message: response.data['message']);
-    } else if (response.statusCode == 400) {
-      print('signup user error');
-      return ErrorResult(message: response.data['message']);
     } else {
-      print('signup user error');
       return ErrorResult(message: response.data['message']);
     }
-  } on DioException catch (e) {
-    print('Signup user exception  ${e.message.toString()}');
-    return ExceptionResult(
-        message: 'Status code 400 , البريد الإلكتروني أو الهاتف موجود بالفعل');
+  } on DioException {
+    return ExceptionResult(message: 'Error, try again later');
   }
 }

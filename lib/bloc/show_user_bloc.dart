@@ -25,7 +25,7 @@ class ShowUserBloc extends Bloc<ShowUserEvent, ShowUserState> {
 Future<ResultUser> getUserInfo(TokenModel token) async {
   try {
     Dio dio = Dio();
-    Response response = await dio.get('$baseurl/users/$token');
+    Response response = await dio.get('$baseurl/users/${token.id}');
     if (response.statusCode == 200) {
       SuccessShowUserModel user = SuccessShowUserModel(
         user: UserModel.fromMap(response.data),
