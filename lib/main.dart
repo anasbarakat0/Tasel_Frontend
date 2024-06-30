@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
-import 'package:tasel_frontend/provider_home_page.dart';
+import 'package:tasel_frontend/provider/provider_home_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
-import 'package:tasel_frontend/user_home_page.dart';
+import 'package:tasel_frontend/user/user_home_page.dart';
 
 void main() {
   runApp(const MyApp());

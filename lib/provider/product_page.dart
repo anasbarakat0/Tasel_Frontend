@@ -7,8 +7,8 @@ import 'package:tasel_frontend/Model/product_model.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/product_list.dart';
 import 'package:tasel_frontend/bloc/show_provider_products_bloc.dart';
-import 'package:tasel_frontend/edit_product.dart';
-import 'package:tasel_frontend/product_deleting_message.dart';
+import 'package:tasel_frontend/provider/edit_product.dart';
+import 'package:tasel_frontend/provider/product_deleting_message.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProductPage extends StatefulWidget {

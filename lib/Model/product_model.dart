@@ -1,10 +1,3 @@
-import 'dart:convert';
-
-ProductModel productModelFromMap(String str) =>
-    ProductModel.fromMap(json.decode(str));
-
-String productModelToMap(ProductModel data) => json.encode(data.toMap());
-
 class ProductModel {
   String id;
   String picture;
@@ -12,6 +5,7 @@ class ProductModel {
   double price;
   String description;
   String storeId;
+
   ProductModel({
     required this.id,
     required this.picture,
@@ -21,21 +15,27 @@ class ProductModel {
     required this.storeId,
   });
 
-  factory ProductModel.fromMap(Map<String, dynamic> json) => ProductModel(
-        id: json["_id"],
-        picture: json["picture"],
-        name: json["name"],
-        price: json["price"],
-        description: json["description"],
-        storeId: json["storeId"],
-      );
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'picture': picture,
+      'name': name,
+      'price': price,
+      'description': description,
+      'storeId': storeId,
+    };
+  }
 
-  Map<String, dynamic> toMap() => {
-        "_id": id,
-        "picture": picture,
-        "name": name,
-        "price": price,
-        "description": description,
-        "storeId": storeId,
-      };
+  factory ProductModel.fromMap(Map<String, dynamic> map) {
+    return ProductModel(
+      id: map['id'] ?? '',
+      picture: map['picture'] ?? '',
+      name: map['name'] ?? '',
+      price: (map['price'] is int)
+          ? (map['price'] as int).toDouble()
+          : map['price'] ?? 0.0,
+      description: map['description'] ?? '',
+      storeId: map['storeId'] ?? '',
+    );
+  }
 }

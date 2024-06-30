@@ -10,8 +10,8 @@ import 'package:tasel_frontend/Model/signup_provider_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/signup_provider_bloc.dart';
-import '../../theme/colors.dart';
-import 'login.dart';
+import '../../../theme/colors.dart';
+import '../login.dart';
 import 'package:validators/validators.dart';
 
 class SignUpProvider extends StatefulWidget {
@@ -31,7 +31,6 @@ class _SignUpProviderState extends State<SignUpProvider> {
   final TextEditingController websiteTitleController = TextEditingController();
   final TextEditingController instagramUrlController = TextEditingController();
   final TextEditingController facebookUrlController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController conPasswordController = TextEditingController();
   final TextEditingController areaName = TextEditingController();
@@ -39,15 +38,15 @@ class _SignUpProviderState extends State<SignUpProvider> {
   final TextEditingController buildingNameorNumber = TextEditingController();
   final TextEditingController floor = TextEditingController();
 
-  final ImagePicker _picker = ImagePicker();
-  File? _image;
+  File? image;
 
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
+  final imagepicker = ImagePicker();
 
-    if (pickedFile != null) {
+  uploadImage() async {
+    var pickedImage = await imagepicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        image = File(pickedImage.path);
       });
     }
   }
@@ -70,36 +69,6 @@ class _SignUpProviderState extends State<SignUpProvider> {
   }
 
   late SignupProviderModel provider;
-
-  void _showImagePickerOptions() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext bc) {
-        return SafeArea(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
-                onTap: () {
-                  _pickImage(ImageSource.gallery);
-                  Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Camera'),
-                onTap: () {
-                  _pickImage(ImageSource.camera);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,16 +129,16 @@ class _SignUpProviderState extends State<SignUpProvider> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                _showImagePickerOptions();
+                                uploadImage();
                               },
                               child: CircleAvatar(
                                 radius: 80,
                                 backgroundColor: Colors.grey[300],
-                                backgroundImage: _image != null
-                                    ? FileImage(_image!) as ImageProvider
+                                foregroundImage: image != null
+                                    ? FileImage(image!)
                                     : const AssetImage(
-                                            'assets/blank-profile.png')
-                                        as ImageProvider,
+                                        'assets/blank-profile.png',
+                                      ),
                               ),
                             ),
 
@@ -474,13 +443,15 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                 ),
                                 child: TextField(
                                   onChanged: (value) {
-                                    setState(() {
-                                      if (value == passwordController.text) {
-                                        match = true;
-                                      } else {
-                                        match = false;
-                                      }
-                                    });
+                                    setState(
+                                      () {
+                                        if (value == passwordController.text) {
+                                          match = true;
+                                        } else {
+                                          match = false;
+                                        }
+                                      },
+                                    );
                                   },
                                   controller: conPasswordController,
                                   decoration: InputDecoration(
@@ -615,15 +586,15 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         return;
                                       }
 
-                                      if (_image == null) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "You have to choose a profile image")),
-                                        );
-                                        return;
-                                      }
+                                      // if (_image == null) {
+                                      //   ScaffoldMessenger.of(context)
+                                      //       .showSnackBar(
+                                      //     const SnackBar(
+                                      //         content: Text(
+                                      //             "You have to choose a profile image")),
+                                      //   );
+                                      //   return;
+                                      // }
 
                                       if (passwordController.text ==
                                           conPasswordController.text) {
@@ -658,7 +629,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                 websiteUrl:
                                                     websiteUrlController.text,
                                                 websiteTitle: '',
-                                                image: _image!,
+                                                image: image!,
                                                 areaName: areaName.text,
                                                 streetName: streetName.text,
                                                 buildingNameorNumber:
@@ -743,7 +714,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                         websiteUrlController
                                                             .text,
                                                     websiteTitle: '',
-                                                    image: _image!,
+                                                    image: image!,
                                                     areaName: areaName.text,
                                                     streetName: streetName.text,
                                                     buildingNameorNumber:
@@ -803,7 +774,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                         websiteUrlController
                                                             .text,
                                                     websiteTitle: '',
-                                                    image: _image!,
+                                                    image: image!,
                                                     areaName: areaName.text,
                                                     streetName: streetName.text,
                                                     buildingNameorNumber:

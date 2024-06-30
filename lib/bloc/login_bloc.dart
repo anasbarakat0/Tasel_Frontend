@@ -28,29 +28,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 }
 
-// Future<ResultModel> login(LoginModel login) async {
-//   try {
-//     http.Response response = await http.post(
-//         Uri(host: baseurl, port: 4003, path: '/login'),
-//         body: login.toJson(),
-//         headers: {
-//           "content-type": "application/json",
-//           "Accept": "application/json"
-//         });
-//     if (response.statusCode == 200) {
-//       return TokenModel(token: jsonDecode(response.body)['token']);
-//     } else {
-//       return ErrorResult(message: response.headers.toString());
-//     }
-//   } on http.ClientException catch (e) {
-//     print("---------");
-//     print(e.message.toString());
-//     return ExceptionResult(message: e.message.toString());
-//   }
-// }
-
-// http://localhost:4003/login
-
 Future<ResultModel> loginUser(LoginModel login) async {
   try {
     Dio dio = Dio();

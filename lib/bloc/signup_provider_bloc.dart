@@ -38,11 +38,14 @@ Future<SignupResultModel> signupProviderMethod(
     );
 
     if (response.statusCode == 200) {
+      print("1");
       return SignedUp(message: response.data['message']);
     } else {
+      print("2");
       return ErrorResult(message: response.data['message']);
     }
   } on DioException catch (e) {
+    print("3");
     return ExceptionResult(message: e.message.toString());
   }
 }

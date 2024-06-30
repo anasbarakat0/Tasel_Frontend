@@ -6,8 +6,8 @@ import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/signup_user_bloc.dart';
 import 'package:validators/validators.dart';
-import '../../theme/colors.dart';
-import 'login.dart';
+import '../../../theme/colors.dart';
+import '../login.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

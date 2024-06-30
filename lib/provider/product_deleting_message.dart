@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasel_frontend/Model/product_model.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
-import 'package:tasel_frontend/product_page.dart';
+import 'package:tasel_frontend/provider/product_page.dart';
 import 'package:tasel_frontend/service/delete_product.dart';
 
 void showMyDialog(

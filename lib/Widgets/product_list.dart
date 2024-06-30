@@ -67,7 +67,7 @@ class MyProducts extends StatelessWidget {
             ),
           ),
           trailing: Text(
-            " ${product.price.toStringAsFixed(2)} S.P",
+            " ${product.price} S.P",
             style: TextStyle(
                 color: AppColors.yellow,
                 fontFamily: 'Cairo',

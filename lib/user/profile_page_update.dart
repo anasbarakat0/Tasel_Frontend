@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:tasel_frontend/profile_page.dart';
+import 'package:tasel_frontend/user/profile_page.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Model/update_user_profile.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';

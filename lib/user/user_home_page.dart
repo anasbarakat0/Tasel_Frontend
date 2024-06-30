@@ -10,7 +10,7 @@ import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
 import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/map_page.dart';
-import 'package:tasel_frontend/profile_page.dart';
+import 'package:tasel_frontend/user/profile_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 // ignore: must_be_immutable

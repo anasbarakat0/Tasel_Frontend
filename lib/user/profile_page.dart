@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/bloc/profile_info_bloc.dart';
-import 'package:tasel_frontend/profile_page_update.dart';
+import 'package:tasel_frontend/user/profile_page_update.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProfilePage extends StatefulWidget {

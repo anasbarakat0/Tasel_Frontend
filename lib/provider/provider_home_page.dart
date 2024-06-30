@@ -9,8 +9,9 @@ import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
 import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/map_page.dart';
-import 'package:tasel_frontend/product_page.dart';
-import 'package:tasel_frontend/provider_update_info.dart';
+import 'package:tasel_frontend/provider/add_product_page.dart';
+import 'package:tasel_frontend/provider/product_page.dart';
+import 'package:tasel_frontend/provider/provider_update_info.dart';
 import 'package:tasel_frontend/service/delete_provider.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
@@ -115,7 +116,7 @@ class ProviderHomePage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                ProviderUpdateInfoPage(tokenId: tokenId)),
+                                AddProductPage(tokenId: tokenId)),
                       );
                     }),
                 LeadingButtons(
