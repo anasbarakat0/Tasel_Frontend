@@ -96,7 +96,6 @@ class SignupProviderModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'image': image,
       'name': name,
       'latitude': latitude,
       'longitude': longitude,

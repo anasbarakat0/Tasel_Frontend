@@ -586,15 +586,15 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         return;
                                       }
 
-                                      // if (_image == null) {
-                                      //   ScaffoldMessenger.of(context)
-                                      //       .showSnackBar(
-                                      //     const SnackBar(
-                                      //         content: Text(
-                                      //             "You have to choose a profile image")),
-                                      //   );
-                                      //   return;
-                                      // }
+                                      if (image == null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  "You have to choose a profile image")),
+                                        );
+                                        return;
+                                      }
 
                                       if (passwordController.text ==
                                           conPasswordController.text) {
