@@ -132,14 +132,9 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                 uploadImage();
                               },
                               child: CircleAvatar(
-                                radius: 80,
-                                backgroundColor: Colors.grey[300],
-                                foregroundImage: image != null
-                                    ? FileImage(image!)
-                                    : const AssetImage(
-                                        'assets/blank-profile.png',
-                                      ),
-                              ),
+                                  radius: 80,
+                                  backgroundColor: Colors.grey[300],
+                                  foregroundImage: FileImage(image)),
                             ),
 
                             const SizedBox(

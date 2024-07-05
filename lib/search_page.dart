@@ -7,6 +7,7 @@ import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/filter_page.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
+// ignore: must_be_immutable
 class SearchPage extends StatelessWidget {
   SearchPage({super.key});
 

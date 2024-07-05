@@ -1,13 +1,6 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
-import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
-import 'package:tasel_frontend/user/curved_navigation_bar.dart';
-import 'package:tasel_frontend/google_map_page.dart';
-import 'package:tasel_frontend/home_page.dart';
-import 'package:tasel_frontend/login.dart';
-import 'package:tasel_frontend/map_page.dart';
-import 'package:tasel_frontend/search_page.dart';
 import 'package:tasel_frontend/spincircle_bottom_bar.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 

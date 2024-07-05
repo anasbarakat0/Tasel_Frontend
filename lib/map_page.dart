@@ -296,7 +296,6 @@ class MapPageState extends State<MapPage> {
                                 ),
                               );
                             }
-                            setState(() {});
                             return Expanded(
                               child: ListView.builder(
                                 itemCount: state.providers.length,

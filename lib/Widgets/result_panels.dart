@@ -16,26 +16,20 @@ class ResultPanel extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(15, 7, 15, 0),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.grey,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 3,
-                blurRadius: 10,
-                offset: const Offset(0, 3)),
-          ],
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [Shadow.myShadow],
         ),
         child: ListTile(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           contentPadding: const EdgeInsets.all(8),
           tileColor: AppColors.grey,
           style: ListTileStyle.list,
           title: Text(
             name,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppColors.grey,
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
@@ -101,26 +95,20 @@ class ResultLocationPanel extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(15, 7, 15, 0),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.grey,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 3,
-                blurRadius: 10,
-                offset: const Offset(0, 3)),
-          ],
+          boxShadow: [Shadow.myShadow],
         ),
         child: ListTile(
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
           contentPadding: const EdgeInsets.all(8),
           tileColor: AppColors.grey,
           style: ListTileStyle.list,
           title: Text(
             name,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: AppColors.grey,
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
@@ -147,7 +135,6 @@ class ResultLocationPanel extends StatelessWidget {
               ),
             ),
           ),
-          isThreeLine: false,
           onTap: onTap,
         ),
       ),

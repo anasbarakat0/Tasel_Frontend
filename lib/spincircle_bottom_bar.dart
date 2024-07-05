@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:spincircle_bottom_bar/modals.dart';
 import 'package:spincircle_bottom_bar/spincircle_bottom_bar.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';

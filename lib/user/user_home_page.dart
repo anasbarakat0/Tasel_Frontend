@@ -8,7 +8,6 @@ import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/Widgets/provider_card.dart';
 import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
 import 'package:tasel_frontend/contact_page.dart';
-import 'package:tasel_frontend/google_map_page.dart';
 import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/map_page.dart';
 import 'package:tasel_frontend/user/profile_page.dart';

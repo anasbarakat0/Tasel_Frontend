@@ -7,6 +7,7 @@ import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/bloc/provider_info_bloc.dart';
 import 'package:tasel_frontend/login.dart';
+import 'package:tasel_frontend/main.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProviderProfilePage extends StatefulWidget {
@@ -47,7 +48,24 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
                             child: Column(
                               children: [
                                 const SizedBox(
-                                  height: 25,
+                                  height: 20,
+                                ),
+                                SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.network(
+                                    '$baseurl/${state.provider.profileImage}',
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'tasel_icon.png',
+                                        fit: BoxFit.contain,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
                                 ),
                                 Text(
                                   state.provider.name,
