@@ -53,6 +53,8 @@ class MapPageState extends State<MapPage> {
   Set<String> category = {};
   int _selectedIndex = -1;
   String searchText = '';
+  Set<Polyline> polylines = {};
+  PolylinePoints polylinePoints = PolylinePoints();
 
   Set<Marker> getMarkers() {
     return {...providersMarkers, ...userMarkers};
@@ -66,33 +68,62 @@ class MapPageState extends State<MapPage> {
         builder: (context) {
           return GradientScaffold(
             body: Stack(
+              fit: StackFit.loose,
+              clipBehavior: Clip.none,
               children: [
-                GoogleMap(
-                  onTap: (argument) {
-                    context.read<ShowProvidersBloc>().add(ShowProviders());
-                    setState(() {
-                      userMarkers.clear();
-                      _selectedIndex = -1;
-                    });
-                  },
-                  onLongPress: (LatLng point) {
-                    providersMarkers.add(Marker(
-                        markerId: const MarkerId('Point'),
-                        position: point,
-                        infoWindow: InfoWindow(
-                            title: '${point.latitude} , ${point.longitude}')));
-                  },
-                  fortyFiveDegreeImageryEnabled: true,
-                  style: mapBasicStyle,
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                  mapType: MapType.normal,
-                  initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) async {
-                    this.controller.complete(controller);
-                  },
-                  markers: getMarkers(),
-                  polylines: polylines,
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 150,
+                    ),
+                    Expanded(
+                      child: GoogleMap(
+                        onTap: (argument) {
+                          context
+                              .read<ShowProvidersBloc>()
+                              .add(ShowProviders());
+                          setState(() {
+                            userMarkers.clear();
+                            _selectedIndex = -1;
+                            polylines.clear();
+                          });
+                        },
+                        onLongPress: (LatLng point) {
+                          providersMarkers.add(
+                            Marker(
+                              markerId: const MarkerId('Point'),
+                              position: point,
+                              infoWindow: InfoWindow(
+                                title: '${point.latitude} , ${point.longitude}',
+                                onTap: () async {
+                                  Position userPosition =
+                                      await _determinePosition();
+                                  _addUserMarker(userPosition);
+                                  _getDirections(
+                                    userPosition.latitude,
+                                    userPosition.longitude,
+                                    point.latitude,
+                                    point.longitude,
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                        fortyFiveDegreeImageryEnabled: true,
+                        style: mapBasicStyle,
+                        myLocationButtonEnabled: true,
+                        myLocationEnabled: true,
+                        mapType: MapType.normal,
+                        initialCameraPosition: _kGooglePlex,
+                        onMapCreated: (GoogleMapController controller) async {
+                          this.controller.complete(controller);
+                        },
+                        markers: getMarkers(),
+                        polylines: polylines,
+                      ),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -387,10 +418,45 @@ class MapPageState extends State<MapPage> {
                                         ),
                                       ),
                                       onPressed: () {
+                                        setState(() {
+                                          _selectedIndex = index;
+                                        });
+
                                         context.read<ShowProvidersBloc>().add(
                                             FilterBy(index,
                                                 category:
                                                     category.elementAt(index)));
+                                        setState(() {});
+                                        for (var e in state.providers) {
+                                          if (e.category ==
+                                              category.elementAt(index)) {
+                                            providersMarkers.add(
+                                              Marker(
+                                                markerId:
+                                                    MarkerId(e.id.toString()),
+                                                position: LatLng(
+                                                    e.latitude, e.longitude),
+                                                icon: customMarkerIcon!,
+                                                infoWindow: InfoWindow(
+                                                  title: e.name,
+                                                  snippet: e.category,
+                                                  onTap: () async {
+                                                    Position userPosition =
+                                                        await _determinePosition();
+                                                    _addUserMarker(
+                                                        userPosition);
+                                                    _getDirections(
+                                                      userPosition.latitude,
+                                                      userPosition.longitude,
+                                                      e.latitude,
+                                                      e.longitude,
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        }
                                       },
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -460,9 +526,6 @@ class MapPageState extends State<MapPage> {
     );
     setState(() {});
   }
-
-  Set<Polyline> polylines = {};
-  PolylinePoints polylinePoints = PolylinePoints();
 
   void _getDirections(double startLatitude, double startLongitude,
       double destinationLatitude, double destinationLongitude) async {

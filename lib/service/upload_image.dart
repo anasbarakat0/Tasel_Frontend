@@ -1,25 +1,34 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart' as dio;
-import 'package:tasel_frontend/main.dart';
-import 'package:tasel_frontend/service/file_handler.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 
-Future<String> uploadImage(File image) async {
-  try {
-    dio.Dio dioClient = dio.Dio();
-    dio.MultipartFile imageFile = await getMultipartFile(image);
-    dio.FormData formData = dio.FormData.fromMap({
-      'image': imageFile,
-    });
-    dio.Response response =
-        await dioClient.post('$baseurl/upload', data: formData);
+Future<String> uploadeImage() async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles();
+  late File file;
+  if (result != null) {
+    file = File(result.files.single.path!);
+
+    var data = FormData.fromMap({'image': file});
+
+    var dio = Dio();
+    Response response = await dio.request(
+      'https://tasel-backend-g6gsdfug6a-uc.a.run.app/upload',
+      options: Options(
+        method: 'POST',
+      ),
+      data: data,
+    );
 
     if (response.statusCode == 200) {
       return response.data['imageUrl'];
     } else {
-      return 'Error';
+      print('error upload image');
+      return '';
     }
-  } on dio.DioException catch (e) {
-    return e.message.toString();
+  } else {
+    print('no image selected');
+    return '';
   }
 }

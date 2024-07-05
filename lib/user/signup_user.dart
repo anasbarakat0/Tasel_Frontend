@@ -61,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           'Do you want to join us as a User?',
                           style: TextStyle(
                             fontFamily: 'Cairo',
-                            fontSize: 30,
+                            fontSize: 26,
                             fontWeight: FontWeight.w700,
                           ),
                         ),

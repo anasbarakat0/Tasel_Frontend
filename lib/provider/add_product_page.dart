@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/service/add_product.dart';
-import 'package:tasel_frontend/theme/colors.dart';
 
 // ignore: must_be_immutable
 class AddProductPage extends StatefulWidget {

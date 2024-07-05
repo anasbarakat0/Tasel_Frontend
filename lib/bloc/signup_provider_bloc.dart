@@ -15,7 +15,7 @@ class SignupProviderBloc
     extends Bloc<SignupProviderEvent, SignupProviderState> {
   SignupProviderBloc() : super(SignupProviderInitial()) {
     on<SignedupProvider>((event, emit) async {
-      var data = await signupProviderMethod(event.provider, event.image);
+      var data = await signupProviderMethod(event.provider);
       if (data is SignedUp) {
         emit(Success());
       } else if (data is ErrorResult) {
@@ -30,15 +30,13 @@ class SignupProviderBloc
 }
 
 Future<SignupResultModel> signupProviderMethod(
-    SignupProviderModel provider, File image) async {
+    SignupProviderModel provider) async {
   try {
     print('Starting signupProviderMethod');
     print('Starting Upload the image');
 
-    String imageUrl = await uploadImage(image);
     Map<String, dynamic> providerMap = provider.toMap();
-    // providerMap.remove('image');
-    providerMap['image'] = imageUrl;
+    providerMap['image'] = await uploadeImage();
 
     Dio dio = Dio();
     Response response =

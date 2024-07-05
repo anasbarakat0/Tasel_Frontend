@@ -237,6 +237,7 @@ Widget BuildUser() {
             ),
           ),
         );
+        context.read<LoginBloc>().add(ResetInit());
       }
     },
     builder: (context, state) {
@@ -328,10 +329,28 @@ Widget BuildProvider() {
           MaterialPageRoute(
               builder: (context) => HomePageProvider(tokenId: state.tokenId)),
         );
+        context.read<LoginProviderBloc>().add(ResetProviderInit());
       }
     },
     builder: (context, state) {
       switch (state) {
+        case LoginProviderInitial():
+          return Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Column(
+              children: [
+                Button(
+                    text: 'Log In Provider',
+                    onPressed: () {
+                      context.read<LoginProviderBloc>().add(SignedinProvider(
+                          user: LoginModel(
+                              email: phoneOrEmail.text,
+                              password: password.text)));
+                    }),
+              ],
+            ),
+          );
+
         case SuccessLoginProvider():
           return Container(
             width: 300,
@@ -349,25 +368,6 @@ Widget BuildProvider() {
                   color: Colors.white,
                 ),
               ),
-            ),
-          );
-        case LoadingLoginProvider():
-          return const CircularProgressIndicator();
-
-        case LoginProviderInitial():
-          return Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: Column(
-              children: [
-                Button(
-                    text: 'Log In Provider',
-                    onPressed: () {
-                      context.read<LoginProviderBloc>().add(SignedinProvider(
-                          user: LoginModel(
-                              email: phoneOrEmail.text,
-                              password: password.text)));
-                    }),
-              ],
             ),
           );
 
@@ -394,6 +394,7 @@ Widget BuildProvider() {
               ],
             ),
           );
+
         case ExceptionLoginProvider():
           return Padding(
             padding: const EdgeInsets.only(top: 30),
@@ -411,6 +412,7 @@ Widget BuildProvider() {
               ],
             ),
           );
+
         default:
           return const LinearProgressIndicator();
       }

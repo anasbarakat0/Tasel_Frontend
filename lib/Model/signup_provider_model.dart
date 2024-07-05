@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 class SignupProviderModel {
-  File image;
+  String image;
   String name;
   double latitude;
   double longitude;
@@ -49,7 +49,7 @@ class SignupProviderModel {
   });
 
   SignupProviderModel copyWith({
-    File? image,
+    String? image,
     String? name,
     double? latitude,
     double? longitude,
@@ -120,7 +120,7 @@ class SignupProviderModel {
 
   factory SignupProviderModel.fromMap(Map<String, dynamic> map) {
     return SignupProviderModel(
-      image: map['image'] as File,
+      image: map['image'] as String,
       name: map['name'] as String,
       latitude: map['latitude'] as double,
       longitude: map['longitude'] as double,

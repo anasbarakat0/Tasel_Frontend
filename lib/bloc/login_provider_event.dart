@@ -9,3 +9,5 @@ class SignedinProvider extends LoginProviderEvent {
     required this.user,
   });
 }
+
+class ResetProviderInit extends LoginProviderEvent {}

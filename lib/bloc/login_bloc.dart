@@ -25,6 +25,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoadingLogin());
       }
     });
+
+    on<ResetInit>((event, emit) {
+      emit(LoginInitial());
+    });
   }
 }
 

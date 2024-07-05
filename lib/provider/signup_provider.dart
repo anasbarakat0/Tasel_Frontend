@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:ionicons/ionicons.dart';
@@ -10,6 +12,8 @@ import 'package:tasel_frontend/Model/signup_provider_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
 import 'package:tasel_frontend/bloc/signup_provider_bloc.dart';
+import 'package:tasel_frontend/service/upload_image.dart';
+
 import '../../../theme/colors.dart';
 import '../login.dart';
 import 'package:validators/validators.dart';
@@ -37,19 +41,6 @@ class _SignUpProviderState extends State<SignUpProvider> {
   final TextEditingController streetName = TextEditingController();
   final TextEditingController buildingNameorNumber = TextEditingController();
   final TextEditingController floor = TextEditingController();
-
-  late File image;
-
-  final imagepicker = ImagePicker();
-
-  uploadImage() async {
-    var pickedImage = await imagepicker.pickImage(source: ImageSource.gallery);
-    if (pickedImage != null) {
-      setState(() {
-        image = File(pickedImage.path);
-      });
-    }
-  }
 
   String mobile = '';
   bool isEmailCorrect = false;
@@ -129,12 +120,12 @@ class _SignUpProviderState extends State<SignUpProvider> {
                           children: [
                             GestureDetector(
                               onTap: () {
-                                uploadImage();
+                                uploadeImage();
                               },
                               child: CircleAvatar(
-                                  radius: 80,
-                                  backgroundColor: Colors.grey[300],
-                                  foregroundImage: FileImage(image)),
+                                radius: 80,
+                                backgroundColor: Colors.grey[300],
+                              ),
                             ),
 
                             const SizedBox(
@@ -414,9 +405,6 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                   obscureText: !isPasswordVisible,
                                   style: AppFont.textFieldStyle,
                                   cursorColor: AppColors.yellow,
-                                  onSubmitted: (_) {
-                                    //todo _signInButtonPressed();
-                                  },
                                 ),
                               ),
                             ),
@@ -504,9 +492,6 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                   obscureText: !isCPasswordVisible,
                                   style: AppFont.textFieldStyle,
                                   cursorColor: AppColors.yellow,
-                                  onSubmitted: (_) {
-                                    //todo _signInButtonPressed();
-                                  },
                                 ),
                               ),
                             ),
@@ -581,58 +566,119 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         return;
                                       }
 
-                                      if (image == null) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "You have to choose a profile image")),
-                                        );
-                                        return;
-                                      }
-
                                       if (passwordController.text ==
                                           conPasswordController.text) {
-                                        context
-                                            .read<SignupProviderBloc>()
-                                            .add(SignedupProvider(
-                                              provider: SignupProviderModel(
-                                                name: providerController.text,
-                                                latitude: 0.0,
-                                                longitude: 0.0,
-                                                phoneNumbers: [
-                                                  int.parse(
-                                                      phoneNumController.text)
-                                                ],
-                                                landlines: [
-                                                  int.parse(
-                                                      landlineNumberController
-                                                          .text)
-                                                ],
-                                                email: emailController.text,
-                                                whatsappNumber:
-                                                    'whatsappNumber',
-                                                instagramAccount:
-                                                    instagramUrlController.text,
-                                                instagramUsername: '',
-                                                facebookPage:
-                                                    facebookUrlController.text,
-                                                facebookUsername: '',
-                                                category: 'category',
-                                                password:
-                                                    passwordController.text,
-                                                websiteUrl:
-                                                    websiteUrlController.text,
-                                                websiteTitle: '',
-                                                image: image!,
-                                                areaName: areaName.text,
-                                                streetName: streetName.text,
-                                                buildingNameorNumber:
-                                                    buildingNameorNumber.text,
-                                                floor: floor.text,
-                                              ),
-                                              image: image,
-                                            ));
+                                        FilePickerResult? result =
+                                            await FilePicker.platform
+                                                .pickFiles();
+                                        late File file;
+                                        if (result != null) {
+                                          file = File.fromRawPath(
+                                              result.files.single.bytes!);
+
+                                          var data =
+                                              FormData.fromMap({'image': file});
+
+                                          var dio = Dio();
+                                          var response = await dio.request(
+                                            'https://tasel-backend-g6gsdfug6a-uc.a.run.app/upload',
+                                            options: Options(
+                                                method: 'POST',
+                                                contentType:
+                                                    'multipart/form-data; '),
+                                            data: data,
+                                          );
+                                          print(response.data);
+
+                                          if (response.statusCode == 200) {
+                                            print("json.encode(response.data)");
+                                          } else {
+                                            print(response.statusMessage);
+                                          }
+
+                                          var headers = {
+                                            'Content-Type': 'application/json'
+                                          };
+                                          var data1 = json.encode({
+                                            "profileImage":
+                                                response.data['imgaeUrl'],
+                                            "name": "Alex",
+                                            "latitude": 33.5384884,
+                                            "longitude": 36.1983861,
+                                            "phoneNumbers": [941445726],
+                                            "landlines": [3316534],
+                                            "areaName": "ضاحية قدسيا",
+                                            "streetName": "السوق الازرق",
+                                            "buildingNameorNumber": "سوق ",
+                                            "floor": "0",
+                                            "email": "abedalkader@gmail.com",
+                                            "whatsappNumber": 941445726,
+                                            "instagramAccount":
+                                                "حساب Instagram",
+                                            "instagramUsername":
+                                                "اسم مستخدم Instagram",
+                                            "facebookPage": "صفحة Facebook",
+                                            "facebookUsername":
+                                                "اسم مستخدم Facebook",
+                                            "WebsiteUrl": "www.alex.com",
+                                            "WebsiteTitle": "عنوان الموقع",
+                                            "category": "Clothes",
+                                            "password": "123456"
+                                          });
+                                          var response1 = await dio.request(
+                                            'https://tasel-backend-g6gsdfug6a-uc.a.run.app/signup/Store',
+                                            options: Options(
+                                              method: 'POST',
+                                              headers: headers,
+                                            ),
+                                            data: data1,
+                                          );
+
+                                          if (response.statusCode == 200) {
+                                            print(response.data);
+                                          } else {
+                                            print(response.statusMessage);
+                                          }
+                                        }
+                                        // context
+                                        //     .read<SignupProviderBloc>()
+                                        //     .add(SignedupProvider(
+                                        //       provider: SignupProviderModel(
+                                        //         name: providerController.text,
+                                        //         latitude: 0.0,
+                                        //         longitude: 0.0,
+                                        //         phoneNumbers: [
+                                        //           int.parse(
+                                        //               phoneNumController.text)
+                                        //         ],
+                                        //         landlines: [
+                                        //           int.parse(
+                                        //               landlineNumberController
+                                        //                   .text)
+                                        //         ],
+                                        //         email: emailController.text,
+                                        //         whatsappNumber:
+                                        //             'whatsappNumber',
+                                        //         instagramAccount:
+                                        //             instagramUrlController.text,
+                                        //         instagramUsername: '',
+                                        //         facebookPage:
+                                        //             facebookUrlController.text,
+                                        //         facebookUsername: '',
+                                        //         category: 'category',
+                                        //         password:
+                                        //             passwordController.text,
+                                        //         websiteUrl:
+                                        //             websiteUrlController.text,
+                                        //         websiteTitle: '',
+                                        //         image: await uploadeImage(),
+                                        //         areaName: areaName.text,
+                                        //         streetName: streetName.text,
+                                        //         buildingNameorNumber:
+                                        //             buildingNameorNumber.text,
+                                        //         floor: floor.text,
+                                        //       ),
+                                        //     ));
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -672,7 +718,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     Text(state.message),
                                     Button(
                                         text: 'Sign Up',
-                                        onPressed: () {
+                                        onPressed: () async {
                                           context
                                               .read<SignupProviderBloc>()
                                               .add(
@@ -710,7 +756,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                         websiteUrlController
                                                             .text,
                                                     websiteTitle: '',
-                                                    image: image!,
+                                                    image: await uploadeImage(),
                                                     areaName: areaName.text,
                                                     streetName: streetName.text,
                                                     buildingNameorNumber:
@@ -718,7 +764,6 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                             .text,
                                                     floor: floor.text,
                                                   ),
-                                                  image: image,
                                                 ),
                                               );
                                         }),
@@ -733,7 +778,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     Text(state.message),
                                     Button(
                                         text: 'Sign Up',
-                                        onPressed: () {
+                                        onPressed: () async {
                                           context
                                               .read<SignupProviderBloc>()
                                               .add(
@@ -771,7 +816,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                         websiteUrlController
                                                             .text,
                                                     websiteTitle: '',
-                                                    image: image!,
+                                                    image: await uploadeImage(),
                                                     areaName: areaName.text,
                                                     streetName: streetName.text,
                                                     buildingNameorNumber:
@@ -779,7 +824,6 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                             .text,
                                                     floor: floor.text,
                                                   ),
-                                                  image: image,
                                                 ),
                                               );
                                         }),

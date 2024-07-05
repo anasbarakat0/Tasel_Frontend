@@ -25,6 +25,10 @@ class LoginProviderBloc extends Bloc<LoginProviderEvent, LoginProviderState> {
         emit(LoadingLoginProvider());
       }
     });
+
+    on<ResetProviderInit>((event, emit) {
+      emit(LoginProviderInitial());
+    });
   }
 }
 

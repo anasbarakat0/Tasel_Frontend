@@ -1,7 +1,6 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:tasel_frontend/Model/response_login_model.dart';
-import 'package:tasel_frontend/spincircle_bottom_bar.dart';
+import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 void main() {
@@ -66,20 +65,20 @@ class SplashScreen extends StatelessWidget {
           fontWeight: FontWeight.w900,
         ),
       ),
-      navigator: HomePageProvider(
-        tokenId: TokenModel(
-          token:
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbkBnbWFpbC5jb20iLCJpYXQiOjE3MjAxMzcxMzl9.KGZHmD7ZE5oORUQNQBcvi-RyCXNyT1KH8zQtyDXC5JQ',
-          id: '66851f574d49b75294fe793e',
-        ),
-      ),
+      // navigator: HomePageProvider(
+      //   tokenId: TokenModel(
+      //     token:
+      //         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbkBnbWFpbC5jb20iLCJpYXQiOjE3MjAxMzcxMzl9.KGZHmD7ZE5oORUQNQBcvi-RyCXNyT1KH8zQtyDXC5JQ',
+      //     id: '66851f574d49b75294fe793e',
+      //   ),
+      // ),
       // navigator: HomePageUser(
       //   tokenId: TokenModel(
       //       id: '66851f574d49b75294fe793e',
       //       token:
       //           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbkBnbWFpbC5jb20iLCJpYXQiOjE3MjAwMDAzNTV9.Wy7SjtrtM6q0VyTdkea05676qoX2fnbKDf7UdHymfdk'),
       // ),
-      // navigator: SearchPage(),
+      navigator: LoginPage(),
       durationInSeconds: 1,
     );
   }

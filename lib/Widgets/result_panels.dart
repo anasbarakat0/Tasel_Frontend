@@ -26,12 +26,16 @@ class ResultPanel extends StatelessWidget {
           contentPadding: const EdgeInsets.all(8),
           tileColor: AppColors.grey,
           style: ListTileStyle.list,
-          title: Text(
-            name,
-            style: TextStyle(
-              color: AppColors.grey,
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
+          title: SizedBox(
+            height: 27,
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: AppColors.grey,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
             ),
           ),
           leading: Expanded(

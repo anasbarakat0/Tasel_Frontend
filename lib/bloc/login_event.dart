@@ -10,3 +10,5 @@ class Signin extends LoginEvent {
     required this.user,
   });
 }
+
+class ResetInit extends LoginEvent {}
