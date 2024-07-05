@@ -7,9 +7,9 @@ abstract class AppColors {
 
   static Color darkYellow = const Color.fromARGB(255, 254, 188, 12);
 
-  static Color grey = const Color.fromARGB(255, 61, 61, 61);
+  static Color grey = const Color.fromARGB(255, 77, 77, 77);
 
-  static Color lightGrey = const Color.fromARGB(255, 163, 163, 163);
+  static Color lightGrey = const Color.fromARGB(255, 209, 209, 209);
 }
 
 abstract class AppButtons {
@@ -25,11 +25,11 @@ abstract class AppButtons {
 }
 
 abstract class AppFont {
-  static TextStyle textFieldStyle = const TextStyle(
+  static TextStyle textFieldStyle = TextStyle(
     fontFamily: 'Cairo',
     fontWeight: FontWeight.w600,
     fontSize: 20,
-    color: Colors.white,
+    color: AppColors.grey,
   );
   static TextStyle cairoS = TextStyle(
     fontFamily: 'Cairo',
@@ -43,4 +43,12 @@ abstract class AppFont {
     fontSize: 25,
     color: AppColors.grey,
   );
+}
+
+abstract class Shadow {
+  static BoxShadow myShadow = BoxShadow(
+      color: Colors.grey.withOpacity(0.2),
+      spreadRadius: 3,
+      blurRadius: 10,
+      offset: const Offset(0, 3));
 }

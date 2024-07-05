@@ -38,7 +38,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
   final TextEditingController buildingNameorNumber = TextEditingController();
   final TextEditingController floor = TextEditingController();
 
-  File? image;
+  late File image;
 
   final imagepicker = ImagePicker();
 
@@ -636,6 +636,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                     buildingNameorNumber.text,
                                                 floor: floor.text,
                                               ),
+                                              image: image,
                                             ));
                                       } else {
                                         ScaffoldMessenger.of(context)
@@ -722,6 +723,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                             .text,
                                                     floor: floor.text,
                                                   ),
+                                                  image: image,
                                                 ),
                                               );
                                         }),
@@ -782,6 +784,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                             .text,
                                                     floor: floor.text,
                                                   ),
+                                                  image: image,
                                                 ),
                                               );
                                         }),

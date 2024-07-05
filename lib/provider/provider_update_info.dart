@@ -77,67 +77,6 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
             .read<ProviderInfoBloc>()
             .add(ShowProviderInfo(idProvider: widget.tokenId.id));
         return Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'Tasel',
-              style: TextStyle(fontWeight: FontWeight.w600),
-            ),
-            backgroundColor: AppColors.yellow,
-            foregroundColor: AppColors.grey,
-            centerTitle: true,
-          ),
-          drawerEnableOpenDragGesture: true,
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: () async {
-              if (disable) {
-                ProviderInfo provider = ProviderInfo(
-                    address: Address(
-                        areaName: areaName.text,
-                        streetName: streetName.text,
-                        buildingNameorNumber: buildingNameorNumber.text,
-                        floor: floor.text),
-                    profileImage: '',
-                    name: name.text,
-                    longitude: 0.0,
-                    latitude: 0.0,
-                    phoneNumbers: phoneNumber.text
-                        .split(',')
-                        .map((e) => int.parse(e.trim()))
-                        .toList(),
-                    landlines: landlines.text
-                        .split(',')
-                        .map((e) => int.parse(e.trim()))
-                        .toList(),
-                    whatsappNumber: int.parse(whatsappNumber.text),
-                    category: category.text,
-                    email: email.text,
-                    facebookPage: facebookPage.text,
-                    facebookUsername: '',
-                    instagramAccount: instagramAccount.text,
-                    instagramUsername: '',
-                    websiteUrl: websiteUrl.text);
-                var edit = await updateProvider(widget.tokenId, provider);
-
-                if (edit) {
-                  // ignore: use_build_context_synchronously
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text("Your data has been changed"),
-                        backgroundColor: Colors.green),
-                  );
-                } else {
-                  // ignore: use_build_context_synchronously
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Error, Try again later")),
-                  );
-                }
-              } else {}
-            },
-            icon: const Icon(Icons.save),
-            label: const Text('Save changes'),
-            backgroundColor: disable ? AppColors.yellow : AppColors.grey,
-            foregroundColor: disable ? AppColors.grey : AppColors.lightGrey,
-          ),
           body: BlocListener<ProviderInfoBloc, ProviderInfoState>(
             listener: (context, state) {
               if (state is SuccessShowProviderInfo) {
@@ -171,17 +110,94 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(
                               height: 25,
                             ),
-                            const Text(
-                              'Your Info...',
-                              style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontSize: 30,
-                                fontWeight: FontWeight.w700,
-                              ),
+                            Row(
+                              children: [
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                                const Text(
+                                  'Your Info...',
+                                  style: TextStyle(
+                                    fontFamily: 'Cairo',
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                const Expanded(child: SizedBox()),
+                                FloatingActionButton.extended(
+                                  onPressed: () async {
+                                    if (disable) {
+                                      ProviderInfo provider = ProviderInfo(
+                                          address: Address(
+                                            areaName: areaName.text,
+                                            streetName: streetName.text,
+                                            buildingNameorNumber:
+                                                buildingNameorNumber.text,
+                                            floor: floor.text,
+                                          ),
+                                          profileImage: '',
+                                          name: name.text,
+                                          longitude: 0.0,
+                                          latitude: 0.0,
+                                          phoneNumbers: phoneNumber.text
+                                              .split(',')
+                                              .map((e) => int.parse(e.trim()))
+                                              .toList(),
+                                          landlines: landlines.text
+                                              .split(',')
+                                              .map((e) => int.parse(e.trim()))
+                                              .toList(),
+                                          whatsappNumber:
+                                              int.parse(whatsappNumber.text),
+                                          category: category.text,
+                                          email: email.text,
+                                          facebookPage: facebookPage.text,
+                                          facebookUsername: '',
+                                          instagramAccount:
+                                              instagramAccount.text,
+                                          instagramUsername: '',
+                                          websiteUrl: websiteUrl.text);
+                                      var edit = await updateProvider(
+                                          widget.tokenId, provider);
+
+                                      if (edit) {
+                                        // ignore: use_build_context_synchronously
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  "Your data has been changed"),
+                                              backgroundColor: Colors.green),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  "Error, Try again later")),
+                                        );
+                                      }
+                                    } else {}
+                                  },
+                                  icon: const Icon(Icons.save),
+                                  elevation: 1,
+                                  label: const Text('Save changes'),
+                                  backgroundColor: disable
+                                      ? AppColors.yellow
+                                      : AppColors.grey,
+                                  foregroundColor: disable
+                                      ? AppColors.grey
+                                      : AppColors.lightGrey,
+                                ),
+                                const SizedBox(
+                                  width: 16,
+                                ),
+                              ],
                             ),
                             const SizedBox(
                               height: 25,
@@ -204,7 +220,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                                       Radius.circular(10),
                                     ),
                                     borderSide: BorderSide(
-                                      color: AppColors.grey,
+                                      color: AppColors.lightGrey,
                                     ),
                                   ),
                                   hintText: 'Mobile Number',
@@ -222,7 +238,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                                       Radius.circular(10),
                                     ),
                                   ),
-                                  fillColor: Colors.grey[850],
+                                  fillColor: Colors.white,
                                   filled: true),
                               initialCountryCode: 'SY',
                               cursorColor: AppColors.darkYellow,
@@ -230,7 +246,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                                 mobile = phone.completeNumber;
                               },
                               pickerDialogStyle: PickerDialogStyle(
-                                backgroundColor: Colors.grey[850],
+                                backgroundColor: Colors.white,
                               ),
                               onTap: () {},
                             ),
@@ -298,14 +314,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 2.0,
-                                      blurRadius: 5.0,
-                                      color: Colors.black.withOpacity(0.2),
-                                      offset: const Offset(0, 5),
-                                    ),
-                                  ],
+                                  boxShadow: [Shadow.myShadow],
                                 ),
                                 child: TextField(
                                   style: AppFont.textFieldStyle,
@@ -317,7 +326,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                                         Radius.circular(10),
                                       ),
                                       borderSide: BorderSide(
-                                        color: AppColors.grey,
+                                        color: AppColors.lightGrey,
                                       ),
                                     ),
                                     hintStyle: TextStyle(
@@ -337,7 +346,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                                         Radius.circular(10),
                                       ),
                                     ),
-                                    fillColor: Colors.grey[850],
+                                    fillColor: Colors.white,
                                     filled: true,
                                     counterText: '',
                                   ),

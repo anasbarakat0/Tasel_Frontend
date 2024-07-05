@@ -4,14 +4,16 @@ import 'package:tasel_frontend/Model/login_model.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/bloc/login_bloc.dart';
 import 'package:tasel_frontend/bloc/login_provider_bloc.dart';
-import 'package:tasel_frontend/provider/provider_home_page.dart';
+import 'package:tasel_frontend/bloc/signup_user_bloc.dart';
+import 'package:tasel_frontend/user/curved_navigation_bar.dart';
 import 'package:tasel_frontend/provider/signup_provider.dart';
+import 'package:tasel_frontend/spincircle_bottom_bar.dart';
 import 'package:tasel_frontend/user/signup_user.dart';
-import 'package:tasel_frontend/user/user_home_page.dart';
 import '../../theme/colors.dart';
-import 'forget_password.dart';
+import 'change_password/forget_password.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 TextEditingController phoneOrEmail = TextEditingController();
@@ -40,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ],
       child: Builder(builder: (context) {
-        return Scaffold(
+        return GradientScaffold(
           body: Center(
             child: SingleChildScrollView(
               child: Column(
@@ -66,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   LiteRollingSwitch(
                     value: type,
-                    colorOn: AppColors.grey,
+                    colorOn: AppColors.lightGrey,
                     colorOff: AppColors.yellow,
                     textOn: 'Customer',
                     textOff: 'Provider',
@@ -106,17 +108,10 @@ class _LoginPageState extends State<LoginPage> {
                           padding: const EdgeInsets.only(bottom: 15),
                           child: Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  spreadRadius: 2.0,
-                                  blurRadius: 5.0,
-                                  color: Colors.black.withOpacity(0.2),
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
+                              boxShadow: [Shadow.myShadow],
                             ),
                             child: TextField(
+                              style: AppFont.textFieldStyle,
                               controller: password,
                               decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -124,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                                     Radius.circular(10),
                                   ),
                                   borderSide: BorderSide(
-                                    color: AppColors.grey,
+                                    color: AppColors.lightGrey,
                                   ),
                                 ),
                                 hintText: 'Password',
@@ -141,8 +136,8 @@ class _LoginPageState extends State<LoginPage> {
                                     Radius.circular(10),
                                   ),
                                 ),
+                                fillColor: Colors.white,
                                 filled: true,
-                                fillColor: Colors.grey[850],
                                 prefixIcon: const Icon(Icons.lock),
                                 prefixIconColor: AppColors.yellow,
                                 suffixIcon: IconButton(
@@ -159,8 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ),
                               obscureText: !isPasswordVisible,
-                              style: AppFont.textFieldStyle,
-                              cursorColor: AppColors.yellow,
+                              cursorColor: AppColors.darkYellow,
                             ),
                           ),
                         ),
@@ -237,7 +231,7 @@ Widget BuildUser() {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => UserHomePage(
+            builder: (context) => HomePageUser(
               tokenId:
                   TokenModel(token: state.tokenId.token, id: state.tokenId.id),
             ),
@@ -248,6 +242,7 @@ Widget BuildUser() {
     builder: (context, state) {
       switch (state) {
         case SuccessLogin():
+          context.read<SignupUserBloc>();
           return Container(
             width: 300,
             height: 50,
@@ -331,7 +326,7 @@ Widget BuildProvider() {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => ProviderHomePage(tokenId: state.tokenId)),
+              builder: (context) => HomePageProvider(tokenId: state.tokenId)),
         );
       }
     },

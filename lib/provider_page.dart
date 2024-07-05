@@ -41,6 +41,7 @@ class ProviderPage extends StatelessWidget {
             ),
             drawerEnableOpenDragGesture: true,
             floatingActionButton: FloatingActionButton(
+              elevation: 1,
               onPressed: () {
                 Navigator.push(
                   context,
@@ -140,8 +141,13 @@ class ProviderPage extends StatelessWidget {
                           child: ListView.builder(
                               itemCount: state.products.length,
                               itemBuilder: (context, index) {
-                                return MyProducts(
-                                  product: state.products[index],
+                                return Column(
+                                  children: [
+                                    MyProducts(
+                                      product: state.products[index],
+                                    ),
+                                    Divider(),
+                                  ],
                                 );
                               }),
                         );

@@ -32,75 +32,106 @@ class _ProductPageState extends State<ProductPage> {
         ),
       child: Builder(builder: (context) {
         return Scaffold(
-          appBar: AppBar(),
           body: Center(
-            child: BlocBuilder<ShowProviderProductsBloc,
-                ShowProviderProductsState>(
-              builder: (context, state) {
-                if (state is ErrorFetchingProducts) {
-                  return Center(
-                    child: Text(state.message),
-                  );
-                } else if (state is SuccessShowProducts) {
-                  return ListView.builder(
-                    itemCount: state.products.length,
-                    itemBuilder: (context, index) {
-                      return Slidable(
-                        startActionPane: ActionPane(
-                          motion: const StretchMotion(),
-                          children: [
-                            SlidableAction(
-                              backgroundColor: Colors.red,
-                              icon: Icons.delete_outline_outlined,
-                              label: 'Delete',
-                              onPressed: (BuildContext context) {
-                                showMyDialog(context, state.products[index],
-                                    widget.tokenId);
-                                context.read<ShowProviderProductsBloc>().add(
-                                      ShowProviderProducts(
-                                          storeId: widget.tokenId.id),
-                                    );
-                              },
-                            ),
-                          ],
-                        ),
-                        endActionPane: ActionPane(
-                          motion: const StretchMotion(),
-                          children: [
-                            SlidableAction(
-                              backgroundColor: AppColors.yellow,
-                              icon: Icons.edit,
-                              label: 'Edit Product',
-                              onPressed: (BuildContext context) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditProduct(
-                                          product: state.products[index]),
-                                    ));
-                              },
-                            ),
-                          ],
-                        ),
-                        child: MyProducts(
-                          product: ProductModel(
-                            id: state.products[index].id,
-                            picture: state.products[index].picture,
-                            name: state.products[index].name,
-                            price: state.products[index].price,
-                            description: state.products[index].description,
-                            storeId: state.products[index].storeId,
-                          ),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  'My Products',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.grey,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                BlocBuilder<ShowProviderProductsBloc,
+                    ShowProviderProductsState>(
+                  builder: (context, state) {
+                    if (state is ErrorFetchingProducts) {
+                      return Center(
+                        child: Text(state.message),
+                      );
+                    } else if (state is SuccessShowProducts) {
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: state.products.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                Slidable(
+                                  startActionPane: ActionPane(
+                                    motion: const StretchMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        backgroundColor: Colors.red,
+                                        icon: Icons.delete_outline_outlined,
+                                        label: 'Delete',
+                                        onPressed: (BuildContext context) {
+                                          showMyDialog(
+                                              context,
+                                              state.products[index],
+                                              widget.tokenId);
+                                          context
+                                              .read<ShowProviderProductsBloc>()
+                                              .add(
+                                                ShowProviderProducts(
+                                                    storeId: widget.tokenId.id),
+                                              );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  endActionPane: ActionPane(
+                                    motion: const StretchMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        backgroundColor: AppColors.yellow,
+                                        icon: Icons.edit,
+                                        label: 'Edit Product',
+                                        onPressed: (BuildContext context) {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditProduct(
+                                                        product: state
+                                                            .products[index]),
+                                              ));
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  child: MyProducts(
+                                    product: ProductModel(
+                                      id: state.products[index].id,
+                                      picture: state.products[index].picture,
+                                      name: state.products[index].name,
+                                      price: state.products[index].price,
+                                      description:
+                                          state.products[index].description,
+                                      storeId: state.products[index].storeId,
+                                    ),
+                                  ),
+                                ),
+                                Divider(),
+                              ],
+                            );
+                          },
                         ),
                       );
-                    },
-                  );
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         );

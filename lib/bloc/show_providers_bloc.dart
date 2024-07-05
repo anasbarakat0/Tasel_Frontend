@@ -1,9 +1,8 @@
-// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
-// ignore: depend_on_referenced_packages
+
 import 'package:meta/meta.dart';
-import 'package:tasel_frontend/Model/provisers_model.dart';
+import 'package:tasel_frontend/Model/providers_model.dart';
 import 'package:tasel_frontend/Model/response_providers_model.dart';
 import 'package:tasel_frontend/main.dart';
 
@@ -67,6 +66,7 @@ Future<ResultProviders> getAllProviders() async {
           response.data['data'][index],
         ),
       );
+
       return ListOf(
         resutl: providersModel,
       );

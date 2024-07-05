@@ -1,10 +1,12 @@
-import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart' as dio;
-import 'package:meta/meta.dart';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasel_frontend/Model/response_signup_model.dart';
 import 'package:tasel_frontend/Model/signup_provider_model.dart';
 import 'package:tasel_frontend/main.dart';
-import 'package:tasel_frontend/service/file_handler.dart';
+import 'package:tasel_frontend/service/upload_image.dart';
 
 part 'signup_provider_event.dart';
 part 'signup_provider_state.dart';
@@ -13,7 +15,7 @@ class SignupProviderBloc
     extends Bloc<SignupProviderEvent, SignupProviderState> {
   SignupProviderBloc() : super(SignupProviderInitial()) {
     on<SignedupProvider>((event, emit) async {
-      var data = await signupProviderMethod(event.provider);
+      var data = await signupProviderMethod(event.provider, event.image);
       if (data is SignedUp) {
         emit(Success());
       } else if (data is ErrorResult) {
@@ -28,48 +30,28 @@ class SignupProviderBloc
 }
 
 Future<SignupResultModel> signupProviderMethod(
-    SignupProviderModel provider) async {
+    SignupProviderModel provider, File image) async {
   try {
     print('Starting signupProviderMethod');
+    print('Starting Upload the image');
 
-    // Convert the provider to a map without the image
+    String imageUrl = await uploadImage(image);
     Map<String, dynamic> providerMap = provider.toMap();
-    providerMap.remove('image');
+    // providerMap.remove('image');
+    providerMap['image'] = imageUrl;
 
-    dio.Dio dioClient = dio.Dio();
-
-    // Handle the image separately
-    dio.MultipartFile imageFile = await getMultipartFile(provider.image);
-
-    // Create the FormData object
-    dio.FormData formData = dio.FormData.fromMap({
-      ...providerMap,
-      'image': imageFile,
-    });
-
-    print('1');
-    dio.Response response = await dioClient.post(
-      '$baseurl/signup/store',
-      data: formData,
-    );
-    print('2');
+    Dio dio = Dio();
+    Response response =
+        await dio.post('$baseurl/signup/Store', data: providerMap);
 
     if (response.statusCode == 200) {
-      print('3');
-      print(response.data);
-      print('4');
       return SignedUp(message: response.data['message']);
     } else {
-      print('5');
-      print(response.data);
       return ErrorResult(message: response.data['message']);
     }
-  } on dio.DioException catch (e) {
-    print('7');
-    print(e.message.toString());
+  } on DioException catch (e) {
     return ExceptionResult(message: e.message.toString());
   } catch (e) {
-    print('Unexpected error: $e');
     return ExceptionResult(message: e.toString());
   }
 }

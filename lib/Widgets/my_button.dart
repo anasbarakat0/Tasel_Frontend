@@ -10,7 +10,7 @@ class Button extends StatelessWidget {
   Button({
     super.key,
     required this.text,
-    this.fontSize = 30,
+    this.fontSize = 20,
     this.onPressed,
   });
 
@@ -40,6 +40,40 @@ class Button extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class LogoutButton extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  LogoutButton({
+    super.key,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: ElevatedButton(
+          onPressed: onPressed,
+          style: ButtonStyle(
+            padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+              const EdgeInsets.only(right: 1),
+            ),
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
+            foregroundColor: WidgetStateProperty.all<Color>(AppColors.grey),
+          ),
+          child: const Icon(
+            Icons.logout_outlined,
+          )),
     );
   }
 }

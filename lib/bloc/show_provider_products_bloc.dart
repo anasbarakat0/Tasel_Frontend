@@ -36,24 +36,20 @@ Future<ProductsResult> showProviderProducts(String storeId) async {
     Response response = await dio.get('$baseurl/store/$storeId/products');
 
     if (response.statusCode == 200) {
-      print('1');
-      print(response.data);
       List<ProductModel> products = List.generate(
         response.data.length,
         (index) {
           var data = response.data[index];
-          print('Product Data: $data');
+
           return ProductModel.fromMap(data);
         },
       );
-      print('2');
+
       return ListOf<ProductModel>(resutl: products);
     } else {
-      print('3');
       return ErrorProducts(message: response.data);
     }
   } on DioException catch (e) {
-    print('4');
     return ExceptionProducts(message: e.message.toString());
   }
 }

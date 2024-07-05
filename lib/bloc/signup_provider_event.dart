@@ -6,7 +6,7 @@ sealed class SignupProviderEvent {}
 
 class SignedupProvider extends SignupProviderEvent {
   final SignupProviderModel provider;
-  SignedupProvider({
-    required this.provider,
-  });
+  final File image;
+
+  SignedupProvider({required this.provider, required this.image});
 }

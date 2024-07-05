@@ -1,27 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class Address {
-  final String areaName;
-  final String streetName;
-  final String buildingNameorNumber;
-  final String floor;
-
-  Address({
-    required this.areaName,
-    required this.streetName,
-    required this.buildingNameorNumber,
-    required this.floor,
-  });
-
-  factory Address.fromMap(Map<String, dynamic> map) {
-    return Address(
-      areaName: map['areaName'] as String,
-      streetName: map['streetName'] as String,
-      buildingNameorNumber: map['buildingNameorNumber'] as String,
-      floor: map['floor'] as String,
-    );
-  }
-}
-
 class ProvidersModel {
   final Address address;
   final String id;
@@ -69,8 +46,10 @@ class ProvidersModel {
       address: Address.fromMap(map['address'] as Map<String, dynamic>),
       longitude: map['longitude'] as double,
       latitude: map['latitude'] as double,
-      phoneNumbers: List<int>.from(map['phoneNumbers'] as List<dynamic>),
-      landlines: List<int>.from(map['landlines'] as List<dynamic>),
+      phoneNumbers:
+          (map['phoneNumbers'] as List<dynamic>).map((e) => e as int).toList(),
+      landlines:
+          (map['landlines'] as List<dynamic>).map((e) => e as int).toList(),
       whatsappNumber: map['whatsappNumber'] as int,
       category: map['category'] as String,
       email: map['email'] as String,
@@ -80,6 +59,29 @@ class ProvidersModel {
       instagramUsername: map['instagramUsername'] as String,
       websiteUrl: map['WebsiteUrl'] as String,
       websiteTitle: map['WebsiteTitle'] as String,
+    );
+  }
+}
+
+class Address {
+  final String areaName;
+  final String streetName;
+  final String buildingNameorNumber;
+  final String floor;
+
+  Address({
+    required this.areaName,
+    required this.streetName,
+    required this.buildingNameorNumber,
+    required this.floor,
+  });
+
+  factory Address.fromMap(Map<String, dynamic> map) {
+    return Address(
+      areaName: map['areaName'] as String,
+      streetName: map['streetName'] as String,
+      buildingNameorNumber: map['buildingNameorNumber'] as String,
+      floor: map['floor'] as String,
     );
   }
 }

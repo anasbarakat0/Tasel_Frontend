@@ -1,8 +1,15 @@
+import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
-import 'package:tasel_frontend/provider/provider_home_page.dart';
+import 'package:tasel_frontend/bloc/show_providers_bloc.dart';
+import 'package:tasel_frontend/user/curved_navigation_bar.dart';
+import 'package:tasel_frontend/google_map_page.dart';
+import 'package:tasel_frontend/home_page.dart';
+import 'package:tasel_frontend/login.dart';
+import 'package:tasel_frontend/map_page.dart';
+import 'package:tasel_frontend/search_page.dart';
+import 'package:tasel_frontend/spincircle_bottom_bar.dart';
 import 'package:tasel_frontend/theme/colors.dart';
-import 'package:tasel_frontend/user/user_home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Tasel Demo',
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       darkTheme: ThemeData.dark().copyWith(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.yellow),
         primaryColorDark: AppColors.yellow,
@@ -32,25 +39,55 @@ class MyApp extends StatelessWidget {
             ),
       ),
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        dialogBackgroundColor: AppColors.grey,
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.yellow),
         fontFamily: 'Cairo',
         useMaterial3: true,
         primaryColorDark: AppColors.yellow,
       ),
-      home: isAuth
-          ? UserHomePage(
-              tokenId: TokenModel(
-                token: tokenS,
-                id: userIdS,
-              ),
-            )
-          : ProviderHomePage(
-              tokenId: TokenModel(
-                token:
-                    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aC5jb2ZmZWVAZ21haWwuY29tIiwiaWF0IjoxNzE5NjEzNTk5fQ.p3nGAq267ZtTFlqunRbwmg6nDHXaLi5u6_xW8dDRI3Q',
-                id: '6675f70d692906b4f2fc5514',
-              ),
-            ),
+      home: const SplashScreen(),
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return EasySplashScreen(
+      logo: Image.asset(
+        'tasel.png',
+        height: 150,
+      ),
+      backgroundColor: Colors.white,
+      showLoader: true,
+      logoWidth: 200.0,
+      loaderColor: AppColors.yellow,
+      title: Text(
+        'Tasel',
+        style: TextStyle(
+          fontSize: 35,
+          color: AppColors.yellow,
+          fontWeight: FontWeight.w900,
+        ),
+      ),
+      navigator: HomePageProvider(
+        tokenId: TokenModel(
+          token:
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbkBnbWFpbC5jb20iLCJpYXQiOjE3MjAxMzcxMzl9.KGZHmD7ZE5oORUQNQBcvi-RyCXNyT1KH8zQtyDXC5JQ',
+          id: '66851f574d49b75294fe793e',
+        ),
+      ),
+      // navigator: HomePageUser(
+      //   tokenId: TokenModel(
+      //       id: '66851f574d49b75294fe793e',
+      //       token:
+      //           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJvbkBnbWFpbC5jb20iLCJpYXQiOjE3MjAwMDAzNTV9.Wy7SjtrtM6q0VyTdkea05676qoX2fnbKDf7UdHymfdk'),
+      // ),
+      // navigator: SearchPage(),
+      durationInSeconds: 1,
     );
   }
 }
