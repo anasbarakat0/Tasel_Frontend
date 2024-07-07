@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/service/add_product.dart';
+import 'package:tasel_frontend/theme/colors.dart';
 
 // ignore: must_be_immutable
 class AddProductPage extends StatefulWidget {
@@ -20,9 +22,9 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
-  TextEditingController name = TextEditingController();
-  TextEditingController description = TextEditingController();
-  TextEditingController price = TextEditingController();
+  late TextEditingController name;
+  late TextEditingController description;
+  late TextEditingController price;
   File? _image;
 
   Future<void> _pickImage() async {
@@ -37,8 +39,16 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   @override
+  void initState() {
+    name = TextEditingController();
+    price = TextEditingController();
+    description = TextEditingController();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientScaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           bool response = await addProduct(
@@ -48,8 +58,9 @@ class _AddProductPageState extends State<AddProductPage> {
             description.text,
           );
           if (response) {
-            // ignore: use_build_context_synchronously
-            Navigator.pop(context);
+            name.clear();
+            price.clear();
+            description.clear();
             // ignore: use_build_context_synchronously
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Success Adding Product"),
@@ -67,23 +78,40 @@ class _AddProductPageState extends State<AddProductPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          GestureDetector(
-            onTap: _pickImage,
-            child: CircleAvatar(
-              radius: 60,
-              backgroundImage: _image != null
-                  ? FileImage(_image!)
-                  : const AssetImage('assets/tasel.png') as ImageProvider,
-            ),
-          ),
-          const SizedBox(height: 16),
-          const Text(
+          Text(
             'Adding Your Product...',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: AppColors.grey,
             ),
+          ),
+          const SizedBox(height: 16),
+          Stack(
+            children: [
+              GestureDetector(
+                onTap: _pickImage,
+                child: CircleAvatar(
+                  radius: 75,
+                  backgroundImage: _image != null
+                      ? FileImage(_image!)
+                      : const AssetImage('assets/tasel_icon.png')
+                          as ImageProvider,
+                ),
+              ),
+              if (_image == null)
+                Positioned(
+                  bottom: 5,
+                  right: 5,
+                  child: IconButton(
+                      onPressed: _pickImage,
+                      icon: Icon(
+                        Icons.add_a_photo,
+                        color: AppColors.grey,
+                        size: 35,
+                      )),
+                )
+            ],
           ),
           const SizedBox(height: 16),
           Padding(
@@ -96,7 +124,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   controller: name,
                   title: 'Product Name',
                   keyboardType: TextInputType.name,
-                  prefixIcon: const Icon(Icons.person),
+                  prefixIcon: const Icon(Icons.local_offer),
                 ),
                 const SizedBox(height: 16),
                 MyTextField(
@@ -104,7 +132,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   controller: description,
                   title: 'Description',
                   keyboardType: TextInputType.name,
-                  prefixIcon: const Icon(Icons.home),
+                  prefixIcon: const Icon(Icons.description),
                 ),
                 const SizedBox(height: 16),
                 MyTextField(
@@ -112,7 +140,7 @@ class _AddProductPageState extends State<AddProductPage> {
                   controller: price,
                   title: 'Price',
                   keyboardType: TextInputType.number,
-                  prefixIcon: const Icon(Icons.home),
+                  prefixIcon: const Icon(Icons.monetization_on),
                 ),
               ],
             ),

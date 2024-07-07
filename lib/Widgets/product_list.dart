@@ -47,7 +47,7 @@ class MyProducts extends StatelessWidget {
         subtitle: Text(
           product.description,
           style: TextStyle(
-            color: AppColors.lightGrey,
+            color: AppColors.grey,
             fontFamily: 'Cairo',
             fontSize: 16,
             // fontWeight: FontWeight.w500

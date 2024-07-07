@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/change_password/change_password_page.dart';
 import 'package:tasel_frontend/change_password/services.dart';
 import '../../../theme/colors.dart';
@@ -43,7 +44,7 @@ class _VerificationPageState extends State<VerificationPage> {
         ),
       ),
     );
-    return Scaffold(
+    return GradientScaffold(
       body: Padding(
         padding: const EdgeInsets.all(23.0),
         child: Column(

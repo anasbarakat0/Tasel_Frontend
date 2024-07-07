@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Image.asset(
-                            'assets/tasel.png',
+                            'assets/taselGrey.png',
                             height: 150,
                           ),
                           SizedBox(
@@ -217,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('There is an Error'),
+                              const Text('There is no Connection...'),
                               ElevatedButton.icon(
                                 onPressed: () {
                                   context
@@ -317,6 +317,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
+                            // if (widget.Provider)
                             SizedBox(
                               height: 300,
                               child: ListView.builder(
@@ -403,53 +404,100 @@ class _HomePageState extends State<HomePage> {
                     if (state is LoadingFetching) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is SuccessShowProviders) {
-                      return SizedBox(
-                        height: 300,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state.providers.length >= 7
-                              ? 7
-                              : state.providers.length,
-                          itemBuilder: (context, index) {
-                            return Row(
-                              children: [
-                                if (index == 0) const SizedBox(width: 20),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: InkWell(
+                      if (widget.Provider) {
+                        return Column(
+                          children: [
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 20,
+                                  childAspectRatio: 0.8,
+                                ),
+                                itemCount: state.providers.length,
+                                itemBuilder: (context, index) {
+                                  final provider = state.providers[index];
+                                  return InkWell(
                                     onTap: () {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => ProviderPage(
-                                            id: state.providers[index].id,
+                                            id: provider.id,
                                           ),
                                         ),
                                       );
                                     },
-                                    child: ProviderCard(
-                                      name: state.providers[index].name,
-                                      image:
-                                          state.providers[index].profileImage,
-                                      category: state.providers[index].category,
-                                      address: state
-                                          .providers[index].address.areaName,
-                                      id: state.providers[index].id,
+                                    child: FittedBox(
+                                      child: ProviderCard(
+                                        id: provider.id,
+                                        name: provider.name,
+                                        image: provider.profileImage,
+                                        category: provider.category,
+                                        address: provider.address.areaName,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return SizedBox(
+                          height: 300,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: state.providers.length >= 7
+                                ? 7
+                                : state.providers.length,
+                            itemBuilder: (context, index) {
+                              return Row(
+                                children: [
+                                  if (index == 0) const SizedBox(width: 20),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ProviderPage(
+                                              id: state.providers[index].id,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: ProviderCard(
+                                        name: state.providers[index].name,
+                                        image:
+                                            state.providers[index].profileImage,
+                                        category:
+                                            state.providers[index].category,
+                                        address: state
+                                            .providers[index].address.areaName,
+                                        id: state.providers[index].id,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                if (index + 1 == 7) const SizedBox(width: 20),
-                              ],
-                            );
-                          },
-                        ),
-                      );
+                                  if (index + 1 == 7) const SizedBox(width: 20),
+                                ],
+                              );
+                            },
+                          ),
+                        );
+                      }
                     } else if (state is ErrorFetchingData) {
                       return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text('There is an Error'),
+                            const Text('There is no Connection...'),
                             ElevatedButton.icon(
                               onPressed: () {
                                 context

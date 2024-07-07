@@ -1,14 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:tasel_frontend/Model/provider_info.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/bloc/provider_info_bloc.dart';
+import 'package:tasel_frontend/service/fetch_categories.dart';
 import 'package:tasel_frontend/service/update_provider.dart';
 import 'package:tasel_frontend/theme/colors.dart';
+import 'package:tasel_frontend/theme/google_map_style.dart';
 
 class ProviderUpdateInfoPage extends StatefulWidget {
   final TokenModel tokenId;
@@ -24,7 +30,6 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
   late TextEditingController phoneNumber;
   late TextEditingController landlines;
   late TextEditingController whatsappNumber;
-  late TextEditingController category;
   late TextEditingController facebookPage;
   late TextEditingController instagramAccount;
   late TextEditingController websiteUrl;
@@ -34,14 +39,39 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
   late TextEditingController buildingNameorNumber;
   late TextEditingController floor;
 
+  final Completer<GoogleMapController> _controller = Completer();
+  static late CameraPosition _kGooglePlex;
+  BitmapDescriptor? ProviderMarkerIcon;
+  LatLng _markerPosition = const LatLng(33.513835, 36.276685);
+
+  Future<void> loadCustomMarker() async {
+    ProviderMarkerIcon = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(40, 40)),
+      'assets/taselUser.png',
+    );
+    setState(() {});
+  }
+
   String mobile = '';
   bool isEmailCorrect = false;
-
+  late String _selectedCategory;
   bool disable = false;
 
   bool isNumber(String str) {
     final numericRegex = RegExp(r'^-?[0-9]+$');
     return numericRegex.hasMatch(str);
+  }
+
+  void _onCategorySelected(String category) {
+    setState(() {
+      _selectedCategory = category;
+    });
+  }
+
+  void _onMapLongPress(LatLng position) {
+    setState(() {
+      _markerPosition = position;
+    });
   }
 
   @override
@@ -52,12 +82,10 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
 
   @override
   void initState() {
-    super.initState();
     name = TextEditingController();
     phoneNumber = TextEditingController();
     landlines = TextEditingController();
     whatsappNumber = TextEditingController();
-    category = TextEditingController();
     facebookPage = TextEditingController();
     instagramAccount = TextEditingController();
     websiteUrl = TextEditingController();
@@ -66,6 +94,12 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
     streetName = TextEditingController();
     buildingNameorNumber = TextEditingController();
     floor = TextEditingController();
+    _kGooglePlex = const CameraPosition(
+      target: LatLng(33.513835, 36.276685),
+      zoom: 13.5,
+    );
+    loadCustomMarker();
+    super.initState();
   }
 
   @override
@@ -76,7 +110,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
         context
             .read<ProviderInfoBloc>()
             .add(ShowProviderInfo(idProvider: widget.tokenId.id));
-        return Scaffold(
+        return GradientScaffold(
           body: BlocListener<ProviderInfoBloc, ProviderInfoState>(
             listener: (context, state) {
               if (state is SuccessShowProviderInfo) {
@@ -86,7 +120,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                   landlines.text = state.provider.landlines.join(', ');
                   whatsappNumber.text =
                       state.provider.whatsappNumber.toString();
-                  category.text = state.provider.category;
+                  _selectedCategory = state.provider.category;
                   facebookPage.text = state.provider.facebookPage;
                   instagramAccount.text = state.provider.instagramAccount;
                   websiteUrl.text = state.provider.websiteUrl;
@@ -96,6 +130,8 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                   buildingNameorNumber.text =
                       state.provider.address.buildingNameorNumber;
                   floor.text = state.provider.address.floor;
+                  _markerPosition =
+                      LatLng(state.provider.latitude, state.provider.longitude);
                 }
                 setState(() {
                   disable = true;
@@ -142,8 +178,8 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                                           ),
                                           profileImage: '',
                                           name: name.text,
-                                          longitude: 0.0,
-                                          latitude: 0.0,
+                                          longitude: _markerPosition.longitude,
+                                          latitude: _markerPosition.latitude,
                                           phoneNumbers: phoneNumber.text
                                               .split(',')
                                               .map((e) => int.parse(e.trim()))
@@ -154,7 +190,7 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                                               .toList(),
                                           whatsappNumber:
                                               int.parse(whatsappNumber.text),
-                                          category: category.text,
+                                          category: _selectedCategory,
                                           email: email.text,
                                           facebookPage: facebookPage.text,
                                           facebookUsername: '',
@@ -281,12 +317,28 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                               prefixIcon: const Icon(Ionicons.logo_whatsapp),
                               ontap: (p0) {},
                             ),
-                            MyTextField(
-                              controller: category,
-                              title: 'Category',
-                              keyboardType: TextInputType.name,
-                              prefixIcon: const Icon(Icons.category),
-                              ontap: (p0) {},
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 15),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                  boxShadow: [Shadow.myShadow],
+                                  border: Border.all(
+                                    color: AppColors.lightGrey,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0,
+                                    vertical: 2,
+                                  ),
+                                  child: MyDropdownMenu(
+                                    onCategorySelected: _onCategorySelected,
+                                  ),
+                                ),
+                              ),
                             ),
                             MyTextField(
                               controller: facebookPage,
@@ -383,6 +435,34 @@ class _ProviderUpdateInfoPageState extends State<ProviderUpdateInfoPage> {
                               keyboardType: TextInputType.name,
                               prefixIcon: const Icon(Icons.stairs),
                               ontap: (p0) {},
+                            ),
+                            GestureDetector(
+                              onVerticalDragUpdate: (details) {},
+                              child: AbsorbPointer(
+                                absorbing: false,
+                                child: SizedBox(
+                                  height: 300,
+                                  child: GoogleMap(
+                                    style: mapBasicStyle,
+                                    buildingsEnabled: true,
+                                    myLocationButtonEnabled: true,
+                                    myLocationEnabled: true,
+                                    initialCameraPosition: _kGooglePlex,
+                                    markers: {
+                                      Marker(
+                                        markerId: MarkerId(state.provider.name),
+                                        position: _markerPosition,
+                                        icon: ProviderMarkerIcon!,
+                                      ),
+                                    },
+                                    onMapCreated:
+                                        (GoogleMapController controller) {
+                                      _controller.complete(controller);
+                                    },
+                                    onTap: _onMapLongPress,
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),

@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:tasel_frontend/Model/product_model.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/product_list.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/bloc/show_provider_products_bloc.dart';
 import 'package:tasel_frontend/provider/edit_product.dart';
 import 'package:tasel_frontend/provider/product_deleting_message.dart';
@@ -31,7 +32,7 @@ class _ProductPageState extends State<ProductPage> {
           ShowProviderProducts(storeId: widget.tokenId.id),
         ),
       child: Builder(builder: (context) {
-        return Scaffold(
+        return GradientScaffold(
           body: Center(
             child: Column(
               children: [

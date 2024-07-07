@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Widgets/info_tile.dart';
@@ -9,6 +12,7 @@ import 'package:tasel_frontend/bloc/provider_info_bloc.dart';
 import 'package:tasel_frontend/login.dart';
 import 'package:tasel_frontend/main.dart';
 import 'package:tasel_frontend/theme/colors.dart';
+import 'package:tasel_frontend/theme/google_map_style.dart';
 
 class ProviderProfilePage extends StatefulWidget {
   final TokenModel tokenId;
@@ -20,6 +24,28 @@ class ProviderProfilePage extends StatefulWidget {
 
 class _ProviderProfilePageState extends State<ProviderProfilePage> {
   bool disable = false;
+
+  final Completer<GoogleMapController> _controller = Completer();
+  static late CameraPosition _kGooglePlex;
+  BitmapDescriptor? ProviderMarkerIcon;
+
+  Future<void> loadCustomMarker() async {
+    ProviderMarkerIcon = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(40, 40)),
+      'assets/taselUser.png',
+    );
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _kGooglePlex = const CameraPosition(
+      target: LatLng(33.513835, 36.276685),
+      zoom: 13.5,
+    );
+    loadCustomMarker();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +61,11 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
               body: BlocListener<ProviderInfoBloc, ProviderInfoState>(
                 listener: (context, state) {
                   if (state is SuccessShowProviderInfo) {
+                    CameraPosition(
+                      target: LatLng(
+                          state.provider.latitude, state.provider.longitude),
+                      zoom: 13.5,
+                    );
                     setState(() {});
                   }
                 },
@@ -47,9 +78,7 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
-                                const SizedBox(
-                                  height: 20,
-                                ),
+                                const SizedBox(height: 20),
                                 SizedBox(
                                   height: 100,
                                   width: 100,
@@ -57,16 +86,14 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
                                     '$baseurl/${state.provider.profileImage}',
                                     fit: BoxFit.contain,
                                     errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
-                                        'tasel_icon.png',
+                                      return Image.network(
+                                        '$baseurl/${state.provider.profileImage}',
                                         fit: BoxFit.contain,
                                       );
                                     },
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
+                                const SizedBox(height: 20),
                                 Text(
                                   state.provider.name,
                                   style: TextStyle(
@@ -75,9 +102,7 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
                                     color: AppColors.grey,
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 25,
-                                ),
+                                const SizedBox(height: 25),
                                 InfoTile(
                                   label: 'Category',
                                   value: state.provider.category,
@@ -139,6 +164,37 @@ class _ProviderProfilePageState extends State<ProviderProfilePage> {
                                   label: 'Website',
                                   value: state.provider.websiteUrl,
                                   icon: Icons.link,
+                                ),
+                                GestureDetector(
+                                  onVerticalDragUpdate: (details) {},
+                                  child: AbsorbPointer(
+                                    absorbing: false,
+                                    child: SizedBox(
+                                      height: 300,
+                                      child: GoogleMap(
+                                        style: mapBasicStyle,
+                                        buildingsEnabled: true,
+                                        myLocationButtonEnabled: true,
+                                        myLocationEnabled: true,
+                                        initialCameraPosition: _kGooglePlex,
+                                        markers: {
+                                          Marker(
+                                            markerId:
+                                                MarkerId(state.provider.name),
+                                            position: LatLng(
+                                              state.provider.latitude,
+                                              state.provider.longitude,
+                                            ),
+                                            icon: ProviderMarkerIcon!,
+                                          ),
+                                        },
+                                        onMapCreated:
+                                            (GoogleMapController controller) {
+                                          _controller.complete(controller);
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),

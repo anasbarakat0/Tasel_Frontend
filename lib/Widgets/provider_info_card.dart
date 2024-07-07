@@ -7,8 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
 class ProviderInfoCard extends StatelessWidget {
-  final String profileImage;
-  final String name;
   final double longitude;
   final double latitude;
   final List<int> phoneNumbers;
@@ -27,8 +25,6 @@ class ProviderInfoCard extends StatelessWidget {
   final String websiteUrl;
   const ProviderInfoCard({
     super.key,
-    required this.profileImage,
-    required this.name,
     required this.longitude,
     required this.latitude,
     required this.phoneNumbers,
@@ -51,25 +47,19 @@ class ProviderInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Card(
-        elevation: 4,
-        color: AppColors.grey,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [Shadow.myShadow],
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                alignment: Alignment.center,
-                child: Text(
-                  name,
-                  style: TextStyle(
-                    fontFamily: 'Cairo',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                    color: AppColors.yellow,
-                  ),
-                ),
+              const SizedBox(
+                height: 20,
               ),
               ListTile(
                 onTap: () async {
@@ -81,116 +71,117 @@ class ProviderInfoCard extends StatelessWidget {
                     launchUrl(url);
                   }
                 },
-                leading: const Icon(
+                leading: Icon(
                   Icons.phone,
-                  color: Colors.white,
+                  color: AppColors.yellow,
                 ),
-                title: Text('Phone Numbers',
+                title: Text(phoneNumbers.join(' , '),
                     style: TextStyle(
-                      color: AppColors.yellow,
+                      color: AppColors.grey,
                     )),
-                subtitle: Text(phoneNumbers.join(' , '),
-                    style: const TextStyle(
-                      color: Colors.white,
+                subtitle: Text('Phone Numbers',
+                    style: TextStyle(
+                      color: AppColors.lightGrey,
                     )),
               ),
               ListTile(
                 onTap: () {},
-                leading: const FaIcon(
+                leading: FaIcon(
                   FontAwesomeIcons.addressBook,
-                  color: Colors.white,
+                  color: AppColors.yellow,
                 ),
-                title: Text('Landlines',
+                title: Text(landlines.join(' , '),
                     style: TextStyle(
-                      color: AppColors.yellow,
+                      color: AppColors.grey,
                     )),
-                subtitle: Text(landlines.join(' , '),
-                    style: const TextStyle(
-                      color: Colors.white,
+                subtitle: Text('Landlines',
+                    style: TextStyle(
+                      color: AppColors.lightGrey,
                     )),
               ),
               ListTile(
                 onTap: () {},
-                leading: const Icon(
+                leading: Icon(
                   Icons.category,
-                  color: Colors.white,
+                  color: AppColors.yellow,
                 ),
-                title: Text('Category',
+                title: Text(category,
                     style: TextStyle(
-                      color: AppColors.yellow,
+                      color: AppColors.grey,
                     )),
-                subtitle: Text(category,
-                    style: const TextStyle(
-                      color: Colors.white,
+                subtitle: Text('Category',
+                    style: TextStyle(
+                      color: AppColors.lightGrey,
                     )),
               ),
               ListTile(
                 onTap: () {},
-                leading: const Icon(
+                leading: Icon(
                   Icons.location_searching,
-                  color: Colors.white,
+                  color: AppColors.yellow,
                 ),
-                title: Text('Area Name',
+                title: Text(areaName,
                     style: TextStyle(
-                      color: AppColors.yellow,
+                      color: AppColors.grey,
                     )),
-                subtitle: Text(areaName,
-                    style: const TextStyle(
-                      color: Colors.white,
+                subtitle: Text('Area Name',
+                    style: TextStyle(
+                      color: AppColors.lightGrey,
                     )),
               ),
               ListTile(
                 onTap: () {},
-                leading: const Icon(
+                leading: Icon(
                   Icons.edit_road_rounded,
-                  color: Colors.white,
+                  color: AppColors.yellow,
                 ),
-                title: Text('Street Name',
+                title: Text(streetName,
                     style: TextStyle(
-                      color: AppColors.yellow,
+                      color: AppColors.grey,
                     )),
-                subtitle: Text(streetName,
-                    style: const TextStyle(
-                      color: Colors.white,
+                subtitle: Text('Street Name',
+                    style: TextStyle(
+                      color: AppColors.lightGrey,
                     )),
               ),
               ListTile(
                 onTap: () {},
-                leading: const Icon(
+                leading: Icon(
                   Icons.location_city_outlined,
-                  color: Colors.white,
+                  color: AppColors.yellow,
                 ),
-                title: Text('Building Name or Number',
+                title: Text(buildingNameorNumber,
                     style: TextStyle(
-                      color: AppColors.yellow,
+                      color: AppColors.grey,
                     )),
-                subtitle: Text(buildingNameorNumber,
-                    style: const TextStyle(
-                      color: Colors.white,
+                subtitle: Text('Building Name or Number',
+                    style: TextStyle(
+                      color: AppColors.lightGrey,
                     )),
               ),
               ListTile(
                 onTap: () {},
-                leading: const Icon(
+                leading: Icon(
                   Icons.stairs,
-                  color: Colors.white,
+                  color: AppColors.yellow,
                 ),
-                title: Text('Floor',
+                title: Text(floor,
                     style: TextStyle(
-                      color: AppColors.yellow,
+                      color: AppColors.grey,
                     )),
-                subtitle: Text(floor,
-                    style: const TextStyle(
-                      color: Colors.white,
+                subtitle: Text('Floor',
+                    style: TextStyle(
+                      color: AppColors.lightGrey,
                     )),
               ),
+              Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
                     icon: const Icon(Ionicons.logo_facebook),
                     color: AppColors.yellow,
-                    iconSize: 40,
+                    iconSize: 30,
                     onPressed: () {
                       launchUrl(
                         Uri.parse(facebookPage),
@@ -201,18 +192,26 @@ class ProviderInfoCard extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Ionicons.logo_instagram),
                     color: AppColors.yellow,
-                    iconSize: 40,
+                    iconSize: 30,
                     onPressed: () {
-                      launchUrl(
-                        Uri.parse(instagramAccount),
-                        mode: LaunchMode.inAppWebView,
-                      );
+                      if (instagramAccount.isNotEmpty) {
+                        print('instagramAccount');
+                        print(instagramAccount);
+                        launchUrl(
+                          Uri.parse(instagramAccount),
+                          mode: LaunchMode.inAppWebView,
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Link is invalid")),
+                        );
+                      }
                     },
                   ),
                   IconButton(
                     icon: const Icon(Icons.link),
                     color: AppColors.yellow,
-                    iconSize: 40,
+                    iconSize: 30,
                     onPressed: () {
                       launchUrl(
                         Uri.parse(websiteUrl),
@@ -223,7 +222,7 @@ class ProviderInfoCard extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Ionicons.logo_whatsapp),
                     color: AppColors.yellow,
-                    iconSize: 40,
+                    iconSize: 30,
                     onPressed: () {
                       // Handle Twitter button press
                     },
@@ -231,7 +230,7 @@ class ProviderInfoCard extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.mail),
                     color: AppColors.yellow,
-                    iconSize: 40,
+                    iconSize: 30,
                     onPressed: () {
                       // Handle LinkedIn button press
                     },

@@ -8,7 +8,7 @@ Future<String> uploadeImage() async {
   FilePickerResult? result = await FilePicker.platform.pickFiles();
   late File file;
   if (result != null) {
-    file = File(result.files.single.path!);
+    file = File.fromRawPath(result.files.single.bytes!);
 
     var data = FormData.fromMap({'image': file});
 

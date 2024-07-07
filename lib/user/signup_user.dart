@@ -4,6 +4,7 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:tasel_frontend/Model/signup_user_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/bloc/signup_user_bloc.dart';
 import 'package:validators/validators.dart';
 import '../../../theme/colors.dart';
@@ -43,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return BlocProvider(
       create: (context) => SignupUserBloc(),
       child: Builder(builder: (context) {
-        return Scaffold(
+        return GradientScaffold(
           body: Stack(
             children: [
               Padding(
@@ -141,6 +142,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                           ),
+
                           Padding(
                             padding: const EdgeInsets.only(bottom: 15),
                             child: Container(
@@ -195,7 +197,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               child: TextField(
                                 style: AppFont.textFieldStyle,
-                                controller: password,
+                                controller: passwordController,
                                 decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: const BorderRadius.all(
@@ -280,13 +282,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                   prefixIconColor: AppColors.yellow,
                                   suffixIcon: IconButton(
                                     icon: Icon(
-                                      isPasswordVisible
+                                      isCPasswordVisible
                                           ? Icons.visibility
                                           : Icons.visibility_off,
                                     ),
                                     onPressed: () {
                                       setState(() {
-                                        isPasswordVisible = !isPasswordVisible;
+                                        isCPasswordVisible =
+                                            !isCPasswordVisible;
                                       });
                                     },
                                   ),
@@ -309,7 +312,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   fillColor: Colors.white,
                                   filled: true,
                                 ),
-                                obscureText: !isPasswordVisible,
+                                obscureText: !isCPasswordVisible,
                                 style: AppFont.textFieldStyle,
                                 cursorColor: AppColors.yellow,
                                 onSubmitted: (_) {

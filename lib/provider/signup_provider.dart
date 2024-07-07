@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -5,14 +6,19 @@ import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:tasel_frontend/Model/signup_provider_model.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/bloc/signup_provider_bloc.dart';
+import 'package:tasel_frontend/service/fetch_categories.dart';
 import 'package:tasel_frontend/service/upload_image.dart';
+import 'package:tasel_frontend/theme/google_map_style.dart';
+import 'package:validators/sanitizers.dart';
 
 import '../../../theme/colors.dart';
 import '../login.dart';
@@ -41,6 +47,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
   final TextEditingController streetName = TextEditingController();
   final TextEditingController buildingNameorNumber = TextEditingController();
   final TextEditingController floor = TextEditingController();
+  late String _selectedCategory;
 
   String mobile = '';
   bool isEmailCorrect = false;
@@ -53,10 +60,45 @@ class _SignUpProviderState extends State<SignUpProvider> {
     return numericRegex.hasMatch(str);
   }
 
+  void _onCategorySelected(String category) {
+    setState(() {
+      _selectedCategory = category;
+    });
+  }
+
+  Future<void> loadCustomMarker() async {
+    ProviderMarkerIcon = await BitmapDescriptor.asset(
+      const ImageConfiguration(size: Size(40, 40)),
+      'assets/taselUser.png',
+    );
+    setState(() {});
+  }
+
+  final Completer<GoogleMapController> _controller = Completer();
+  static late CameraPosition _kGooglePlex;
+  BitmapDescriptor? ProviderMarkerIcon;
+  LatLng _markerPosition = const LatLng(33.513835, 36.276685);
+
+  void _onMapLongPress(LatLng position) {
+    setState(() {
+      _markerPosition = position;
+    });
+  }
+
   @override
   void dispose() {
     emailController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    _kGooglePlex = const CameraPosition(
+      target: LatLng(33.513835, 36.276685),
+      zoom: 13.5,
+    );
+    loadCustomMarker();
+    super.initState();
   }
 
   late SignupProviderModel provider;
@@ -66,7 +108,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
     return BlocProvider(
       create: (context) => SignupProviderBloc(),
       child: Builder(builder: (context) {
-        return Scaffold(
+        return GradientScaffold(
           body: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
@@ -118,43 +160,75 @@ class _SignUpProviderState extends State<SignUpProvider> {
                       SingleChildScrollView(
                         child: Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                uploadeImage();
-                              },
-                              child: CircleAvatar(
-                                radius: 80,
-                                backgroundColor: Colors.grey[300],
-                              ),
+                            Stack(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    uploadeImage();
+                                  },
+                                  child: CircleAvatar(
+                                    radius: 80,
+                                    backgroundColor: Colors.grey[300],
+                                    child: Image.asset(
+                                      'tasel.png',
+                                      height: 110,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  bottom: 10,
+                                  right: 10,
+                                  child: Icon(
+                                    Icons.add_a_photo,
+                                    color: AppColors.grey,
+                                  ),
+                                )
+                              ],
                             ),
 
                             const SizedBox(
                               height: 35,
                             ),
 
-                            //Provider-Name
                             MyTextField(
                               ontap: (p0) {},
                               controller: providerController,
-                              title: 'Provider-Name',
+                              title: 'Provider Name',
                               keyboardType: TextInputType.name,
-                              prefixIcon: const Icon(Icons.person),
+                              prefixIcon: const Icon(Icons.store),
                             ),
 
-                            //E-Mail
                             Padding(
                               padding: const EdgeInsets.only(bottom: 15),
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 2.0,
-                                      blurRadius: 5.0,
-                                      color: Colors.black.withOpacity(0.2),
-                                      offset: const Offset(0, 5),
-                                    ),
-                                  ],
+                                  color: Colors.white,
+                                  boxShadow: [Shadow.myShadow],
+                                  border: Border.all(
+                                    color: AppColors.lightGrey,
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0,
+                                    vertical: 2,
+                                  ),
+                                  child: MyDropdownMenu(
+                                    onCategorySelected: _onCategorySelected,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 15),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [Shadow.myShadow],
                                 ),
                                 child: TextField(
                                   keyboardType: TextInputType.emailAddress,
@@ -166,38 +240,39 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     });
                                   },
                                   decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: AppColors.grey,
-                                        ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
                                       ),
-                                      hintText: 'E-mail',
-                                      hintStyle: TextStyle(
+                                      borderSide: BorderSide(
                                         color: AppColors.lightGrey,
-                                        fontFamily: 'Cairo',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
                                       ),
-                                      prefixIcon: const Icon(Icons.email),
-                                      prefixIconColor: AppColors.yellow,
-                                      suffixIcon: isEmailCorrect == false
-                                          ? null
-                                          : const Icon(
-                                              Icons.done,
-                                              color: Colors.green,
-                                            ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: AppColors.darkYellow),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
+                                    ),
+                                    hintText: 'E-mail',
+                                    hintStyle: TextStyle(
+                                      color: AppColors.lightGrey,
+                                      fontFamily: 'Cairo',
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                    ),
+                                    prefixIcon: const Icon(Icons.email),
+                                    prefixIconColor: AppColors.yellow,
+                                    suffixIcon: isEmailCorrect == false
+                                        ? null
+                                        : const Icon(
+                                            Icons.done,
+                                            color: Colors.green,
+                                          ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.darkYellow),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
                                       ),
-                                      fillColor: Colors.grey[850],
-                                      filled: true),
+                                    ),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
                                   cursorColor: AppColors.darkYellow,
                                   onTap: () {
                                     if (providerController.text.length < 4) {
@@ -220,54 +295,43 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 2.0,
-                                      blurRadius: 5.0,
-                                      color: Colors.black.withOpacity(0.2),
-                                      offset: const Offset(0, 5),
-                                    ),
-                                  ],
+                                  boxShadow: [Shadow.myShadow],
                                 ),
                                 child: IntlPhoneField(
                                   showCountryFlag: false,
                                   style: AppFont.textFieldStyle,
                                   controller: phoneNumController,
-                                  keyboardType: TextInputType.phone,
+                                  keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: AppColors.grey,
-                                        ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
                                       ),
-                                      hintText: 'Mobile Number',
-                                      counterText: '',
-                                      hintStyle: TextStyle(
+                                      borderSide: BorderSide(
                                         color: AppColors.lightGrey,
-                                        fontFamily: 'Cairo',
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 18,
                                       ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: AppColors.darkYellow),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(10),
-                                        ),
+                                    ),
+                                    hintText: 'Phone Number',
+                                    counterText: '',
+                                    hintStyle: TextStyle(
+                                      color: AppColors.lightGrey,
+                                      fontFamily: 'Cairo',
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: AppColors.darkYellow,
                                       ),
-                                      fillColor: Colors.grey[850],
-                                      filled: true),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                    ),
+                                    fillColor: Colors.white,
+                                    filled: true,
+                                  ),
                                   initialCountryCode: 'SY',
                                   cursorColor: AppColors.darkYellow,
-                                  onChanged: (phone) {
-                                    mobile = phone.completeNumber;
-                                  },
-                                  pickerDialogStyle: PickerDialogStyle(
-                                    backgroundColor: Colors.grey[850],
-                                  ),
                                   onTap: () {
                                     if (!isEmailCorrect) {
                                       ScaffoldMessenger.of(context)
@@ -349,17 +413,10 @@ class _SignUpProviderState extends State<SignUpProvider> {
                               padding: const EdgeInsets.only(bottom: 15),
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 2.0,
-                                      blurRadius: 5.0,
-                                      color: Colors.black.withOpacity(0.2),
-                                      offset: const Offset(0, 5),
-                                    ),
-                                  ],
+                                  boxShadow: [Shadow.myShadow],
                                 ),
                                 child: TextField(
+                                  style: AppFont.textFieldStyle,
                                   controller: passwordController,
                                   decoration: InputDecoration(
                                     enabledBorder: OutlineInputBorder(
@@ -367,7 +424,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         Radius.circular(10),
                                       ),
                                       borderSide: BorderSide(
-                                        color: AppColors.grey,
+                                        color: AppColors.lightGrey,
                                       ),
                                     ),
                                     hintText: 'Password',
@@ -384,6 +441,8 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         Radius.circular(10),
                                       ),
                                     ),
+                                    fillColor: Colors.white,
+                                    filled: true,
                                     prefixIcon: const Icon(Icons.lock),
                                     prefixIconColor: AppColors.yellow,
                                     suffixIcon: IconButton(
@@ -399,42 +458,29 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         });
                                       },
                                     ),
-                                    fillColor: Colors.grey[850],
-                                    filled: true,
                                   ),
                                   obscureText: !isPasswordVisible,
-                                  style: AppFont.textFieldStyle,
-                                  cursorColor: AppColors.yellow,
+                                  cursorColor: AppColors.darkYellow,
                                 ),
                               ),
                             ),
-
-                            //ConfirmPassword
+                            //////////////////////////////////*
                             Padding(
                               padding: const EdgeInsets.only(bottom: 15),
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      spreadRadius: 2.0,
-                                      blurRadius: 5.0,
-                                      color: Colors.black.withOpacity(0.2),
-                                      offset: const Offset(0, 5),
-                                    ),
-                                  ],
+                                  boxShadow: [Shadow.myShadow],
                                 ),
                                 child: TextField(
                                   onChanged: (value) {
-                                    setState(
-                                      () {
-                                        if (value == passwordController.text) {
-                                          match = true;
-                                        } else {
-                                          match = false;
-                                        }
-                                      },
-                                    );
+                                    setState(() {
+                                      if (value == passwordController.text) {
+                                        match = true;
+                                      } else {
+                                        match = false;
+                                      }
+                                    });
                                   },
                                   controller: conPasswordController,
                                   decoration: InputDecoration(
@@ -443,7 +489,7 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                         Radius.circular(10),
                                       ),
                                       borderSide: BorderSide(
-                                        color: AppColors.grey,
+                                        color: AppColors.lightGrey,
                                       ),
                                     ),
                                     hintText: 'Confirm Password',
@@ -457,14 +503,14 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                     prefixIconColor: AppColors.yellow,
                                     suffixIcon: IconButton(
                                       icon: Icon(
-                                        isCPasswordVisible
+                                        isPasswordVisible
                                             ? Icons.visibility
                                             : Icons.visibility_off,
                                       ),
                                       onPressed: () {
                                         setState(() {
-                                          isCPasswordVisible =
-                                              !isCPasswordVisible;
+                                          isPasswordVisible =
+                                              !isPasswordVisible;
                                         });
                                       },
                                     ),
@@ -486,12 +532,44 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                 color: AppColors.yellow,
                                                 width: 1.0),
                                           ),
-                                    fillColor: Colors.grey[850],
+                                    fillColor: Colors.white,
                                     filled: true,
                                   ),
-                                  obscureText: !isCPasswordVisible,
+                                  obscureText: !isPasswordVisible,
                                   style: AppFont.textFieldStyle,
                                   cursorColor: AppColors.yellow,
+                                  onSubmitted: (_) {
+                                    //todo _signInButtonPressed();
+                                  },
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onVerticalDragUpdate: (details) {},
+                              child: AbsorbPointer(
+                                absorbing: false,
+                                child: SizedBox(
+                                  height: 300,
+                                  child: GoogleMap(
+                                    style: mapBasicStyle,
+                                    buildingsEnabled: true,
+                                    myLocationButtonEnabled: true,
+                                    myLocationEnabled: true,
+                                    initialCameraPosition: _kGooglePlex,
+                                    markers: {
+                                      Marker(
+                                        markerId:
+                                            MarkerId(providerController.text),
+                                        position: _markerPosition,
+                                        icon: ProviderMarkerIcon!,
+                                      ),
+                                    },
+                                    onMapCreated:
+                                        (GoogleMapController controller) {
+                                      _controller.complete(controller);
+                                    },
+                                    onTap: _onMapLongPress,
+                                  ),
                                 ),
                               ),
                             ),
@@ -509,19 +587,19 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                   child: Button(
                                     text: 'Sign Up',
                                     onPressed: () async {
-                                      if (providerController.text.isEmpty ||
-                                          phoneNumController.text.isEmpty ||
-                                          emailController.text.isEmpty ||
-                                          passwordController.text.isEmpty ||
-                                          conPasswordController.text.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                              content: Text(
-                                                  "Please fill in all fields")),
-                                        );
-                                        return;
-                                      }
+                                      // if (providerController.text.isEmpty ||
+                                      //     phoneNumController.text.isEmpty ||
+                                      //     emailController.text.isEmpty ||
+                                      //     passwordController.text.isEmpty ||
+                                      //     conPasswordController.text.isEmpty) {
+                                      //   ScaffoldMessenger.of(context)
+                                      //       .showSnackBar(
+                                      //     const SnackBar(
+                                      //         content: Text(
+                                      //             "Please fill in all fields")),
+                                      //   );
+                                      //   return;
+                                      // }
 
                                       if (providerController.text.length < 4) {
                                         ScaffoldMessenger.of(context)
@@ -572,12 +650,17 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                             await FilePicker.platform
                                                 .pickFiles();
                                         late File file;
+
                                         if (result != null) {
                                           file = File.fromRawPath(
-                                              result.files.single.bytes!);
+                                            result.files.single.bytes!,
+                                          );
 
-                                          var data =
-                                              FormData.fromMap({'image': file});
+                                          var data = FormData.fromMap({
+                                            'image': MultipartFile.fromBytes(
+                                              await file.readAsBytes(),
+                                            ),
+                                          });
 
                                           var dio = Dio();
                                           var response = await dio.request(
@@ -585,13 +668,12 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                             options: Options(
                                                 method: 'POST',
                                                 contentType:
-                                                    'multipart/form-data; '),
+                                                    'multipart/form-data'),
                                             data: data,
                                           );
                                           print(response.data);
 
                                           if (response.statusCode == 200) {
-                                            print("json.encode(response.data)");
                                           } else {
                                             print(response.statusMessage);
                                           }
@@ -601,29 +683,37 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                           };
                                           var data1 = json.encode({
                                             "profileImage":
-                                                response.data['imgaeUrl'],
-                                            "name": "Alex",
-                                            "latitude": 33.5384884,
-                                            "longitude": 36.1983861,
-                                            "phoneNumbers": [941445726],
-                                            "landlines": [3316534],
-                                            "areaName": "ضاحية قدسيا",
-                                            "streetName": "السوق الازرق",
-                                            "buildingNameorNumber": "سوق ",
-                                            "floor": "0",
-                                            "email": "abedalkader@gmail.com",
+                                                response.data['imageUrl'],
+                                            "name": providerController.text,
+                                            "latitude":
+                                                _markerPosition.latitude,
+                                            "longitude":
+                                                _markerPosition.longitude,
+                                            "phoneNumbers": [
+                                              toInt(phoneNumController.text)
+                                            ],
+                                            "landlines": [
+                                              toInt(
+                                                  landlineNumberController.text)
+                                            ],
+                                            "areaName": areaName.text,
+                                            "streetName": streetName.text,
+                                            "buildingNameorNumber":
+                                                buildingNameorNumber.text,
+                                            "floor": floor.text,
+                                            "email": emailController.text,
                                             "whatsappNumber": 941445726,
                                             "instagramAccount":
-                                                "حساب Instagram",
-                                            "instagramUsername":
-                                                "اسم مستخدم Instagram",
-                                            "facebookPage": "صفحة Facebook",
-                                            "facebookUsername":
-                                                "اسم مستخدم Facebook",
-                                            "WebsiteUrl": "www.alex.com",
-                                            "WebsiteTitle": "عنوان الموقع",
-                                            "category": "Clothes",
-                                            "password": "123456"
+                                                instagramUrlController.text,
+                                            "instagramUsername": "",
+                                            "facebookPage":
+                                                facebookUrlController.text,
+                                            "facebookUsername": "",
+                                            "WebsiteUrl":
+                                                websiteUrlController.text,
+                                            "WebsiteTitle": "",
+                                            "category": _selectedCategory,
+                                            "password": passwordController.text
                                           });
                                           var response1 = await dio.request(
                                             'https://tasel-backend-g6gsdfug6a-uc.a.run.app/signup/Store',
@@ -633,52 +723,25 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                             ),
                                             data: data1,
                                           );
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            SnackBar(
+                                              content: Text(response1
+                                                  .statusMessage
+                                                  .toString()),
+                                            ),
+                                          );
 
                                           if (response.statusCode == 200) {
+                                            print(
+                                                '==================================================');
                                             print(response.data);
                                           } else {
+                                            print(
+                                                '==================================================');
                                             print(response.statusMessage);
                                           }
                                         }
-                                        // context
-                                        //     .read<SignupProviderBloc>()
-                                        //     .add(SignedupProvider(
-                                        //       provider: SignupProviderModel(
-                                        //         name: providerController.text,
-                                        //         latitude: 0.0,
-                                        //         longitude: 0.0,
-                                        //         phoneNumbers: [
-                                        //           int.parse(
-                                        //               phoneNumController.text)
-                                        //         ],
-                                        //         landlines: [
-                                        //           int.parse(
-                                        //               landlineNumberController
-                                        //                   .text)
-                                        //         ],
-                                        //         email: emailController.text,
-                                        //         whatsappNumber:
-                                        //             'whatsappNumber',
-                                        //         instagramAccount:
-                                        //             instagramUrlController.text,
-                                        //         instagramUsername: '',
-                                        //         facebookPage:
-                                        //             facebookUrlController.text,
-                                        //         facebookUsername: '',
-                                        //         category: 'category',
-                                        //         password:
-                                        //             passwordController.text,
-                                        //         websiteUrl:
-                                        //             websiteUrlController.text,
-                                        //         websiteTitle: '',
-                                        //         image: await uploadeImage(),
-                                        //         areaName: areaName.text,
-                                        //         streetName: streetName.text,
-                                        //         buildingNameorNumber:
-                                        //             buildingNameorNumber.text,
-                                        //         floor: floor.text,
-                                        //       ),
-                                        //     ));
                                       } else {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
@@ -726,8 +789,10 @@ class _SignUpProviderState extends State<SignUpProvider> {
                                                   provider: SignupProviderModel(
                                                     name:
                                                         providerController.text,
-                                                    latitude: 0.0,
-                                                    longitude: 0.0,
+                                                    latitude: _markerPosition
+                                                        .latitude,
+                                                    longitude: _markerPosition
+                                                        .latitude,
                                                     phoneNumbers: [
                                                       int.parse(
                                                           phoneNumController

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasel_frontend/Widgets/my_button.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/change_password/services.dart';
 import 'package:tasel_frontend/change_password/verification_page.dart';
 import '../../../theme/colors.dart';
@@ -27,7 +28,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientScaffold(
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(23.0),
@@ -165,6 +166,9 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         }
                       },
                     )),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 1.5,
               ),
             ],
           ),

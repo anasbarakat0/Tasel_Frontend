@@ -8,6 +8,7 @@ import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/bloc/login_bloc.dart';
 import 'package:tasel_frontend/bloc/login_provider_bloc.dart';
 import 'package:tasel_frontend/bloc/signup_user_bloc.dart';
+import 'package:tasel_frontend/contact_page.dart';
 import 'package:tasel_frontend/user/curved_navigation_bar.dart';
 import 'package:tasel_frontend/provider/signup_provider.dart';
 import 'package:tasel_frontend/spincircle_bottom_bar.dart';
@@ -164,19 +165,20 @@ class _LoginPageState extends State<LoginPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ForgetPasswordPage(),
-                                    ),
-                                  );
-                                },
-                                child: Text('Forgot password?',
-                                    style: AppFont.cairoS),
-                              ),
+                              if (type)
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgetPasswordPage(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text('Forgot password?',
+                                      style: AppFont.cairoS),
+                                ),
                             ],
                           ),
                         ),
@@ -210,8 +212,19 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         child: Text('Sing Up', style: AppFont.cairoS),
-                      )
+                      ),
                     ],
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ContactUsPage(),
+                        ),
+                      );
+                    },
+                    child: Text('Contact Us', style: AppFont.cairoS),
                   ),
                 ],
               ),

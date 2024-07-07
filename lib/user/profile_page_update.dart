@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tasel_frontend/Model/response_login_model.dart';
 import 'package:tasel_frontend/Model/update_user_profile.dart';
 import 'package:tasel_frontend/Widgets/my_text_field.dart';
+import 'package:tasel_frontend/Widgets/scaffold_gradient.dart';
 import 'package:tasel_frontend/service/update_user_profile.dart';
 import 'package:tasel_frontend/theme/colors.dart';
 
@@ -59,7 +60,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GradientScaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.yellow,
         foregroundColor: AppColors.grey,
@@ -73,9 +74,6 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
             ),
           );
           if (updated) {
-            print('----------------------54263425348-----');
-            print(updated);
-
             Navigator.pop(context);
             widget.refresh;
           } else {
@@ -94,23 +92,40 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GestureDetector(
-                onTap: _pickImage,
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundImage: _image != null
-                      ? FileImage(_image!)
-                      : const AssetImage('assets/tasel.png') as ImageProvider,
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
+              Text(
                 'Edit Your Info...',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppColors.grey,
                 ),
+              ),
+              const SizedBox(height: 16),
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: CircleAvatar(
+                      radius: 75,
+                      backgroundImage: _image != null
+                          ? FileImage(_image!)
+                          : const AssetImage('assets/tasel_icon.png')
+                              as ImageProvider,
+                    ),
+                  ),
+                  if (_image == null)
+                    Positioned(
+                      bottom: 5,
+                      right: 5,
+                      child: IconButton(
+                          onPressed: _pickImage,
+                          icon: Icon(
+                            Icons.add_a_photo,
+                            color: AppColors.grey,
+                            size: 35,
+                          )),
+                    )
+                ],
               ),
               const SizedBox(height: 16),
               Padding(
